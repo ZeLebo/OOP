@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.nsu.sartakov.HeapsortTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-09-14T08:35:38" hostname="MacBook-ZhoRa.local" time="0.034">
+  <properties/>
+  <testcase name="sort()" classname="ru.nsu.sartakov.HeapsortTest" time="0.031"/>
+  <testcase name="sort_empty_array()" classname="ru.nsu.sartakov.HeapsortTest" time="0.001"/>
+  <testcase name="sort_oneOut()" classname="ru.nsu.sartakov.HeapsortTest" time="0.001"/>
+  <system-out><![CDATA[HeapsortTestHeapsort.BeforeEach
+HeapsortTestHeapsort.BeforeEach
+HeapsortTestHeapsort.BeforeEach
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
