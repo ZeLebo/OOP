@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+        // scanner the string
         Scanner input = new Scanner(System.in);
         ArrayList <Integer> nums = new ArrayList<> ();
 
@@ -16,7 +17,6 @@ public class Main {
                 nums.add(Integer.parseInt(intStr));
             }
         }
-
         Integer[] arr = nums.toArray(new Integer[0]);
 
         Heapsort hs = new Heapsort();
