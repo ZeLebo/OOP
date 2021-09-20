@@ -9,7 +9,7 @@ public class Main {
         ArrayList <Integer> nums = new ArrayList<> ();
 
         String str = input.nextLine();
-        String[] line = str.split("\\s+");
+        String[] line = str.split(",");
 
         for (String intStr : line) {
             if (!intStr.isEmpty()) {
