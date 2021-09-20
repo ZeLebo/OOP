@@ -1,16 +1,23 @@
 package ru.nsu.sartakov;
+
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter the size of the array:");
-        int size = input.nextInt();
-        int[] arr = new int[size];
-        System.out.println("Enter the array:");
-        for (int i = 0; i < size; i++) {
-            arr[i] = input.nextInt();
+        ArrayList <Integer> nums = new ArrayList<> ();
+
+        String str = input.nextLine();
+        String[] line = str.split("\\s+");
+
+        for (String intStr : line) {
+            if (!intStr.isEmpty()) {
+                nums.add(Integer.parseInt(intStr));
+            }
         }
+
+        Integer[] arr = nums.toArray(new Integer[0]);
 
         Heapsort hs = new Heapsort();
         hs.sort(arr);
