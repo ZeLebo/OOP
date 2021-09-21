@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         // scanner the string
+        // hello my dear git
         Scanner input = new Scanner(System.in);
         ArrayList <Integer> nums = new ArrayList<> ();
 
