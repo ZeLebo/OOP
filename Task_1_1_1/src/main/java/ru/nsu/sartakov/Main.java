@@ -5,9 +5,6 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        // scanner the string
-        // hello my dear git
-        // comment just to test
         Scanner input = new Scanner(System.in);
         ArrayList <Integer> nums = new ArrayList<> ();
 
@@ -23,13 +20,12 @@ public class Main {
 
         Heapsort hs = new Heapsort();
         hs.sort(arr);
-
-        // print the array
-        for (int i = 0; i < arr.length - 1; i++) {
-            System.out.print(arr[i] + ", ");
-        }
-        if (arr.length > 0) {
-            System.out.println(arr[arr.length - 1]);
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i]);
+            // for the comma at the end of the string
+            if (i != arr.length - 1) {
+                System.out.print(", ");
+            }
         }
     }
 }
