@@ -1,9 +1,14 @@
 package ru.nsu.sartakov;
 
+import java.io.File;
 import java.util.Scanner;
-import java.awt.Desktop;
-import java.io.*;
 
+
+/*
+It's not done yet, it's just a draft, I will complete it in the morning,
+and if I don't it means that I feel shattered or dead
+please, don't kick or ban me
+*/
 
 // the func, that opens the file
 // the func that searches the string
@@ -15,7 +20,7 @@ public class Main {
     {
         String concat = pattern + "$" + text;
         int l = concat.length();
-        int Z[] = new int[l];
+        int[] Z = new int[l];
         getZarr(concat, Z);
         for(int i = 0; i < l; ++i){
             if(Z[i] == pattern.length()){
@@ -51,34 +56,37 @@ public class Main {
     }
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // get the string
         Scanner input = new Scanner(System.in);
-        String str = input.nextLine();
+        StringBuilder str = new StringBuilder(input.nextLine());
         String pattern = input.nextLine();
 
-        if (str.isEmpty()){
+        if (str.length() == 0){
             System.out.println("Enter something UwU");
             return;
         }
 
-        String[] line = str.split(" ");
-        str = "";
+        String[] line = str.toString().split(" ");
+        str = new StringBuilder();
 
         for (int i = 1; i < line.length; i++) {
-            str += line[i] + " ";
+            str.append(line[i]).append(" ");
         }
 
         // open the file, if it exists
         File file = new File (line[0]);
-        int l = -1;
+        int l;
         if (!file.exists()) {
             System.out.println("There's no such file");
             return;
         }
-        l = search(str, pattern);
+        l = search(str.toString(), pattern);
+        if (l == -1){
+            System.out.println("no substring in that file\n or something went wrong");    
+        }
         // testing print (don't kick me)
         System.out.println("The filename is " + file);
-        System.out.println("The stirng to find is " + str);
+        System.out.println("The string to find is " + str);
     }
 }
