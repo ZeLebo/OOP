@@ -3,11 +3,7 @@ package ru.nsu.sartakov;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.io.IOException;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,7 +70,7 @@ class ZFuncTest {
 
     @Test
     public void ZFunc_noSubstrings() throws IOException {
-        String file_name = "src/files/input.txt";
+        String file_name = "src/files/test1.txt";
         String pattern = "you can't find me there)";
         File file = new File(file_name);
         String testFuncRes = "{}";
