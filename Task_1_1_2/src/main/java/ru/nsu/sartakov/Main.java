@@ -1,11 +1,6 @@
 package ru.nsu.sartakov;
 
-//import java.io.*;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -37,16 +32,6 @@ public class Main {
         File file = new File (file_name);
         if (!file.exists()) {
             System.out.println("There's no such file");
-
-            // to create files for tests
-            if (file.createNewFile()) {
-                System.out.println("I've made one");
-                FileWriter myWriter = new FileWriter(file_name);
-                myWriter.write(pattern);
-                myWriter.close();
-            }
-
-            return;
         }
 
         // reading the file in buffer
@@ -57,24 +42,15 @@ public class Main {
                 new FileInputStream(file_name), StandardCharsets.UTF_8), BUF_LENGTH);
 
         // shift + [array of chars] < file.len
-        int res = 0;
+        StringBuilder res = new StringBuilder();
         for (int shift = 0;
              shift < (int) file.length();
              shift += BUF_LENGTH - pattern.length()) {
 
             int charsRead = reader.read(buf);
             String toCheck = new String(Arrays.copyOf(buf, shift + charsRead - 1));
-            res += ZFunc.search(shift, toCheck, pattern);
+            res.append(ZFunc.search(shift, toCheck, pattern));
         }
-        // out for testing
-        if (res == 0) {
-            System.out.println("\nNo substring found");
-        }
-        if (res == 1) {
-            System.out.println("\n1 substring is found");
-        }
-        else {
-            System.out.println("\n" + res + " substrings are found");
-        }
+        System.out.println(res);
     }
 }
