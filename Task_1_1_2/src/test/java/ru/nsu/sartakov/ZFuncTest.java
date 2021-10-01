@@ -19,10 +19,19 @@ class ZFuncTest {
         String file_name = "src/files/empty.txt";
         String pattern = "something";
         File file = new File(file_name);
-        StringBuilder res = ZFunc.startFunc(file_name, file, pattern);
-        StringBuilder resEmpty = new StringBuilder();
-        resEmpty.append("The file is empty");
-        Assertions.assertSame(resEmpty, res);
+        String resEmpty = "The file is empty";
+        String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
+        assertEquals(resEmpty, res);
+    }
+
+    @Test
+    public void ZFunc_notExistingFile() throws IOException {
+        String file_name = "src/files/none.txt";
+        String pattern = "Lucifer is a great series";
+        File file = new File(file_name);
+        String resNotExist = "There's no such file";
+        String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
+        assertEquals(resNotExist, res);
     }
 
     @Test
@@ -30,33 +39,8 @@ class ZFuncTest {
         String file_name = "src/files/test.txt";
         String pattern = "";
         File file = new File(file_name);
-        StringBuilder res = ZFunc.startFunc(file_name, file, pattern);
-        StringBuilder resNothing = new StringBuilder();
-        resNothing.append("I don't know what to find");
-        Assertions.assertSame(resNothing, res);
-    }
-
-    @Test
-    public void ZFunc_bigFile() throws IOException {
-        String file_name = "src/files/bigfile.txt";
-        String pattern = "something";
-        File file = new File(file_name);
-        StringBuilder res = ZFunc.startFunc(file_name, file, pattern);
-    }
-
-    @Test
-    public void ZFunc_normalFile() throws IOException {
-        String file_name = "src/files/empty.txt";
-        String pattern = "something";
-        File file = new File(file_name);
-        StringBuilder res = ZFunc.startFunc(file_name, file, pattern);
-    }
-
-    @Test
-    public void ZFunc_noSubstrings() throws IOException {
-        String file_name = "src/files/input.txt";
-        String pattern = "hello";
-        File file = new File(file_name);
-        StringBuilder res = ZFunc.startFunc(file_name, file, pattern);
+        String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
+        String resNothing = "I don't know what to find";
+        assertEquals(resNothing, res);
     }
 }

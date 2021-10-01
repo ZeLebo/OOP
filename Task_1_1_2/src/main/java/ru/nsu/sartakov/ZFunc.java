@@ -17,36 +17,38 @@ public class ZFunc {
 
         // some checkups for input
         if (!file.exists()) {
-            String resNoFile = "There's no such file";
-            res.append(resNoFile);
+            res.append("There's no such file");
             return res;
         }
-        if ( pattern.length() == 0) {
-            String resNothing = "I don't know what to find";
-            res.append(resNothing);
+        else if (file.length() == 0) {
+            res.append("The file is empty");
             return res;
         }
-
-        if (file.length() == 0) {
-            String resEmpty = "The file is empty";
-            res.append(resEmpty);
+        else if ( pattern.length() == 0) {
+            res.append("I don't know what to find");
             return res;
         }
-
-        // reading the file in buffer
-        final int BUF_LENGTH = 2048;
-        char[] buf = new char[BUF_LENGTH];
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file_name), StandardCharsets.UTF_8), BUF_LENGTH);
-        // make it work with shifts
-        for (int shift = 0; shift < (int) file.length(); shift += BUF_LENGTH - pattern.length()) {
-            int charsRead = reader.read(buf);
-            // start the search function ( ZFunc logic )
-            String toCheck = new String(Arrays.copyOf(buf, shift + charsRead - 1));
-            res.append(search(shift, toCheck, pattern));
+        else {
+            // reading the file in buffer
+            final int BUF_LENGTH = 2048;
+            char[] buf = new char[BUF_LENGTH];
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file_name), StandardCharsets.UTF_8), BUF_LENGTH);
+            // make it work with shifts
+            for (int shift = 0; shift < (int) file.length(); shift += BUF_LENGTH - pattern.length()) {
+                int charsRead = reader.read(buf);
+                // start the search function ( ZFunc logic )
+                String toCheck = new String(Arrays.copyOf(buf, shift + charsRead - 1));
+                res.append(search(shift, toCheck, pattern));
+            }
+            if (res.length() != 0) {
+                res.insert(0, '{');
+                res.setCharAt((res.length() - 1), '}');
+            }
+            else {
+                res.append("{}");
+            }
+            return res;
         }
-        res.insert(0, '{');
-        res.setCharAt((res.length() - 1), '}');
-        return res;
     }
 
     public static StringBuilder search(int shift, String text, String pattern) {
