@@ -66,24 +66,18 @@ public class ZFunc {
     private static void getZarr(String str, int[] Z) {
         int n = str.length();
         int L = 0, R = 0;
-        for(int i = 1; i < n; i++) {
+        for (int i = 1; i < n; i++) {
+            int k = i - L;
             if (i > R) {
-                L = i;
-                for (R = i; R < n && str.charAt(R - L) == str.charAt(R); R++);
-                Z[i] = R - L;
-                R--;
+                R = i;
             }
-            else {
-                int k = i - L;
-                if ( Z[k] < R - i + 1 )
-                    Z[i] = Z[k];
-                else{
-                    L = i;
-                    for ( ; R < n && str.charAt(R - L) == str.charAt(R); R++);
-                    Z[i] = R - L;
-                    R--;
-                }
+            if (Z[k] < R - i + 1) {
+                Z[i] = Z[k];
             }
+            L = i;
+            for (; R < n && str.charAt(R - L) == str.charAt(R); R++) ;
+            Z[i] = R - L;
+            R--;
         }
     }
 
