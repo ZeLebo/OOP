@@ -2,12 +2,8 @@ package ru.nsu.sartakov;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.io.File;
-import java.util.SplittableRandom;
 
 /*
 input.txt - file where to find
