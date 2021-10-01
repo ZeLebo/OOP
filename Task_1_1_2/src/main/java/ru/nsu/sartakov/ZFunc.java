@@ -1,18 +1,18 @@
 package ru.nsu.sartakov;
 
 public class ZFunc {
-    public static int search(String text, String pattern)
-    {
+    public static int search(int shift, String text, String pattern) {
+        int res = 0;
         String concat = pattern + "$" + text;
-        int l = concat.length();
-        int[] Z = new int[l];
+        int[] Z = new int[concat.length()];
         getZarr(concat, Z);
-        for(int i = 0; i < l; ++i){
+        for(int i = 0; i < concat.length(); ++i){
             if(Z[i] == pattern.length()){
-                return (i - pattern.length() - 1);
+                System.out.print((shift + i - pattern.length() - 1) + " ");
+                res += 1;
             }
         }
-        return -1;
+        return res;
     }
     private static void getZarr(String str, int[] Z) {
         int n = str.length();
@@ -39,6 +39,4 @@ public class ZFunc {
             }
         }
     }
-
-
 }
