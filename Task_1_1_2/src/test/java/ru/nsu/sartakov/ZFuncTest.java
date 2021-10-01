@@ -12,29 +12,6 @@ import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ZFuncTest {
-//    private static StringBuilder testFunc(File file, String pattern) throws FileNotFoundException {
-//
-//        Scanner scan = new Scanner(file);
-//        String fileToString = ;
-//
-//        StringBuilder result = new StringBuilder();
-//
-//        int index = fileToString.indexOf(pattern);
-//        while (index >= 0) {
-//            result.append(index);
-//            index = fileToString.indexOf(pattern, index + 1);
-//        }
-//
-//        if (result.length() == 0) {
-//            result.append("{}");
-//        }
-////        else {
-////            result.insert(0, '{');
-////            result.setCharAt((result.length() - 1), '}');
-////        }
-//////        result.append(file.toString().indexOf(pattern));
-//    return result;
-//}
     @Test
     public void ZFunc_emptyFile() throws IOException {
         String file_name = "src/files/empty.txt";
