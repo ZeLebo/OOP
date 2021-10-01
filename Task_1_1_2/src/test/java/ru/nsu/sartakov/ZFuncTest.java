@@ -1,19 +1,40 @@
 package ru.nsu.sartakov;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ZFuncTest {
-    private static void testFunc (String Text, String pattern) {
-
-    }
-
+//    private static StringBuilder testFunc(File file, String pattern) throws FileNotFoundException {
+//
+//        Scanner scan = new Scanner(file);
+//        String fileToString = ;
+//
+//        StringBuilder result = new StringBuilder();
+//
+//        int index = fileToString.indexOf(pattern);
+//        while (index >= 0) {
+//            result.append(index);
+//            index = fileToString.indexOf(pattern, index + 1);
+//        }
+//
+//        if (result.length() == 0) {
+//            result.append("{}");
+//        }
+////        else {
+////            result.insert(0, '{');
+////            result.setCharAt((result.length() - 1), '}');
+////        }
+//////        result.append(file.toString().indexOf(pattern));
+//    return result;
+//}
     @Test
     public void ZFunc_emptyFile() throws IOException {
         String file_name = "src/files/empty.txt";
@@ -42,5 +63,45 @@ class ZFuncTest {
         String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
         String resNothing = "I don't know what to find";
         assertEquals(resNothing, res);
+    }
+    @Test
+    public void ZFunc_bigFile() throws IOException {
+        String file_name = "src/files/bigfile.txt";
+        String pattern = "something";
+        File file = new File(file_name);
+        String testFuncRes = "{2205 2263 4602 6674 8326 9850 11095 11860 12745}";
+        String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
+        assertEquals(testFuncRes, res);
+
+    }
+
+    @Test
+    public void ZFunc_normalFile() throws IOException {
+        String file_name = "src/files/input.txt";
+        String pattern = "dear";
+        File file = new File(file_name);
+        String testFuncRes = "{10}";
+        String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
+        assertEquals(testFuncRes, res);
+    }
+
+    @Test
+    public void ZFunc_russian() throws IOException {
+        String file_name = "src/files/russian.txt";
+        String pattern = "пирог";
+        File file = new File(file_name);
+        String testFuncRes = "{7}";
+        String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
+        assertEquals(testFuncRes, res);
+    }
+
+    @Test
+    public void ZFunc_noSubstrings() throws IOException {
+        String file_name = "src/files/input.txt";
+        String pattern = "you can't find me there)";
+        File file = new File(file_name);
+        String testFuncRes = "{}";
+        String res = (ZFunc.startFunc(file_name, file, pattern)).toString();
+        assertEquals(testFuncRes, res);
     }
 }

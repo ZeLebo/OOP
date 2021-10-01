@@ -2,6 +2,8 @@ package ru.nsu.sartakov;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.io.File;
@@ -94,13 +96,13 @@ public class ZFunc {
         Scanner input = new Scanner(System.in);
         String file_name = input.nextLine();
 
-        if (file_name.length() == 0){
+        if (file_name.length() == 0) {
             System.out.println("Enter something UwU");
             return;
         }
         // rename for specific directory
         file_name = "src/files/" + file_name;
-        File file = new File (file_name);
+        File file = new File(file_name);
         String pattern = input.nextLine();
         // entry point and something to output
         StringBuilder res = startFunc(file_name, file, pattern);
