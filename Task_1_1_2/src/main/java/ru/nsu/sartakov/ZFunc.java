@@ -5,20 +5,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
 
-/*
-input.txt - file where to find
-pattern - what to find
-*/
 public class ZFunc {
+    private static final int BUF_LENGTH = 2048;
+
     public static StringBuilder startFunc(String file_name, File file, String pattern) throws IOException {
         StringBuilder res = new StringBuilder();
 
-        // some checkups for input
         if (!file.exists()) {
             res.append("There's no such file");
             return res;
-        }
-        else if (file.length() == 0) {
+        } else if (file.length() == 0) {
             res.append("The file is empty");
             return res;
         }
@@ -27,14 +23,10 @@ public class ZFunc {
             return res;
         }
         else {
-            // reading the file in buffer
-            final int BUF_LENGTH = 2048;
             char[] buf = new char[BUF_LENGTH];
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file_name), StandardCharsets.UTF_8), BUF_LENGTH);
-            // make it work with shifts
             for (int shift = 0; shift < (int) file.length(); shift += BUF_LENGTH - pattern.length()) {
                 int charsRead = reader.read(buf);
-                // start the search function ( ZFunc logic )
                 String toCheck = new String(Arrays.copyOf(buf, shift + charsRead - 1));
                 res.append(search(shift, toCheck, pattern));
             }
@@ -51,31 +43,38 @@ public class ZFunc {
 
     public static StringBuilder search(int shift, String text, String pattern) {
         StringBuilder res = new StringBuilder();
-        // making it one string
         String concat = pattern + "$" + text;
-        int[] Z = new int[concat.length()];
-        getZarr(concat, Z);
-        for(int i = 0; i < concat.length(); ++i){
-            if(Z[i] == pattern.length()){
+        int[] Z = getZarr(concat);
+
+        for (int i = 0; i < concat.length(); ++i) {
+            if (Z[i] == pattern.length()) {
                 res.append(shift + i - pattern.length() - 1).append(" ");
             }
         }
         return res;
     }
 
-    private static void getZarr(String str, int[] Z) {
-        // working for (m * n)?
+    private static int[] getZarr(String str) {
+        int[] Z = new int[str.length()];
+        Arrays.fill(Z, -1);
         int n = str.length();
         int L = 0, R = 0;
+
         for (int i = 1; i < n; i++) {
+            int k = i - L;
             if (i > R) {
                 R = i;
             }
+            if (Z[k] < 0) {
+                Z[i] = Z[k];
+            }
             L = i;
             for (; R < n && str.charAt(R - L) == str.charAt(R); R++) ;
+            // не оптимизировано началоьное значение Z[i]
             Z[i] = R - L;
             R--;
         }
+        return Z;
     }
 
     public static void main(String[] args) throws IOException {
