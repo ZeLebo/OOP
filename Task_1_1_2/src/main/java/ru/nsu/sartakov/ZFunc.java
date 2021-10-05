@@ -5,6 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static java.lang.Math.min;
+
 public class ZFunc {
     private static final int BUF_LENGTH = 2048;
 
@@ -56,23 +58,18 @@ public class ZFunc {
 
     private static int[] getZarr(String str) {
         int[] Z = new int[str.length()];
-        Arrays.fill(Z, -1);
         int n = str.length();
         int L = 0, R = 0;
 
         for (int i = 1; i < n; i++) {
-            int k = i - L;
-            if (i > R) {
-                R = i;
+            Z[i] = (R > i) ? min(Z[i - L], R - i) : 0;
+            while ((i + Z[i] < n) && str.charAt(Z[i]) == str.charAt(i + Z[i])) {
+                ++Z[i];
             }
-            if (Z[k] < 0) {
-                Z[i] = Z[k];
+            if (i + Z[i] > R) {
+                L = i;
+                R = i + Z[i];
             }
-            L = i;
-            for (; R < n && str.charAt(R - L) == str.charAt(R); R++) ;
-            // не оптимизировано началоьное значение Z[i]
-            Z[i] = R - L;
-            R--;
         }
         return Z;
     }
