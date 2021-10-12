@@ -13,7 +13,7 @@ public class MyStack <T> implements Iterable<T> {
     private int count = 0;
     private T[] stackArr;
 
-
+    @SuppressWarnings("unchecked")
     public MyStack() {
         stackArr = (T[]) new Object[CAP];
     }
