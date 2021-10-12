@@ -58,7 +58,7 @@ public class MyStack <T> implements Iterable<T> {
         }
         MyStack <T> stack = new MyStack<>();
         stack.resize(size);
-        System.arraycopy(this.stackArr, 0, stack.stackArr, 0, size);
+        System.arraycopy(this.stackArr, count - size, stack.stackArr, 0, size);
         stack.count = size;
         this.count -= size;
         return stack;
