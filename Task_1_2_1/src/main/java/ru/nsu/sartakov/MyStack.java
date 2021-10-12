@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
-public class MyStack <T> implements Iterable<T> {
+public class MyStack<T> implements Iterable<T> {
 
     private static final int CAP = 4;
     private static final int MULT = 2;
@@ -23,23 +23,23 @@ public class MyStack <T> implements Iterable<T> {
     }
 
     public boolean isEmpty() {
-        return (count == 0);
+        return count == 0;
     }
 
     private void resize(int toSize) {
-        while(stackArr.length < toSize) {
+        while (stackArr.length < toSize) {
             stackArr = Arrays.copyOf(stackArr, stackArr.length * MULT);
         }
     }
 
-    public void push (T elem) {
+    public void push(T elem) {
         resize(count + 1);
         stackArr[count] = elem;
         count++;
     }
 
     public T pop() {
-        if ( count < 1 ) {
+        if (count < 1) {
             throw new NoSuchElementException();
         }
         count--;
@@ -52,19 +52,17 @@ public class MyStack <T> implements Iterable<T> {
         this.count += stack.count;
     }
 
-    public MyStack<T> popStack (int size) {
-        if ( size < 0 || size > count ) {
+    public MyStack<T> popStack(int size) {
+        if (size < 0 || size > count) {
             throw new NoSuchElementException();
         }
-        MyStack <T> stack = new MyStack<>();
+        MyStack<T> stack = new MyStack<>();
         stack.resize(size);
         System.arraycopy(this.stackArr, count - size, stack.stackArr, 0, size);
         stack.count = size;
         this.count -= size;
         return stack;
     }
-
-    // for making foreach working
 
     @Override
     public Iterator<T> iterator() {

@@ -51,7 +51,6 @@ class MyStackTest {
         Assertions.assertEquals(145, testStack.pop());
     }
 
-
     @Test
     void popNoSuchElem() {
         testStack.push(1);
@@ -69,7 +68,6 @@ class MyStackTest {
             testStack.popStack(-1);
         });
     }
-
 
     @Test
     void countBigInteger() {
@@ -110,7 +108,8 @@ class MyStackTest {
         Assertions.assertEquals(0, testStack.count());
     }
 
-    class StrangeClass {};
+    class StrangeClass {}
+
     @Test
     void pushStrangeCustomType() {
         MyStack<StrangeClass> stack = new MyStack<>();
@@ -119,7 +118,7 @@ class MyStackTest {
 
         stack2.push(strangeClass);
 
-        stack.pushStack( stack2 );
+        stack.pushStack(stack2);
 
         Assertions.assertEquals(strangeClass, stack.pop());
     }
