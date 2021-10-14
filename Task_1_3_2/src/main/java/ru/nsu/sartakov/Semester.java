@@ -18,12 +18,6 @@ public class Semester {
         return this.semester.values();
     }
 
-    /**
-     * The logic of numbers
-     * @param marks is the marks itself
-     * @return result is the average grade for the semester
-     */
-
     public static double averageScore(ArrayList<Integer> marks) {
         double result = 0.0;
 
