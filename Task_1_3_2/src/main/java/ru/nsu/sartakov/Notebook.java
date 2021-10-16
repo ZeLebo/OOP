@@ -8,7 +8,7 @@ public class Notebook extends Semester{
 
     private String fulName;
     private static final int SEM_AMOUNT = 8;
-    private final Semester[] semesters = new Semester[9];
+    private final Semester[] semesters = new Semester[SEM_AMOUNT + 1];
     private int qualifyingWorkGrade;
 
     public Notebook(String fulName, int qualifyingWorkGrade) {
