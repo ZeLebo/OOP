@@ -7,6 +7,7 @@ import java.util.Collection;
 public class Notebook extends Semester{
 
     private String fulName;
+    private static final int SEM_AMOUNT = 8;
     private final Semester[] semesters = new Semester[9];
     private int qualifyingWorkGrade;
 
@@ -14,7 +15,7 @@ public class Notebook extends Semester{
         this.fulName = fulName;
         this.qualifyingWorkGrade = qualifyingWorkGrade;
 
-        for (int i = 1; i < 9; i++) {
+        for (int i = 1; i <= SEM_AMOUNT; i++) {
             Semester tmp = new Semester();
             semesters[i] = tmp;
         }
