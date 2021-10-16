@@ -7,7 +7,6 @@ import java.util.Collection;
 public class Notebook extends Semester{
 
     private String fulName;
-    private String course;
     private final Semester[] semesters = new Semester[9];
     private int qualifyingWorkGrade;
 
@@ -19,18 +18,6 @@ public class Notebook extends Semester{
             Semester tmp = new Semester();
             semesters[i] = tmp;
         }
-    }
-
-    public Semester[] getSemesters() {
-        return semesters;
-    }
-
-    public void setFulName(String fulName) {
-        this.fulName = fulName;
-    }
-
-    public String getFulName() {
-        return fulName;
     }
 
     public void add(int semester, String course, int grade) {
