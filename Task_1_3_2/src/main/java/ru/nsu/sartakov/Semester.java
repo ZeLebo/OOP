@@ -3,15 +3,10 @@ package ru.nsu.sartakov;
 import java.util.*;
 
 public class Semester {
-//    Semester() {};
     private final Map<String, Integer> semester = new HashMap<>();
 
     protected void setGrade(String course, int grade) {
         this.semester.put(course, grade);
-    }
-
-    protected Collection<String> getCourses() {
-        return this.semester.keySet();
     }
 
     protected Collection<Integer> getGrades() {

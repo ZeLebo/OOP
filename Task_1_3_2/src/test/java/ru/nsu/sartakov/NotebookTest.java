@@ -1,12 +1,9 @@
 package ru.nsu.sartakov;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class NotebookTest {
     @Test
@@ -25,6 +22,7 @@ class NotebookTest {
         mine.add(2, "Imperative", 4);
         mine.add(2, "English", 5);
         mine.add(2, "DP", 4);
+
 
         ArrayList<Integer> grades = mine.getAllGrades(); //Here we can calculate the average score not only for the entire period.
         Assertions.assertEquals(4.1, Semester.averageScore(grades), 0.1);
