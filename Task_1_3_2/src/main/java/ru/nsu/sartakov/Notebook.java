@@ -21,7 +21,6 @@ public class Notebook {
 
     public static boolean diploma(Notebook notebook) {
         List<Integer> grades = notebook.getAllGrades();
-
         boolean isSatisfactoryGrades = grades.stream().anyMatch(g -> g < 4);
         long fives = grades.stream().filter(g -> g == 5).count();
         double fivesPercent = (double) fives / grades.size();

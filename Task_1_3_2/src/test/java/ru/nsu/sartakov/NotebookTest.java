@@ -26,7 +26,6 @@ class NotebookTest {
         mine.add(2, "DP", 4);
     }
 
-
     @Test
     public void AverageScoreTest() {
         ArrayList<Integer> grades = mine.getAllGrades();
