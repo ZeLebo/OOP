@@ -48,6 +48,6 @@ class NotebookTest {
     public void nameChangingTest() {
         Assertions.assertTrue(mine.fullName == "SartakovAA");
         mine.nameChanging("AzazaZA");
-        Assertions.assertFalse(mine.fullName == "AzazaZA");
+        Assertions.assertTrue(mine.fullName == "AzazaZA");
     }
 }
