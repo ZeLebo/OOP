@@ -23,14 +23,12 @@ class NotebookTest {
         mine.add(2, "English", 5);
         mine.add(2, "DP", 4);
 
-
-        ArrayList<Integer> grades = mine.getAllGrades(); //Here we can calculate the average score not only for the entire period.
+        ArrayList<Integer> grades = mine.getAllGrades();
         Assertions.assertEquals(4.1, Semester.averageScore(grades), 0.1);
     }
 
     @Test
     public void DiplomaTest() {
-
         Notebook mine = new Notebook("SartakovAA", 5);
         mine.add(1, "Algebra", 4);
         mine.add(1, "Discrete", 4);
@@ -52,7 +50,6 @@ class NotebookTest {
 
     @Test
     public void hasNoThreeTest() {
-
         Notebook mine = new Notebook("SartakovAA", 5);
         mine.add(1, "Algebra", 4);
         mine.add(1, "Discrete", 4);
@@ -70,5 +67,4 @@ class NotebookTest {
 
         Assertions.assertFalse(Semester.hasNoThree(mine, 1));
     }
-
 }

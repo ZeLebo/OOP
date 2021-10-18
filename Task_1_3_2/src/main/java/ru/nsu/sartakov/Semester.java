@@ -15,11 +15,9 @@ public class Semester {
 
     public static double averageScore(ArrayList<Integer> marks) {
         double result = 0.0;
-
         for (int mark : marks) {
             result += mark;
         }
-
         result /= marks.size();
         return result;
     }
@@ -31,9 +29,7 @@ public class Semester {
         boolean satis = grades.stream().anyMatch(g -> g < 4);
         fives = grades.stream().filter(g -> g == 5).count();
         double fivesPercent = (double) fives / grades.size();
-
         return fivesPercent >= 0.75 && !satis && notebook.getQualifyingWorkGrade() == 5;
-
     }
 
     public static boolean hasNoThree(Notebook notebook, int semester) {
@@ -47,5 +43,4 @@ public class Semester {
         }
         return result;
     }
-
 }
