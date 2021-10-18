@@ -31,7 +31,7 @@ public class Notebook {
         this.semesters[semester].setGrade(course, grade);
     }
 
-    public static boolean hasNoThree(Notebook notebook, int semester) {
+    public static boolean HasNoThreeInSemester(Notebook notebook, int semester) {
         Collection<Integer> marks = notebook.getSemesterGrades(semester);
         for (int mark : marks) {
             if (mark < 4) {

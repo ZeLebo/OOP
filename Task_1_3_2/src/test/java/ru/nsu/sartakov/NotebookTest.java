@@ -40,7 +40,7 @@ class NotebookTest {
 
     @Test
     public void hasNoThreeTest() {
-        Assertions.assertFalse(Notebook.hasNoThree(mine, 1));
+        Assertions.assertFalse(Notebook.HasNoThreeInSemester(mine, 1));
     }
 
     @Test
