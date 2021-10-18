@@ -19,18 +19,6 @@ public class Notebook {
         }
     }
 
-    public static boolean diploma(Notebook notebook) {
-        List<Integer> grades = notebook.getAllGrades();
-        boolean isSatisfactoryGrades = grades.stream().anyMatch(g -> g < 4);
-        long fives = grades.stream().filter(g -> g == 5).count();
-        double fivesPercent = (double) fives / grades.size();
-        return fivesPercent >= 0.75 && !isSatisfactoryGrades && notebook.getQualifyingWorkGrade() == 5;
-    }
-
-    public void add(int semester, String course, int grade) {
-        this.semesters[semester].setGrade(course, grade);
-    }
-
     public static boolean HasNoThreeInSemester(Notebook notebook, int semester) {
         Collection<Integer> marks = notebook.getSemesterGrades(semester);
         for (int mark : marks) {
@@ -41,12 +29,28 @@ public class Notebook {
         return true;
     }
 
-    public void setQualifyingWorkGrade(int qualifyingWorkGrade) {
-        this.qualifyingWorkGrade = qualifyingWorkGrade;
+    public static boolean scholarschip(Notebook notebook, int semester) {
+        return HasNoThreeInSemester(notebook, semester);
+    }
+
+    public void nameChanging(String newName) {
+        this.fullName = newName;
+    }
+
+    public void add(int semester, String course, int grade) {
+        this.semesters[semester].setGrade(course, grade);
     }
 
     public int getQualifyingWorkGrade() {
         return this.qualifyingWorkGrade;
+    }
+
+    public void setQualifyingWorkGrade(int qualifyingWorkGrade) {
+        this.qualifyingWorkGrade = qualifyingWorkGrade;
+    }
+
+    public Collection<Integer> getSemesterGrades(int semester) {
+        return semesters[semester].getGrades();
     }
 
     public ArrayList<Integer> getAllGrades() {
@@ -57,11 +61,11 @@ public class Notebook {
         return grades;
     }
 
-    public void nameChanging(String newName) {
-        this.fullName = newName;
-    }
-
-    public Collection<Integer> getSemesterGrades(int semester) {
-        return semesters[semester].getGrades();
+    public static boolean diploma(Notebook notebook) {
+        List<Integer> grades = notebook.getAllGrades();
+        boolean isSatisfactoryGrades = grades.stream().anyMatch(g -> g < 4);
+        long fives = grades.stream().filter(g -> g == 5).count();
+        double fivesPercent = (double) fives / grades.size();
+        return fivesPercent >= 0.75 && !isSatisfactoryGrades && notebook.getQualifyingWorkGrade() == 5;
     }
 }
