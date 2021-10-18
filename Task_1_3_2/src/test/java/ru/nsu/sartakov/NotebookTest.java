@@ -46,8 +46,8 @@ class NotebookTest {
 
     @Test
     public void nameChangingTest() {
-        Assertions.assertTrue(mine.fullName == "SartakovAA");
+        Assertions.assertSame("SartakovAA", mine.fullName);
         mine.nameChanging("AzazaZA");
-        Assertions.assertTrue(mine.fullName == "AzazaZA");
+        Assertions.assertEquals("AzazaZA", mine.fullName);
     }
 }
