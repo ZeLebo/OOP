@@ -1,6 +1,9 @@
 package ru.nsu.sartakov;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Semester {
     private final Map<String, Integer> semester = new HashMap<>();
@@ -19,28 +22,6 @@ public class Semester {
             result += mark;
         }
         result /= marks.size();
-        return result;
-    }
-
-    public static boolean Diploma(Notebook notebook) {
-        List<Integer> grades;
-        grades = notebook.getAllGrades();
-        long fives;
-        boolean satis = grades.stream().anyMatch(g -> g < 4);
-        fives = grades.stream().filter(g -> g == 5).count();
-        double fivesPercent = (double) fives / grades.size();
-        return fivesPercent >= 0.75 && !satis && notebook.getQualifyingWorkGrade() == 5;
-    }
-
-    public static boolean hasNoThree(Notebook notebook, int semester) {
-        Collection<Integer> marks = notebook.getSemesterGrades(semester);
-        boolean result = true;
-        for (int mark : marks) {
-            if (mark < 4) {
-                result = false;
-                break;
-            }
-        }
         return result;
     }
 }
