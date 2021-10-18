@@ -39,8 +39,14 @@ class NotebookTest {
     }
 
     @Test
-    public void hasNoThreeTest() {
+    public void HasNoThreeTest() {
         Assertions.assertFalse(Notebook.HasNoThreeInSemester(mine, 1));
+    }
+
+    @Test
+    public void ScholarschipTest() {
+        Assertions.assertFalse(Notebook.scholarschip(mine, 1));
+        Assertions.assertFalse(Notebook.scholarschip(mine, 2));
     }
 
     @Test
