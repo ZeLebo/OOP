@@ -48,19 +48,19 @@ class NotebookTest {
         mine.add(1, "Declarative", 5);
         mine.add(1, "Imperative", 5);
         mine.add(2, "Algebra", 5);
-        Assertions.assertTrue(Notebook.hasNoThreeInSemester(mine, 1));
-        Assertions.assertTrue(Notebook.hasNoThreeInSemester(mine, 2));
+        Assertions.assertTrue(mine.hasNoThreeInSemester(1));
+        Assertions.assertTrue(mine.hasNoThreeInSemester(2));
     }
 
     @Test
     public void hasNoThreeNegativeTest() {
-        Assertions.assertFalse(Notebook.hasNoThreeInSemester(mine, 1));
+        Assertions.assertFalse(mine.hasNoThreeInSemester(1));
     }
 
     @Test
     public void scholarschipTest() {
-        Assertions.assertFalse(Notebook.scholarschip(mine, 1));
-        Assertions.assertFalse(Notebook.scholarschip(mine, 2));
+        Assertions.assertFalse(mine.scholarschip(1));
+        Assertions.assertFalse(mine.scholarschip(2));
     }
 
     @Test
