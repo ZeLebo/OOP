@@ -32,33 +32,33 @@ class NotebookTest {
     }
 
     @Test
-    public void AverageScoreTest() {
+    public void averageScoreTest() {
         ArrayList<Integer> grades = mine.getAllGrades();
         Assertions.assertEquals(4.1, Semester.averageScore(grades), 0.1);
     }
 
     @Test
-    public void DiplomaTest() {
+    public void diplomaTest() {
         mine.setQualifyingWorkGrade(5);
         Assertions.assertFalse(Notebook.diploma(mine));
     }
 
     @Test
-    public void HasNoThreeTestPositive() {
+    public void hasNoThreeTestPositive() {
         mine.add(1, "Declarative", 5);
         mine.add(1, "Imperative", 5);
         mine.add(2, "Algebra", 5);
-        Assertions.assertTrue(Notebook.HasNoThreeInSemester(mine, 1));
-        Assertions.assertTrue(Notebook.HasNoThreeInSemester(mine, 2));
+        Assertions.assertTrue(Notebook.hasNoThreeInSemester(mine, 1));
+        Assertions.assertTrue(Notebook.hasNoThreeInSemester(mine, 2));
     }
 
     @Test
-    public void HasNoThreeNegativeTest() {
-        Assertions.assertFalse(Notebook.HasNoThreeInSemester(mine, 1));
+    public void hasNoThreeNegativeTest() {
+        Assertions.assertFalse(Notebook.hasNoThreeInSemester(mine, 1));
     }
 
     @Test
-    public void ScholarschipTest() {
+    public void scholarschipTest() {
         Assertions.assertFalse(Notebook.scholarschip(mine, 1));
         Assertions.assertFalse(Notebook.scholarschip(mine, 2));
     }

@@ -19,7 +19,7 @@ public class Notebook {
         }
     }
 
-    public static boolean HasNoThreeInSemester(Notebook notebook, int semester) {
+    public static boolean hasNoThreeInSemester(Notebook notebook, int semester) {
         Collection<Integer> marks = notebook.getSemesterGrades(semester);
         for (int mark : marks) {
             if (mark < 4) {
@@ -30,7 +30,7 @@ public class Notebook {
     }
 
     public static boolean scholarschip(Notebook notebook, int semester) {
-        return HasNoThreeInSemester(notebook, semester);
+        return hasNoThreeInSemester(notebook, semester);
     }
 
     public void nameChanging(String newName) {
