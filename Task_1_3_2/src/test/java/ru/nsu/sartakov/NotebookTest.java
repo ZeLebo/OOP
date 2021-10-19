@@ -27,6 +27,11 @@ class NotebookTest {
     }
 
     @Test
+    public void getQualifyingMark() {
+        Assertions.assertSame(mine.getQualifyingWorkGrade(), 5);
+    }
+
+    @Test
     public void AverageScoreTest() {
         ArrayList<Integer> grades = mine.getAllGrades();
         Assertions.assertEquals(4.1, Semester.averageScore(grades), 0.1);
@@ -39,7 +44,16 @@ class NotebookTest {
     }
 
     @Test
-    public void HasNoThreeTest() {
+    public void HasNoThreeTestPositive() {
+        mine.add(1, "Declarative", 5);
+        mine.add(1, "Imperative", 5);
+        mine.add(2, "Algebra", 5);
+        Assertions.assertTrue(Notebook.HasNoThreeInSemester(mine, 1));
+        Assertions.assertTrue(Notebook.HasNoThreeInSemester(mine, 2));
+    }
+
+    @Test
+    public void HasNoThreeNegativeTest() {
         Assertions.assertFalse(Notebook.HasNoThreeInSemester(mine, 1));
     }
 
