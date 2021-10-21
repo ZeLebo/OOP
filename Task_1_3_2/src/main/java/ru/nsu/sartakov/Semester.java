@@ -12,16 +12,19 @@ public class Semester {
         this.semester.put(course, grade);
     }
 
-    protected Collection<Integer> getGrades() {
-        return this.semester.values();
+    protected Integer getCourseGrade(String course) {
+        return this.semester.get(course);
     }
 
-    public static double averageScore(ArrayList<Integer> marks) {
-        double result = 0.0;
-        for (int mark : marks) {
-            result += mark;
+    protected ArrayList<String> getInfo() {
+        ArrayList<String> gradesInfo = new ArrayList<>();
+        for (String key : semester.keySet()) {
+            gradesInfo.add(key + " - " + semester.get(key));
         }
-        result /= marks.size();
-        return result;
+        return gradesInfo;
+    }
+
+    protected Collection<Integer> getGrades() {
+        return this.semester.values();
     }
 }
