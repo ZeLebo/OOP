@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 public class Notebook {
     /**
      * I used "protested" cause people may change their names
