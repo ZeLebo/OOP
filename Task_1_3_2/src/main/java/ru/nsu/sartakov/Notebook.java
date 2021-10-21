@@ -34,7 +34,6 @@ public class Notebook {
 
     /**
      * get the info about having of not "satisfactory" in semester
-     *
      * @param semester the number of semester you want to get
      * @return the statement whether you have "three" or not
      */
@@ -50,7 +49,6 @@ public class Notebook {
 
     /**
      * you can get scholarschip if you don't have "satisfactory"
-     *
      * @param semester the number of semester you want to know if you got the scholarship
      * @return the state, whether you get it or not
      */
@@ -72,7 +70,6 @@ public class Notebook {
 
     /**
      * Let me make it as the first semester students can't have higher scholarship
-     *
      * @return whether the person have the
      */
     public boolean isHavingHigherScholarship() {
@@ -111,7 +108,6 @@ public class Notebook {
 
     /**
      * if you want to get the special course grade
-     *
      * @param semester the number of the semester
      * @param course   the name of the course attended
      * @return the grade
@@ -145,7 +141,6 @@ public class Notebook {
 
     /**
      * if you want to get the special semester average score
-     *
      * @param semester the number of semester you want to get grades of
      * @return the average score of semester
      */
@@ -161,7 +156,6 @@ public class Notebook {
     /**
      * Obvious that if you want to get the whole course ( till your actual semester )
      * average score, you can do this
-     *
      * @return average score for all the time
      */
     public ArrayList<Integer> getAllGrades() {
@@ -176,7 +170,6 @@ public class Notebook {
      * to have red diploma you have to have at least 75% of grades "five"
      * you can have "satisfactory" during the studying
      * you have to get "excellent" for the qualifying work
-     *
      * @return whether you can have the red diploma or not
      */
     public boolean isRedDiploma() {
