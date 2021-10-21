@@ -123,9 +123,7 @@ public class Notebook {
      * During studying we get the grades,
      * so if we don't have any grades in semester
      * it means this is one we're studying
-     * <p>
      * if we don't have grades at all,
-     *
      * @return 1 we are on the first one
      */
     public int getSemNumber() {

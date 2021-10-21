@@ -79,7 +79,7 @@ class NotebookTest {
         mine.add(2, "Imperative", 5);
         mine.add(2, "English", 5);
         mine.add(2, "DP", 5);
-        Assertions.assertTrue(mine.isHavingScholarship());
+        Assertions.assertTrue(mine.isHavingHigherScholarship());
     }
 
     @Test
