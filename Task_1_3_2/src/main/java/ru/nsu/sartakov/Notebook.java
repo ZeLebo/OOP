@@ -22,12 +22,16 @@ public class Notebook {
         }
     }
 
-    public double allTimeAverageScore(ArrayList<Integer> grades) {
+    public double allTimeAverageScore() {
         double result = 0.0;
-        for (int mark : grades) {
-            result += mark;
+        int cnt = 0;
+        for (int i = 1; i < this.getSemNumber(); i++) {
+            for (String key : semesters[i].semester.keySet()) {
+                result += semesters[i].semester.get(key);
+                cnt++;
+            }
         }
-        result /= grades.size();
+        result /= cnt;
         return result;
     }
 
