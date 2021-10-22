@@ -22,7 +22,7 @@ public class Notebook {
         }
     }
 
-    public static double allTimeAverageScore(ArrayList<Integer> grades) {
+    public double allTimeAverageScore(ArrayList<Integer> grades) {
         double result = 0.0;
         for (int mark : grades) {
             result += mark;
