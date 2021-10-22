@@ -16,7 +16,14 @@ public class Semester {
         return this.semester.get(course);
     }
 
-    protected ArrayList<String> getInfo() {
+    /**
+     * To be honest I wanted to make it protected
+     * In order to not everybody can get the info,
+     * But I messed up =(
+     *
+     * @return ArrayList of string with course and grade for it
+     */
+    public ArrayList<String> getInfo() {
         ArrayList<String> gradesInfo = new ArrayList<>();
         for (String key : semester.keySet()) {
             gradesInfo.add(key + " - " + semester.get(key));
