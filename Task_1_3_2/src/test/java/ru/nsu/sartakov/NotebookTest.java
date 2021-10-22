@@ -33,8 +33,7 @@ class NotebookTest {
 
     @Test
     public void allTimeAverageScoreTest() {
-        ArrayList<Integer> grades = mine.getAllGrades();
-        Assertions.assertEquals(4.1, mine.allTimeAverageScore(grades), 0.1);
+        Assertions.assertEquals(4.1, mine.allTimeAverageScore(), 0.1);
     }
 
     @Test

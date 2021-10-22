@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Semester {
-    private final Map<String, Integer> semester = new HashMap<>();
+    protected final Map<String, Integer> semester = new HashMap<>();
 
     protected void setGrade(String course, int grade) {
         this.semester.put(course, grade);
