@@ -8,7 +8,7 @@ public class Notebook {
     /**
      * I used "protested" cause people may change their names
      */
-    protected String fullName;
+    public String fullName;
     private static final int SEM_AMOUNT = 8;
     private final Semester[] semesters = new Semester[SEM_AMOUNT + 1];
     private int qualifyingWorkGrade;
@@ -24,14 +24,10 @@ public class Notebook {
 
     public double allTimeAverageScore() {
         double result = 0.0;
-        int cnt = 0;
         for (int i = 1; i < this.getSemNumber(); i++) {
-            for (String key : semesters[i].semester.keySet()) {
-                result += semesters[i].semester.get(key);
-                cnt++;
-            }
+            result += this.semesterAverageScore(i);
         }
-        result /= cnt;
+        result /= this.getSemNumber() - 1;
         return result;
     }
 
