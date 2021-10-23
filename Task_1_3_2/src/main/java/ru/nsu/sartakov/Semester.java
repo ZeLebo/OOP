@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Semester {
-    protected final Map<String, Integer> semester = new HashMap<>();
+    private final Map<String, Integer> semester = new HashMap<>();
 
-    protected void setGrade(String course, int grade) {
+    public void setGrade(String course, int grade) {
         this.semester.put(course, grade);
     }
 
-    protected Integer getCourseGrade(String course) {
+    public Integer getCourseGrade(String course) {
         return this.semester.get(course);
     }
 
@@ -31,7 +31,7 @@ public class Semester {
         return gradesInfo;
     }
 
-    protected Collection<Integer> getGrades() {
+    public Collection<Integer> getGrades() {
         return this.semester.values();
     }
 }
