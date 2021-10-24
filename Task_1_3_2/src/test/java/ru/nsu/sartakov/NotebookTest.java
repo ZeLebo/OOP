@@ -83,9 +83,9 @@ class NotebookTest {
 
     @Test
     public void changeNameTest() {
-        Assertions.assertSame("SartakovAA", mine.fullName);
+        Assertions.assertSame("SartakovAA", mine.getFullName());
         mine.changeName("AzazaZA");
-        Assertions.assertEquals("AzazaZA", mine.fullName);
+        Assertions.assertEquals("AzazaZA", mine.getFullName());
     }
 
     @Test

@@ -8,7 +8,7 @@ public class Notebook {
     /**
      * I used "protested" cause people may change their names
      */
-    public String fullName;
+    private String fullName;
     private static final int SEM_AMOUNT = 8;
     private final Semester[] semesters = new Semester[SEM_AMOUNT + 1];
     private int qualifyingWorkGrade;
@@ -99,6 +99,10 @@ public class Notebook {
 
     public Collection<Integer> getSemesterGrades(int semester) {
         return semesters[semester].getGrades();
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public void changeName(String newName) {
