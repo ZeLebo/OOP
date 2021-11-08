@@ -5,6 +5,7 @@ import Operations.*;
 import java.util.*;
 
 public class Calculator {
+    private final Map<String, Operation> operations = new HashMap<>();
 
     public Calculator(){
         List<Operation> lst = OperationFabric.produceOperations();
@@ -32,8 +33,6 @@ public class Calculator {
         return true;
     }
 
-    private final Map<String, Operation> operations = new HashMap<>();
-
     public double calc(String inputString) {
         String[] input = inputString.split(" ");
         Stack <Double> stack = new Stack<>();
@@ -42,12 +41,8 @@ public class Calculator {
             if (isNumeric(input[i])) {
                 stack.push(Double.parseDouble(input[i]));
             } else if (operations.containsKey(input[i])) {
-                stack.push(
-                        operations.get(input[i])
-                                .calculate(stack)
-                );
-            }
-            else {
+                stack.push(operations.get(input[i]).calculate(stack));
+            } else {
                 throw new IllegalArgumentException("The operation wasn't found");
             }
         }
