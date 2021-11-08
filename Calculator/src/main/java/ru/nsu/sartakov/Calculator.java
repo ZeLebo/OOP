@@ -1,9 +1,17 @@
 package ru.nsu.sartakov;
 
-import java.util.Scanner;
-import java.util.Stack;
+import Operations.*;
 
-public class Calculator extends Arithmetics {
+import java.util.*;
+
+public class Calculator {
+
+    public Calculator(){
+        List<Operation> lst = OperationFabric.produceOperations();
+        for(Operation op : lst){
+            operations.put(op.getRepresentation(), op);
+        }
+    }
 
     public void main(String[] args) {
         Scanner inputScanner = new Scanner(System.in);
@@ -24,52 +32,27 @@ public class Calculator extends Arithmetics {
         return true;
     }
 
+    private final Map<String, Operation> operations = new HashMap<>();
+
     public double calc(String inputString) {
-        new Arithmetics();
         String[] input = inputString.split(" ");
         Stack <Double> stack = new Stack<>();
 
         for (int i = input.length - 1; i > -1 ; --i) {
-            double x;
-            double y;
             if (isNumeric(input[i])) {
                 stack.push(Double.parseDouble(input[i]));
-            } else if (input[i].equals("+")) {
-                x = stack.pop();
-                y = stack.pop();
-                stack.push(add(x, y));
-            } else if (input[i].equals("-")) {
-                x = stack.pop();
-                y = stack.pop();
-                stack.push(sub(x, y));
-            } else if (input[i].equals("*")) {
-                x = stack.pop();
-                y = stack.pop();
-                stack.push(mult(x, y));
-            } else if (input[i].equals("/")) {
-                x = stack.pop();
-                y = stack.pop();
-                stack.push(div(x, y));
-            } else if (input[i].equals("log")) {
-                x = stack.pop();
-                y = stack.pop();
-                stack.push(log(x, y));
-            } else if (input[i].equals("pow")) {
-                x = stack.pop();
-                y = stack.pop();
-                stack.push(pow(x, y));
-            } else if (input[i].equals("sqrt")) {
-                x = stack.pop();
-                stack.push(sqrt(x));
-            } else if (input[i].equals("sin")) {
-                x = stack.pop();
-                stack.push(sin(x));
-            } else if (input[i].equals("cos")) {
-                x = stack.pop();
-                stack.push(cos(x));
-            } else {
-                System.out.println("Something went wrong… UwU");
+            } else if (operations.containsKey(input[i])) {
+                stack.push(
+                        operations.get(input[i])
+                                .calculate(stack)
+                );
             }
+            else {
+                throw new IllegalArgumentException("The operation wasn't found");
+            }
+        }
+        if (stack.size() != 1) {
+            throw new IllegalArgumentException("The amount of arguments is wrong");
         }
         return stack.pop();
     }
