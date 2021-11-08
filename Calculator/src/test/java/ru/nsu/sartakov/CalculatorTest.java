@@ -1,77 +1,110 @@
 package ru.nsu.sartakov;
 
+import Operations.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class CalculatorTest extends Arithmetics {
+import java.util.Stack;
+
+class CalculatorTest {
+
+    Stack<Double> numbers;
+    @BeforeEach
+    public void init() {
+        numbers = new Stack<>();
+    }
 
     @Test
     public void additionTest() {
         double x = 147.72;
         double y = 243.2;
+        numbers.push(y);
+        numbers.push(x);
+        AddOperator op = new AddOperator();
         double result = x + y;
-        Assertions.assertEquals(result, add(x, y));
+        Assertions.assertEquals(result, op.calculate(numbers));
     }
 
     @Test
     public void subtractionTest() {
         double x = 1234.23;
         double y = 234432.324;
+        numbers.push(y);
+        numbers.push(x);
+        SubOperator op = new SubOperator();
         double result = x - y;
-        Assertions.assertEquals(result, sub(x, y));
+        Assertions.assertEquals(result, op.calculate(numbers));
     }
 
     @Test
     public void multiplicationTest() {
         double x = 147.72;
         double y = 243.2;
+        numbers.push(y);
+        numbers.push(x);
+        MultOperator op = new MultOperator();
         double result = x * y;
-        Assertions.assertEquals(result, mult(x, y));
+        Assertions.assertEquals(result, op.calculate(numbers));
     }
 
     @Test
     public void divisionTest() {
         double x = 147.72;
         double y = 243.2;
+        numbers.push(y);
+        numbers.push(x);
+        DivOperator op = new DivOperator();
         double result = x / y;
-        Assertions.assertEquals(result, div(x, y));
+        Assertions.assertEquals(result, op.calculate(numbers));
     }
 
     @Test
     public void logTest() {
         double x = 5.0;
         double y = 125.0;
+        numbers.push(y);
+        numbers.push(x);
+        LogOperator op = new LogOperator();
         double result = 3.0;
-        Assertions.assertEquals(result, log(x, y), 0.00001);
+        Assertions.assertEquals(result, op.calculate(numbers), 0.00001);
     }
 
     @Test
     public void powTest() {
         double x = 2.0;
         double y = 5.0;
+        numbers.push(y);
+        numbers.push(x);
+        PowOperator op = new PowOperator();
         double result = 32.0;
-        Assertions.assertEquals(result, pow(x, y));
+        Assertions.assertEquals(result, op.calculate(numbers));
     }
 
     @Test
     public void sqrtTest() {
         double x = 25.0;
+        numbers.push(x);
+        SqrtOperator op = new SqrtOperator();
         double result = 5.0;
-        Assertions.assertEquals(result, sqrt(x));
+        Assertions.assertEquals(result, op.calculate(numbers));
     }
 
     @Test
     public void cosTest() {
         double x = 1.0;
+        numbers.push(x);
+        CosOperator op = new CosOperator();
         double result = 0.5403023059;
-        Assertions.assertEquals(result, cos(x), 0.000000001);
+        Assertions.assertEquals(result, op.calculate(numbers), 0.000000001);
     }
 
     @Test
     public void sinTest() {
-        double x = 1.0;
+        numbers.push(1.0);
         double result = 0.8414709848;
-        Assertions.assertEquals(result, sin(x), 0.000000001);
+        SinOperator op =  new SinOperator();
+        Assertions.assertEquals(result, op.calculate(numbers), 0.000000001);
     }
 
     @Test
