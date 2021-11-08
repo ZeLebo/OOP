@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 class CalculatorTest {
@@ -113,5 +114,26 @@ class CalculatorTest {
         String input = "sin + - 1 2 1";
         double result = 0.0;
         Assertions.assertEquals(result, calculator.calc(input), 0.0001);
+    }
+
+    @Test
+    public void tooManyArgumentsTest() {
+        Calculator calculator = new Calculator();
+        String input = "sin + - 1 2 1 1 1";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> calculator.calc(input));
+    }
+
+    @Test
+    public void notEnoughArgumentsTest() {
+        Calculator calculator = new Calculator();
+        String input = "sin + - 1 2";
+        Assertions.assertThrows(EmptyStackException.class, () -> calculator.calc(input));
+    }
+
+    @Test
+    public void noArgumentsTest() {
+        Calculator calculator = new Calculator();
+        String input = "";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> calculator.calc(input));
     }
 }
