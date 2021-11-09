@@ -9,7 +9,7 @@ public interface Operation {
     double calculate(Stack<Double> stack);
 
     /**
-     * String representation of an operation
+     * @return string representation of an operation
      */
     String getRepresentation();
 }

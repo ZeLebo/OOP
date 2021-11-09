@@ -21,7 +21,7 @@ public class AddOperator implements Operation{
     }
 
     /**
-     * @return the operation char
+     * @return the operation symbol
      */
     @Override
     public String getRepresentation() {
