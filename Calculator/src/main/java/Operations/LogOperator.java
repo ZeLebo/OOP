@@ -4,6 +4,11 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class LogOperator implements Operation{
+    /**
+     *
+     * @param stack - the input data presented as stack
+     * @return the log of the last number in stack
+     */
     @Override
     public double calculate(Stack<Double> stack) {
         if (stack.size() > 1) {
@@ -19,6 +24,10 @@ public class LogOperator implements Operation{
         }
     }
 
+    /**
+     *
+     * @return the representation of an operation
+     */
     @Override
     public String getRepresentation() {
         return "log";
