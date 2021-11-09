@@ -1,6 +1,6 @@
 package ru.nsu.sartakov;
 
-import Operations.*;
+import ru.nsu.sartakov.operations.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,24 +1,27 @@
-package Operations;
+package ru.nsu.sartakov.operations;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-public class PowOperator implements Operation {
+public class LogOperator implements Operation{
     /**
      *
      * @param stack - the input data presented as stack
-     * @return the result of powering the last number for the previous number
+     * @return the log of the last number in stack
      */
     @Override
     public double calculate(Stack<Double> stack) {
         if (stack.size() > 1) {
             double a = stack.pop();
             double b = stack.pop();
-            return Math.pow(a, b);
+            if ( a != 1 && a > 0) {
+                return Math.log(b) / Math.log(a);
+            } else {
+                throw new ArithmeticException("You can't provide such base");
+            }
         } else {
             throw new EmptyStackException();
         }
-
     }
 
     /**
@@ -27,6 +30,6 @@ public class PowOperator implements Operation {
      */
     @Override
     public String getRepresentation() {
-        return "pow";
+        return "log";
     }
 }

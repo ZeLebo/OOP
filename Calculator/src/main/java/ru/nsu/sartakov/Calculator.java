@@ -1,6 +1,6 @@
 package ru.nsu.sartakov;
 
-import Operations.*;
+import ru.nsu.sartakov.operations.*;
 
 import java.util.*;
 
@@ -8,22 +8,12 @@ public class Calculator {
     private final Map<String, Operation> operations = new HashMap<>();
 
     public Calculator(){
-        List<Operation> lst = OperationFabric.produceOperations();
-        for(Operation op : lst){
+        List<Operation> list = OperationFabric.produceOperations();
+        for(Operation op : list){
             operations.put(op.getRepresentation(), op);
         }
     }
 
-    /**
-     * input function get the string of input calculation data
-     * Input must be written in prefix structure
-     */
-    public void main(String args) {
-        Scanner inputScanner = new Scanner(System.in);
-        String inputString = inputScanner.nextLine();
-        System.out.println(calc(inputString));
-        inputScanner.close();
-    }
 
     private boolean isNumeric(String input) {
         if (input == null) {

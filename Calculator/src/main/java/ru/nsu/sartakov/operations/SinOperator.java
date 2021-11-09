@@ -1,4 +1,4 @@
-package Operations;
+package ru.nsu.sartakov.operations;
 
 import java.util.Stack;
 
