@@ -3,7 +3,12 @@ package Operations;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-public class PowOperator implements Operation{
+public class PowOperator implements Operation {
+    /**
+     *
+     * @param stack - the input data presented as stack
+     * @return the result of powering the last number for the previous number
+     */
     @Override
     public double calculate(Stack<Double> stack) {
         if (stack.size() > 1) {
@@ -16,6 +21,10 @@ public class PowOperator implements Operation{
 
     }
 
+    /**
+     *
+     * @return the representation of an operation
+     */
     @Override
     public String getRepresentation() {
         return "pow";

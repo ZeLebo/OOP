@@ -4,6 +4,11 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class AddOperator implements Operation{
+    /**
+     *
+     * @param stack - the input data presented as stack
+     * @return the sum of the last two elements in stack
+     */
     @Override
     public double calculate(Stack<Double> stack) {
         if (stack.size() > 1 ) {
@@ -15,6 +20,9 @@ public class AddOperator implements Operation{
         }
     }
 
+    /**
+     * @return the operation char
+     */
     @Override
     public String getRepresentation() {
         return "+";

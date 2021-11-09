@@ -14,7 +14,11 @@ public class Calculator {
         }
     }
 
-    public void main(String[] args) {
+    /**
+     * input function get the string of input calculation data
+     * Input must be written in prefix structure
+     */
+    public void main(String args) {
         Scanner inputScanner = new Scanner(System.in);
         String inputString = inputScanner.nextLine();
         System.out.println(calc(inputString));
@@ -33,6 +37,11 @@ public class Calculator {
         return true;
     }
 
+    /**
+     *
+     * @param inputString the calculation expression in prefix
+     * @return the result of expression or Exception
+     */
     public double calc(String inputString) {
         String[] input = inputString.split(" ");
         Stack <Double> stack = new Stack<>();
