@@ -1,6 +1,6 @@
 package ru.nsu.sartakov;
 
-import Operations.*;
+import ru.nsu.sartakov.operations.*;
 import java.util.ArrayList;
 import java.util.List;
 

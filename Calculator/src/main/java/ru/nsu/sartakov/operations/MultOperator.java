@@ -1,7 +1,6 @@
-package Operations;
+package ru.nsu.sartakov.operations;
 
 import java.util.Stack;
-import java.util.stream.Stream;
 
 public class MultOperator implements Operation {
     /**
