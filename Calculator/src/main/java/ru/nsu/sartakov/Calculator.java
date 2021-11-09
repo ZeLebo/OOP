@@ -30,8 +30,8 @@ public class Calculator {
         for (int i = input.length - 1; i > -1 ; --i) {
             if (isNumeric(input[i])) {
                 stack.push(Double.parseDouble(input[i]));
-            } else if (fabric.getOperations().containsKey(input[i])) {
-                stack.push(fabric.getOperations().get(input[i]).calculate(stack));
+            } else if (fabric.isOperation(input[i])) {
+                stack.push(fabric.operationCalculation(stack, input[i]));
             } else {
                 throw new IllegalArgumentException("The operation wasn't found");
             }

@@ -1,10 +1,8 @@
 package ru.nsu.sartakov;
 
 import ru.nsu.sartakov.operations.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 public class OperationFabric {
     private final Map<String, Operation> operations = new HashMap<>();
@@ -30,7 +28,20 @@ public class OperationFabric {
         return list;
     }
 
-    public Map<String, Operation> getOperations() {
-        return operations;
+    /**
+     * @param stack where the numbers lie
+     * @param input the operation
+     * @return the result produced by making the opearation
+     */
+    public double operationCalculation(Stack <Double> stack, String input) {
+        return operations.get(input).calculate(stack);
+    }
+
+    /**
+     * @param symbol of the input string
+     * @return whether the symbol is supported in calculator
+     */
+    public boolean isOperation(String symbol) {
+        return operations.containsKey(symbol);
     }
 }
