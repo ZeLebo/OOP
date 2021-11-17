@@ -15,7 +15,7 @@ public class Notebook  {
     String notesFile = "Notes.json";
     DateTimeFormatter dtf;
 
-    Notebook() {
+    public Notebook() {
         notes = new ArrayList<>();
         data = new GsonBuilder().setPrettyPrinting().create();
         dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -33,7 +33,7 @@ public class Notebook  {
 
     public String show(LocalDateTime after, LocalDateTime before,String keyWord) throws IOException {
         LocalDateTime date;
-        List<Note> searchResult = new ArrayList<>();;
+        List<Note> searchResult = new ArrayList<>();
         for (Note note: notes) {
             date = LocalDateTime.parse(note.getTime(), dtf);
             String text = note.getNote();

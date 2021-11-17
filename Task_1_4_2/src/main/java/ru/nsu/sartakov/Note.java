@@ -1,25 +1,16 @@
 package ru.nsu.sartakov;
 
 import com.google.gson.annotations.SerializedName;
+
 public class Note {
-    @SerializedName("header")
-    private String header = new String();
     @SerializedName("note")
-    private String note = new String();
+    private String note;
     @SerializedName("creationTime")
-    private String creationTime = new String();
+    private String creationTime;
 
     Note(String time, String note) {
         this.creationTime = time;
         this.note = note;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
-    }
-
-    public String getHeader() {
-        return header;
     }
 
     public void setNote(String note){
