@@ -11,9 +11,6 @@ public class App {
         switch (args[0]) {
             case "-add":
                 try {
-                    System.out.println(args[0]);
-                    System.out.println(args[1]);
-                    System.out.println(args[2]);
                     notebook.add(args[1], args[2]);
                 } catch (IndexOutOfBoundsException e) {
                     System.out.println("Wrong amount of command line parameters");
@@ -26,6 +23,12 @@ public class App {
                     System.out.println("Wrong amount of command line parameters");
                 }
                 break;
+            case "-show":
+                try {
+                    notebook.showAllNotes();
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Too many command line argumetns");
+                }
         }
     }
 

@@ -34,10 +34,10 @@ public class Notebook  {
                 );
     }
 
-    public List<Note> show(LocalDateTime from, LocalDateTime to, List<String> subWords) {
+    public List<Note> find(LocalDateTime from, LocalDateTime to, List<String> subWords) {
         return notes.stream()
-                .filter(i -> i.getTime().isAfter(from))
-                .filter(i -> i.getTime().isBefore(to))
+                .filter(i -> i.getCreationTime().isAfter(from))
+                .filter(i -> i.getCreationTime().isBefore(to))
                 .filter(j -> subWords.stream()
                         .anyMatch(
                                 i -> j.getHeading()
@@ -45,5 +45,9 @@ public class Notebook  {
                         )
                 )
                 .collect(Collectors.toList());
+    }
+
+    public List<Note> showAllNotes() {
+        return notes;
     }
 }

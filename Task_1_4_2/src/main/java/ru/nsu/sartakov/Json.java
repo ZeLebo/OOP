@@ -15,16 +15,11 @@ public class Json {
     Gson gson = new Gson();
 
 
-    public void understand(Note note) {
+    public void understand(Note notes) {
         try {
             FileWriter fileWritter = new FileWriter(fileName);
-//            String toSave = gson.toJson(note, Note.class);
-//            fileWritter.append(toSave);
 
-            //gson.toJson(note, fileWritter);
-
-            gson.toJson(note, fileWritter);
-
+            gson.toJson(notes, fileWritter);
             fileWritter.close();
 
         } catch (IOException e) {
