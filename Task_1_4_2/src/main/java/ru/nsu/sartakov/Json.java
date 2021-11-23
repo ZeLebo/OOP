@@ -29,7 +29,7 @@ public class Json {
         return data;
     }
 
-    public void writeToFile(List<Note> notes) {
+    public void writeToFile(Note notes) {
         try {
             FileWriter fileWriter = new FileWriter(fileName);
             gson.toJson(notes, fileWriter);
