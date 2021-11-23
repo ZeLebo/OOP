@@ -14,19 +14,18 @@ public class Notebook  {
     public Notebook() {
         notes = new ArrayList<>();
     }
-
+// TODO put the note in the end of file
     public void addNote(String heading, String text) {
         Note newNote = new Note(heading, text);
         notes.add(newNote);
-        //file.writeToFile(newNote);
+        file.writeToFile(newNote);
     }
-
+// TODO get the file and read it
     public void removeNote(String heading) {
         notes.stream()
                 .filter(
                         i -> ! i.getHeading().equals(heading)
                 );
-        file.writeToFile(notes);
     }
 
     public List<Note> showAllNotes() throws IOException {
@@ -43,6 +42,13 @@ public class Notebook  {
                                         .contains(i)
                         )
                 )
+                .collect(Collectors.toList());
+    }
+
+    public List<Note> showNotesPeriod(LocalDateTime from, LocalDateTime to) {
+        return notes.stream()
+                .filter(i -> i.getTime().isAfter(from))
+                .filter(i -> i.getTime().isBefore(to))
                 .collect(Collectors.toList());
     }
 }
