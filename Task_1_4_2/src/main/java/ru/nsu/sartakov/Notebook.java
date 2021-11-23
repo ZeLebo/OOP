@@ -1,6 +1,8 @@
 package ru.nsu.sartakov;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ public class Notebook  {
     public Notebook() {
         notes = new ArrayList<>();
     }
+
+
 // TODO put the note in the end of file
     public void addNote(String heading, String text) {
         Note newNote = new Note(heading, text);
