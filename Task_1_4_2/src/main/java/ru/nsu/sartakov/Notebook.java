@@ -1,16 +1,10 @@
 package ru.nsu.sartakov;
 
-import com.google.gson.*;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-//todo get rid of the file writting in this class, only making notes, then parsing
 
 public class Notebook  {
     Json file = new Json();
@@ -21,23 +15,28 @@ public class Notebook  {
         notes = new ArrayList<>();
     }
 
-    public void add(String heading, String text) throws IOException {
+    public void addNote(String heading, String text) {
         Note newNote = new Note(heading, text);
         notes.add(newNote);
-        file.understand(newNote);
+        //file.writeToFile(newNote);
     }
 
-    public void rm(String heading) {
+    public void removeNote(String heading) {
         notes.stream()
                 .filter(
                         i -> ! i.getHeading().equals(heading)
                 );
+        file.writeToFile(notes);
     }
 
-    public List<Note> find(LocalDateTime from, LocalDateTime to, List<String> subWords) {
+    public List<Note> showAllNotes() throws IOException {
+        return file.readFromFile();
+    }
+
+    public List<Note> showNotes(LocalDateTime from, LocalDateTime to, List<String> subWords) {
         return notes.stream()
-                .filter(i -> i.getCreationTime().isAfter(from))
-                .filter(i -> i.getCreationTime().isBefore(to))
+                .filter(i -> i.getTime().isAfter(from))
+                .filter(i -> i.getTime().isBefore(to))
                 .filter(j -> subWords.stream()
                         .anyMatch(
                                 i -> j.getHeading()
@@ -45,9 +44,5 @@ public class Notebook  {
                         )
                 )
                 .collect(Collectors.toList());
-    }
-
-    public List<Note> showAllNotes() {
-        return notes;
     }
 }

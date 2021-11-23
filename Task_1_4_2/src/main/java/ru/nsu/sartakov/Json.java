@@ -1,64 +1,43 @@
 package ru.nsu.sartakov;
 
 import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collections;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 public class Json {
-    private String fileName = "Notes.json";
-    //Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    Gson gson = new Gson();
+    private final String fileName = "Notes.json";
+    transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d.M.yyyy HH:mm:ss");
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>)
+                    (json, typeOfT, context) ->
+                            LocalDateTime.parse(json.getAsString(), dateTimeFormatter.withLocale(Locale.ENGLISH)))
+            .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>)
+                    (src, typeOfSrc, context) -> new JsonPrimitive(dateTimeFormatter.format(src)))
+            .setPrettyPrinting().create();
+// TODO reading from file
+    public List<Note> readFromFile() throws IOException {
+            Gson gson = new Gson();
+            FileReader reader = new FileReader(fileName);
+            //JsonReader reader = new JsonReader(new FileReader(fileName));
+            List<Note> data;
+        data = gson.fromJson(reader, new TypeToken<List<Note>>(){}.getType());
+        return data;
+    }
 
-
-    public void understand(Note notes) {
+    public void writeToFile(List<Note> notes) {
         try {
-            FileWriter fileWritter = new FileWriter(fileName);
-
-            gson.toJson(notes, fileWritter);
-            fileWritter.close();
+            FileWriter fileWriter = new FileWriter(fileName);
+            gson.toJson(notes, fileWriter);
+            fileWriter.close();
 
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("The file is not here");
+            System.out.println("The file hasn't been found");
         }
     }
-
-    public String testWrite(List<Note> notes) throws IOException {
-        try (Writer writer = new FileWriter(fileName)) {
-            gson.toJson(notes, writer);
-        }
-        return gson.toJson(notes);
-    }
-
-/*
-    private void openFileToRead() {
-        try {
-            FileReader fileReader = new FileReader(fileName);
-        } catch (FileNotFoundException e) {
-            System.out.println("File wasn't found");
-        }
-    }
-
-    public void writeToFile(List<Note> notes) throws IOException {
-        fileWriter = new FileWriter(fileName);
-        String json = gson.toJson(notes, List.class);
-        Files.write(Path.of(fileName), Collections.singleton(json));
-
-        fileWriter.close();
-    }
-
-    public List<Note> readJson() throws IOException {
-        openFileToRead();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String data = Files.readString(Path.of(fileName));
-        Type type = new TypeToken<List<Note>>(){}.getType();
-        return gson.fromJson(data, type);
-    }
-
- */
 }
