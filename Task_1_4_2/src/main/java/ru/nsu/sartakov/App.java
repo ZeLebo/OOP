@@ -1,10 +1,17 @@
 package ru.nsu.sartakov;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.cli.*;
 
 public class App {
@@ -27,13 +34,26 @@ public class App {
                 .hasArg()
                 .optionalArg(true)
                 .build());
+        options.addOption(Option.builder("test")
+                .hasArg(false)
+                .build());
         CommandLineParser parser = new DefaultParser();
         CommandLine line = parser.parse(options, args);
 
+        if (line.hasOption("test")) {
+            System.out.println("Testing this out");
+
+            Gson gson = new Gson();
+            Reader reader = Files.newBufferedReader(Paths.get("Notes.json"));
+
+            List<Note> note = new Gson().fromJson(reader,new TypeToken<List<Note>>(){}.getType());
+            reader.close();
+
+            System.out.println(note);
+        }
+
         if (line.hasOption("add")) {
             String[] values = line.getOptionValues("add");
-            System.out.println(values[0]);
-            System.out.println(values[1]);
             notebook.addNote(values[0], values[1]);
         }
 
@@ -57,31 +77,5 @@ public class App {
                                 subWords);
             }
         }
-
-        switch (args[0]) {
-            case "-add":
-                try {
-                    notebook.addNote(args[1], args[2]);
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Wrong amount of command line parameters");
-                }
-                break;
-            case "-rm":
-                try {
-                    notebook.removeNote(args[1]);
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Wrong amount of command line parameters");
-                }
-                break;
-            case "-show":
-                try {
-                    notebook.showAllNotes();
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Too many command line arguments");
-                }
-        }
-
-        //System.out.println(notebook.showAllNotes());
     }
-
 }

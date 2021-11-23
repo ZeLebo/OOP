@@ -19,12 +19,13 @@ public class Json {
             .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>)
                     (src, typeOfSrc, context) -> new JsonPrimitive(dateTimeFormatter.format(src)))
             .setPrettyPrinting().create();
+
 // TODO reading from file
     public List<Note> readFromFile() throws IOException {
-            Gson gson = new Gson();
-            FileReader reader = new FileReader(fileName);
-            //JsonReader reader = new JsonReader(new FileReader(fileName));
-            List<Note> data;
+        Gson gson = new Gson();
+        FileReader reader = new FileReader(fileName);
+        //JsonReader reader = new JsonReader(new FileReader(fileName));
+        List<Note> data;
         data = gson.fromJson(reader, new TypeToken<List<Note>>(){}.getType());
         return data;
     }
