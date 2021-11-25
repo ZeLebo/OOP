@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import org.apache.commons.cli.*;
 
 public class App {
@@ -17,6 +18,11 @@ public class App {
         formatter.printOptions(printOut, 100, options, 2, 2);
         printOut.close();
     }
+
+    public void mainCaller(String[] line) throws ParseException {
+        main(line);
+    }
+
     /**
      * @param args arguments of command line
      */
@@ -34,7 +40,8 @@ public class App {
                 .build());
         options.addOption(Option.builder("show")
                 .longOpt("Show the notes takes zero, two or many parameters \n<The date to search from> \n<The date to search to> \n<Subwords to find in the header>")
-                .hasArg()
+                .hasArg(true)
+                .numberOfArgs(3)
                 .optionalArg(true)
                 .build());
         CommandLineParser parser = new DefaultParser();
@@ -87,7 +94,7 @@ public class App {
                     System.out.println(i.getNote());
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("You have no notes added to fit such params");
+                System.out.println("Array index out of bounds show notes period on time");
             }
 
         } else {

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Notebook  {
     private final Json file = new Json();
-    private final List<Note> notes;
+    private List<Note> notes;
     public Notebook() {
         notes = new ArrayList<>();
     }
@@ -58,10 +58,11 @@ public class Notebook  {
      * @param to the end of time period
      * @return a list of note that were made in time period
      */
-    public List<Note> showNotesPeriod(LocalDateTime from, LocalDateTime to) {
+    public List<Note> showNotesPeriod(LocalDateTime from, LocalDateTime to) throws IOException {
+        notes = file.readFromFile();
         return notes.stream()
-                .filter(i -> i.getTime().isAfter(from))
-                .filter(i -> i.getTime().isBefore(to))
+                .filter(i -> i.getTime().withNano(0).isAfter(from))
+                .filter(i -> i.getTime().withNano(0).isBefore(to))
                 .collect(Collectors.toList());
     }
 
@@ -71,7 +72,8 @@ public class Notebook  {
      * @param subWords of the heading
      * @return list of notes that fit the params
      */
-    public List<Note> findNotesPeriodSwords(LocalDateTime from, LocalDateTime to, List<String> subWords) {
+    public List<Note> findNotesPeriodSwords(LocalDateTime from, LocalDateTime to, List<String> subWords) throws IOException {
+        notes = file.readFromFile();
         return notes.stream()
                 .filter(i -> i.getTime().isAfter(from))
                 .filter(i -> i.getTime().isBefore(to))
