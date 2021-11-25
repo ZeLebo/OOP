@@ -10,7 +10,7 @@ import com.google.gson.*;
 
 public class Json {
     public final String fileName = "Notes.json";
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>)
                     (json, typeOfT, context) ->
