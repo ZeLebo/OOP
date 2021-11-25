@@ -19,20 +19,25 @@ public class Json {
                     (src, typeOfSrc, context) -> new JsonPrimitive(dateTimeFormatter.format(src)))
             .setPrettyPrinting().create();
 
-// TODO maybe I should store them as an array, instead of list…
+    /**
+     * @return list of all notes from the file
+     * @throws IOException if the file is not exist
+     */
     public List<Note> readFromFile() throws IOException {
         File file = new File(fileName);
         if (file.length() == 0) {
-                FileWriter fileWriter = new FileWriter(fileName);
+            FileWriter fileWriter = new FileWriter(fileName);
             fileWriter.write("[]");
-                fileWriter.close();
+            fileWriter.close();
         }
-
 
         FileReader reader = new FileReader(fileName);
         return Arrays.stream(gson.fromJson(reader, Note[].class)).toList();
     }
 
+    /**
+     * @param notes is a list on notes to write to file
+     */
     public void writeToFile(List<Note> notes) {
         try {
             FileWriter fileWriter = new FileWriter(fileName);
