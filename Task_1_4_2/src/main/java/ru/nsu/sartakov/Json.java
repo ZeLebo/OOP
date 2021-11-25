@@ -21,6 +21,14 @@ public class Json {
 
 // TODO maybe I should store them as an array, instead of list…
     public List<Note> readFromFile() throws IOException {
+        File file = new File(fileName);
+        if (file.length() == 0) {
+                FileWriter fileWriter = new FileWriter(fileName);
+            fileWriter.write("[]");
+                fileWriter.close();
+        }
+
+
         FileReader reader = new FileReader(fileName);
         return Arrays.stream(gson.fromJson(reader, Note[].class)).toList();
     }
