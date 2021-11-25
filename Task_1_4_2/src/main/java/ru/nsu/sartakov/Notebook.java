@@ -1,5 +1,6 @@
 package ru.nsu.sartakov;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Notebook  {
-    Json file = new Json();
+    private final Json file = new Json();
     private final List<Note> notes;
     public Notebook() {
         notes = new ArrayList<>();
@@ -20,20 +21,28 @@ public class Notebook  {
      * @throws IOException if the file wasn't found
      */
     public void addNote(String heading, String text) throws IOException {
-        notes.addAll(file.readFromFile());
-        notes.add(new Note(heading, text));
-        file.writeToFile(notes);
+        try {
+            notes.addAll(file.readFromFile());
+            notes.add(new Note(heading, text));
+            file.writeToFile(notes);
+        } catch (FileNotFoundException fe) {
+            System.out.println("The file wasn't found");
+        }
     }
 
     /**
      * Removing a notes with such heading
      * @param heading of the note
      */
-    public void removeNote(String heading) {
-        file.writeToFile(notes.stream()
-                .filter(
-                        i -> ! i.getHeading().equals(heading)
-                ).collect(Collectors.toList()));
+    public void removeNote(String heading) throws IOException {
+        try {
+            file.writeToFile(notes.stream()
+                    .filter(
+                            i -> !i.getHeading().equals(heading)
+                    ).collect(Collectors.toList()));
+        } catch (FileNotFoundException ex) {
+            System.out.println("The file wasn't found");
+        }
     }
 
     /**

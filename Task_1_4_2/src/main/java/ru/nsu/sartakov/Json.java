@@ -9,8 +9,8 @@ import java.util.Locale;
 import com.google.gson.*;
 
 public class Json {
-    private final String fileName = "Notes.json";
-    transient DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d.M.yyyy HH:mm:ss");
+    public final String fileName = "Notes.json";
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>)
                     (json, typeOfT, context) ->
@@ -24,28 +24,30 @@ public class Json {
      * @throws IOException if the file is not exist
      */
     public List<Note> readFromFile() throws IOException {
-        File file = new File(fileName);
-        if (file.length() == 0) {
-            FileWriter fileWriter = new FileWriter(fileName);
-            fileWriter.write("[]");
-            fileWriter.close();
+        try {
+            File file = new File(fileName);
+            if (file.length() == 0) {
+                FileWriter fileWriter = new FileWriter(fileName);
+                fileWriter.write("[]");
+                fileWriter.close();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("The file wasn't found");
         }
 
-        FileReader reader = new FileReader(fileName);
-        return Arrays.stream(gson.fromJson(reader, Note[].class)).toList();
+        try (FileReader reader = new FileReader(fileName)) {
+            return Arrays.stream(gson.fromJson(reader, Note[].class)).toList();
+        }
     }
 
     /**
      * @param notes is a list on notes to write to file
      */
-    public void writeToFile(List<Note> notes) {
-        try {
-            FileWriter fileWriter = new FileWriter(fileName);
+    public void writeToFile(List<Note> notes) throws IOException {
+        try (FileWriter fileWriter = new FileWriter(fileName)) {
             gson.toJson(notes, fileWriter);
-            fileWriter.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
             System.out.println("The file hasn't been found");
         }
     }
