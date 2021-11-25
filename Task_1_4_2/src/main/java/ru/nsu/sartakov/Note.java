@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class Note {
     @SerializedName("creation_time")
-    private LocalDateTime time;
+    private final LocalDateTime time;
     @SerializedName("heading")
     private final String heading;
     @SerializedName("note")
