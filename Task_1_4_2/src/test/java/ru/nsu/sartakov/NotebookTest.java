@@ -58,7 +58,7 @@ public class NotebookTest {
         notebook.addNote("Header", "Hello");
         notebook.addNote("Not important", "");
         LocalDateTime timeToTest = LocalDateTime.now();
-        Thread.sleep(5000);
+        Thread.sleep(1000);
         Note note = new Note("ZhoRa", "This is the note, I wanna see");
         notebook.addNote("ZhoRa", "This is the note, I wanna see");
         Note result = notebook.showNotesPeriod(timeToTest,
