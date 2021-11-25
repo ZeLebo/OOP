@@ -1,8 +1,6 @@
 package ru.nsu.sartakov;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,26 +15,24 @@ public class Notebook  {
         notes = new ArrayList<>();
     }
 
-
-// TODO put the note in the end of file
-    public void addNote(String heading, String text) {
-        Note newNote = new Note(heading, text);
-        notes.add(newNote);
-        file.writeToFile(newNote);
+    public void addNote(String heading, String text) throws IOException {
+        notes.addAll(file.readFromFile());
+        notes.add(new Note(heading, text));
+        file.writeToFile(notes);
     }
-// TODO get the file and read it
+
     public void removeNote(String heading) {
-        notes.stream()
+        file.writeToFile(notes.stream()
                 .filter(
                         i -> ! i.getHeading().equals(heading)
-                );
+                ).collect(Collectors.toList()));
     }
 
     public List<Note> showAllNotes() throws IOException {
         return file.readFromFile();
     }
 
-    public List<Note> showNotes(LocalDateTime from, LocalDateTime to, List<String> subWords) {
+    public List<Note> findNotesPeriodSwords(LocalDateTime from, LocalDateTime to, List<String> subWords) {
         return notes.stream()
                 .filter(i -> i.getTime().isAfter(from))
                 .filter(i -> i.getTime().isBefore(to))

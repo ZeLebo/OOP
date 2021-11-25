@@ -3,11 +3,10 @@ package ru.nsu.sartakov;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 
 public class Json {
     private final String fileName = "Notes.json";
@@ -20,17 +19,13 @@ public class Json {
                     (src, typeOfSrc, context) -> new JsonPrimitive(dateTimeFormatter.format(src)))
             .setPrettyPrinting().create();
 
-// TODO reading from file
+// TODO maybe I should store them as an array, instead of list…
     public List<Note> readFromFile() throws IOException {
-        Gson gson = new Gson();
         FileReader reader = new FileReader(fileName);
-        //JsonReader reader = new JsonReader(new FileReader(fileName));
-        List<Note> data;
-        data = gson.fromJson(reader, new TypeToken<List<Note>>(){}.getType());
-        return data;
+        return Arrays.stream(gson.fromJson(reader, Note[].class)).toList();
     }
 
-    public void writeToFile(Note notes) {
+    public void writeToFile(List<Note> notes) {
         try {
             FileWriter fileWriter = new FileWriter(fileName);
             gson.toJson(notes, fileWriter);

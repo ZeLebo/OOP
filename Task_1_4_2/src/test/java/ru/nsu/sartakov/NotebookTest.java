@@ -8,7 +8,7 @@ import java.io.IOException;
 public class NotebookTest {
     Notebook notebook = new Notebook();
     @Test
-    public void addTest() {
+    public void addTest() throws IOException {
         notebook.addNote("My new note", "Hello");
         notebook.addNote("The new heading", "The new note content");
     }
