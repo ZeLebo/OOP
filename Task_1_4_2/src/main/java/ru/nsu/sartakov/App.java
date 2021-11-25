@@ -7,7 +7,9 @@ import java.util.List;
 import org.apache.commons.cli.*;
 
 public class App {
-    // Todo use commons.cli parameters
+    /**
+     * @param args arguments of command line
+     */
     public static void main(String[] args) throws IOException, ParseException {
         Notebook notebook = new Notebook();
         Options options = new Options();
@@ -69,7 +71,6 @@ public class App {
                 }
             }
         } else {
-            // TODO put the help function
             System.out.println("You're doing something wrong");
         }
     }
