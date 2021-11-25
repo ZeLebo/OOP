@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,15 +57,32 @@ public class NotebookTest {
     }
 
     @Test
-    public void showNotesPeriod() {
+    public void showNotesPeriod() throws IOException, InterruptedException {
+        List<String> subwords = new ArrayList<>();
+        subwords.add("ZhoRa");
+        notebook.addNote("Header", "Hello");
+        notebook.addNote("Not important", "");
+        LocalDateTime timeToTest = LocalDateTime.now();
+        Thread.sleep(5000);
+        Note note = new Note("ZhoRa", "This is the note, I wanna see");
+        notebook.addNote("ZhoRa", "This is the note, I wanna see");
+        Note result = notebook.showNotesPeriod(timeToTest,
+                LocalDateTime.parse("2022-11-25T18:12:40")).get(0);
 
+        Assertions.assertEquals(result.getNote(), note.getNote());
 
     }
 
     @Test
-    public void showNotesPeriodSubwords() {
-        //-show "2020-11-25T18:12:40" "2022-11-25T18:12:40" "ZhoRa"
-
-
+    public void findNotesPeriodSubwords() throws IOException {
+        List<String> subwords = new ArrayList<>();
+        subwords.add("ZhoRa");
+        notebook.addNote("Header", "Hello");
+        notebook.addNote("Not important", "");
+        notebook.addNote("ZhoRa", "This is the note, I wanna see");
+        Note note = new Note("ZhoRa", "This is the note, I wanna see");
+        Note result = notebook.findNotesPeriodSwords(LocalDateTime.parse("2020-11-25T18:12:40"),
+                LocalDateTime.parse("2022-11-25T18:12:40"), subwords).get(0);
+        Assertions.assertEquals(result.getNote(), note.getNote());
     }
 }
