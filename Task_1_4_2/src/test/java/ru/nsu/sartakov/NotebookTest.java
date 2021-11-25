@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +20,7 @@ public class NotebookTest {
     @Test
     public void addTest() throws IOException {
         notebook.addNote("Header", "The new note content");
-        List<Note> notes = new ArrayList<>();
         Note note = new Note("Header", "The new note content");
-        notes.add(note);
         Assertions.assertEquals(note.getTime().withNano(0), notebook.showAllNotes().get(0).getTime().withNano(0));
         Assertions.assertEquals(note.getHeading(), notebook.showAllNotes().get(0).getHeading());
         Assertions.assertEquals(note.getNote(), notebook.showAllNotes().get(0).getNote());
@@ -58,8 +55,6 @@ public class NotebookTest {
 
     @Test
     public void showNotesPeriod() throws IOException, InterruptedException {
-        List<String> subwords = new ArrayList<>();
-        subwords.add("ZhoRa");
         notebook.addNote("Header", "Hello");
         notebook.addNote("Not important", "");
         LocalDateTime timeToTest = LocalDateTime.now();
