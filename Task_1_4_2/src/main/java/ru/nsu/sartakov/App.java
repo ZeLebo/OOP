@@ -28,9 +28,6 @@ public class App {
                 .hasArg()
                 .optionalArg(true)
                 .build());
-        options.addOption(Option.builder("test")
-                .hasArg(false)
-                .build());
         CommandLineParser parser = new DefaultParser();
         CommandLine line = parser.parse(options, args);
 
