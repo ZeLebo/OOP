@@ -8,11 +8,9 @@ public class Note {
     @SerializedName("creation_time")
     LocalDateTime time;
     @SerializedName("heading")
-    private String heading;
+    private final String heading;
     @SerializedName("note")
-    private String note;
-
-    Note(){}
+    private final String note;
 
     Note(String heading, String note) {
         this.time = LocalDateTime.now();
@@ -20,24 +18,12 @@ public class Note {
         this.note = note;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
     public LocalDateTime getTime() {
         return time;
     }
 
-    public void setHeading(String heading) {
-        this.heading = heading;
-    }
-
     public String getHeading() {
         return this.heading;
-    }
-
-    public void setNote(String content) {
-        this.note = content;
     }
 
     public String getNote() {
