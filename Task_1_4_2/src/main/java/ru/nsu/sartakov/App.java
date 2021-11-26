@@ -44,6 +44,11 @@ public class App {
                 .numberOfArgs(3)
                 .optionalArg(true)
                 .build());
+        options.addOption(Option.builder("changeName")
+                .longOpt("Change the file name to store the notes")
+                .hasArg(true)
+                .numberOfArgs(1)
+                .build());
         CommandLineParser parser = new DefaultParser();
         CommandLine line = parser.parse(options, args);
 
@@ -54,12 +59,19 @@ public class App {
                 remove(line);
             } else if (line.hasOption("show")) {
                 show(line);
+            } else if (line.hasOption("change")) {
+              changeFileNameStoringNotes(line);
             } else {
                 printHelp(options);
             }
         } catch (IOException e) {
             printHelp(options);
         }
+    }
+
+    public static void changeFileNameStoringNotes(CommandLine line) throws IOException {
+        String[] values = line.getOptionValues("change");
+        notebook.setFileName(values[0]);
     }
 
     public static void add(CommandLine line) throws IOException {

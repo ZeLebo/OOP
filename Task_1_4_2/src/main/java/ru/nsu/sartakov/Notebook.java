@@ -8,10 +8,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Notebook  {
-    private final Json file = new Json();
+    public String fileName;
+    private final Json file = new Json(fileName);
     private List<Note> notes;
+
     public Notebook() {
         notes = new ArrayList<>();
+    }
+
+    public void setFileName(String newFileName) {
+        this.fileName = newFileName;
     }
 
     /**
