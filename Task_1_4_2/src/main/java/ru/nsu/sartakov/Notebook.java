@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Notebook  {
     public String fileName;
-    private final Json file = new Json(fileName);
+    private final Json file = new Json();
     private List<Note> notes;
 
     public Notebook() {
