@@ -58,19 +58,12 @@ public class App {
                 remove(line);
             } else if (line.hasOption("show")) {
                 show(line);
-            } else if (line.hasOption("change")) {
-                changeFileNameStoringNotes(line);
             } else {
                 printHelp(options);
             }
         } catch (IOException e) {
             printHelp(options);
         }
-    }
-
-    public static void changeFileNameStoringNotes(CommandLine line) throws IOException {
-        String[] values = line.getOptionValues("change");
-        notebook.setFileName(values[0]);
     }
 
     public static void add(CommandLine line) throws IOException {
