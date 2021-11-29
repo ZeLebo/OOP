@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Notebook  {
-    public String fileName;
+    System.Logger log;
+    private String fileName;
     private final Json file = new Json();
     private List<Note> notes;
 
@@ -32,7 +33,7 @@ public class Notebook  {
             notes.add(new Note(heading, text));
             file.writeToFile(notes);
         } catch (FileNotFoundException fe) {
-            System.out.println("The file wasn't found");
+            log.log(System.Logger.Level.ERROR, "The file wasn't found", fe);
         }
     }
 
@@ -47,7 +48,7 @@ public class Notebook  {
                             i -> !i.getHeading().equals(heading)
                     ).collect(Collectors.toList()));
         } catch (FileNotFoundException ex) {
-            System.out.println("The file wasn't found");
+            log.log(System.Logger.Level.ERROR, "The file wasn't found", ex);
         }
     }
 
@@ -78,7 +79,7 @@ public class Notebook  {
      * @param subWords of the heading
      * @return list of notes that fit the params
      */
-    public List<Note> findNotesPeriodSwords(LocalDateTime from, LocalDateTime to, List<String> subWords) throws IOException {
+    public List<Note> findNotesPeriodSubWords(LocalDateTime from, LocalDateTime to, List<String> subWords) throws IOException {
         notes = file.readFromFile();
         return notes.stream()
                 .filter(i -> i.getTime().isAfter(from))

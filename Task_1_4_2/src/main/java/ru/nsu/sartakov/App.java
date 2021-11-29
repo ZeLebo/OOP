@@ -59,7 +59,7 @@ public class App {
             } else if (line.hasOption("show")) {
                 show(line);
             } else if (line.hasOption("change")) {
-              changeFileNameStoringNotes(line);
+                changeFileNameStoringNotes(line);
             } else {
                 printHelp(options);
             }
@@ -89,39 +89,33 @@ public class App {
             if (notes.size() == 0) {
                 System.out.println("You have no notes added");
             } else {
-                for (Note i : notes) {
-                    System.out.println(i.getTime());
-                    System.out.println(i.getHeading());
-                    System.out.println(i.getNote());
-                }
+                notesPrinting(notes);
             }
         } else if (values.length == 2) {
             try {
                 List<Note> notes = notebook.showNotesPeriod(LocalDateTime.parse(values[0]),
                         LocalDateTime.parse(values[1]));
-                for (Note i : notes) {
-                    System.out.println(i.getTime());
-                    System.out.println(i.getHeading());
-                    System.out.println(i.getNote());
-                }
+                notesPrinting(notes);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Array index out of bounds show notes period on time");
             }
 
         } else {
             try {
-                List<Note> notes = notebook.findNotesPeriodSwords(LocalDateTime.parse(values[0]),
+                List<Note> notes = notebook.findNotesPeriodSubWords(LocalDateTime.parse(values[0]),
                         LocalDateTime.parse(values[1]),
                         Arrays.stream(values).toList());
-
-                for (Note i : notes) {
-                    System.out.println(i.getTime());
-                    System.out.println(i.getHeading());
-                    System.out.println(i.getNote());
-                }
+                notesPrinting(notes);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("You have no notes added to fit such params");
             }
+        }
+    }
+    public static void notesPrinting(List<Note> notes) {
+        for (Note i : notes) {
+            System.out.println(i.getTime());
+            System.out.println(i.getHeading());
+            System.out.println(i.getNote());
         }
     }
 }
