@@ -76,7 +76,7 @@ public class NotebookTest {
         notebook.addNote("Not important", "");
         notebook.addNote("ZhoRa", "This is the note, I wanna see");
         Note note = new Note("ZhoRa", "This is the note, I wanna see");
-        Note result = notebook.findNotesPeriodSwords(LocalDateTime.parse("2020-11-25T18:12:40"),
+        Note result = notebook.findNotesPeriodSubWords(LocalDateTime.parse("2020-11-25T18:12:40"),
                 LocalDateTime.parse("2022-11-25T18:12:40"), subwords).get(0);
         Assertions.assertEquals(result.getNote(), note.getNote());
     }
