@@ -68,6 +68,7 @@ public class App {
 
     public static void add(CommandLine line) throws IOException {
         String[] values = line.getOptionValues("add");
+        notebook.setFileName(line.getArgList().get(0));
         notebook.addNote(values[0], values[1]);
     }
 
