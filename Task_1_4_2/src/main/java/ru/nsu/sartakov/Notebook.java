@@ -35,6 +35,7 @@ public class Notebook  {
             file.writeToFile(notes);
         } catch (FileNotFoundException fe) {
             log.log(System.Logger.Level.ERROR, "The file wasn't found", fe);
+            throw fe;
         }
     }
 
@@ -50,6 +51,7 @@ public class Notebook  {
                     ).collect(Collectors.toList()));
         } catch (FileNotFoundException ex) {
             log.log(System.Logger.Level.ERROR, "The file wasn't found", ex);
+            throw ex;
         }
     }
 

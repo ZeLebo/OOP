@@ -39,6 +39,7 @@ public class Json {
             }
         } catch (FileNotFoundException e) {
             log.log(System.Logger.Level.ERROR, "The file wasn't found", e);
+            throw e;
         }
 
         try (FileReader reader = new FileReader(fileName)) {
@@ -59,6 +60,7 @@ public class Json {
 
         } catch (FileNotFoundException e) {
             log.log(System.Logger.Level.ERROR, "The file wasn't found", e);
+            throw e;
         }
     }
 }
