@@ -11,7 +11,7 @@ public class Notebook  {
     System.Logger log;
     private List<Note> notes;
     private String fileName = "Notes.json";
-    private final Json file = new Json(fileName);
+    private Json file = new Json(fileName);
 
     public Notebook() {
         notes = new ArrayList<>();
@@ -19,6 +19,7 @@ public class Notebook  {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+        file = new Json(fileName);
     }
 
     /**

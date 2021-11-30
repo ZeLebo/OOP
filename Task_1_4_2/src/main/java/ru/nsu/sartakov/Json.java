@@ -9,14 +9,15 @@ import java.util.Locale;
 import com.google.gson.*;
 
 public class Json {
-    private String fileName;
+    private final String fileName;
+    System.Logger log;
 
     Json (String fileName) {
         this.fileName = fileName;
     }
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private Gson gson = new GsonBuilder()
+    private final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>)
                     (json, typeOfT, context) ->
                             LocalDateTime.parse(json.getAsString(), dateTimeFormatter.withLocale(Locale.ENGLISH)))
@@ -37,7 +38,7 @@ public class Json {
                 fileWriter.close();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("The file wasn't found");
+            log.log(System.Logger.Level.ERROR, "The file wasn't found", e);
         }
 
         try (FileReader reader = new FileReader(fileName)) {
@@ -49,11 +50,15 @@ public class Json {
      * @param notes is a list on notes to write to file
      */
     public void writeToFile(List<Note> notes) throws IOException {
+        if (new File(fileName).createNewFile()) {
+            log.log(System.Logger.Level.INFO, "The file was created");
+        }
+
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             gson.toJson(notes, fileWriter);
 
         } catch (FileNotFoundException e) {
-            System.out.println("The file hasn't been found");
+            log.log(System.Logger.Level.ERROR, "The file wasn't found", e);
         }
     }
 }
