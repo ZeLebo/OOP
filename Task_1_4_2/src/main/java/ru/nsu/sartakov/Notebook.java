@@ -43,6 +43,8 @@ public class Notebook  {
      * Removing a notes with such heading
      * @param heading of the note
      */
+
+    //
     public void removeNote(String heading) throws IOException {
         try {
             file.writeToFile(notes.stream()
