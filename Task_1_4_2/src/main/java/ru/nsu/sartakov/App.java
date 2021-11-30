@@ -62,7 +62,7 @@ public class App {
             } else {
                 printHelp(options);
             }
-        } catch (IOException e) {
+        } catch (IOException | IndexOutOfBoundsException e) {
             printHelp(options);
         }
     }
