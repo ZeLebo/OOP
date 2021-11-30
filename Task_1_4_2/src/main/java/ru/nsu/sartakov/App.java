@@ -13,7 +13,7 @@ public class App {
     private static void printHelp(Options options) {
         HelpFormatter formatter = new HelpFormatter();
         PrintWriter printOut = new PrintWriter(System.out);
-        formatter.printUsage(printOut, 100, "java -jar Task_1_4_2-1.0-SNAPSHOT.jar [options]");
+        formatter.printUsage(printOut, 100, "java -jar Task_1_4_2-1.0-SNAPSHOT.jar <FileName.json> [options]");
         formatter.printOptions(printOut, 100, options, 2, 2);
         printOut.close();
     }
