@@ -52,7 +52,6 @@ public class App {
         CommandLine line = parser.parse(options, args);
 
         try {
-            // something
             notebook.setFileName(line.getArgList().get(0));
             if (line.hasOption("add")) {
                 add(line);
