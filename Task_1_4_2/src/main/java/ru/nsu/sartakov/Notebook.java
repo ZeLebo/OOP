@@ -9,11 +9,16 @@ import java.util.stream.Collectors;
 
 public class Notebook  {
     System.Logger log;
-    private final Json file = new Json();
     private List<Note> notes;
+    private String fileName = "Notes.json";
+    private final Json file = new Json(fileName);
 
     public Notebook() {
         notes = new ArrayList<>();
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     /**
