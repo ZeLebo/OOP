@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JsonTest {
     Notebook notebook = new Notebook();
-    Json gson = new Json();
+    Json gson = new Json("Notes.json");
 
     @Test
     public void readFromFile() throws IOException {

@@ -14,7 +14,7 @@ class AppTest {
     @Test
     public void parseTest() throws ParseException, IOException {
         notebook.removeNote("Header");
-        String[] line = {"-add", "Header", "Content"};
+        String[] line = {"Notes.json", "-add", "Header", "Content"};
         Note note = new Note("Header", "Content");
         app.mainCaller(line);
         Note result = notebook.showAllNotes().get(notebook.showAllNotes().size() - 1);
