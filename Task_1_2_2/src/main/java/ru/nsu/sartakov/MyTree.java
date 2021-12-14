@@ -1,29 +1,26 @@
 package ru.nsu.sartakov;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
-public class MyTree<T> implements Iterable<T> {
-    // some thought about that lab
-    public static class TreeNode {
-        int val;
-        List<TreeNode> children = new LinkedList<>();
+public class MyTree<Node> implements Iterable<Node> {
+    /**
+     * Node is something random type (T)
+     * Tree is consists of Nodes
+     * [n]treeArr = [0, 1, 2, 3, 4, 5, 6, ..., n - 1]
+     * if treeArr[i] is None and i < n:
+     *      treeArr[i] = new Node(int n)
+     * elif treeArr[i] is not None:
+     *
+     */
 
-        TreeNode(int data) {
-            val = data;
-        }
-
-        TreeNode(int data, List<TreeNode> child) {
-            val = data;
-            children = child;
-        }
-    }
     /**
      * @param n the amount of leaves
      */
-    private T[] treeArr;
-    MyTree(int n){}
+    private Node[] children;
+
+    MyTree(int arity, Node value){
+        children = new Node(arity, value);
+    }
 
     /**
      * @param value object to store in the tree
@@ -50,9 +47,9 @@ public class MyTree<T> implements Iterable<T> {
         }
 
         @Override
-        public T next() {
+        public Node next() {
             actPos++;
-            return treeArr[actPos];
+            return children[actPos];
         }
     }
 
