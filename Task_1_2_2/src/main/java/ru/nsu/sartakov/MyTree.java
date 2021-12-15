@@ -14,11 +14,11 @@ public class MyTree<Node> implements Iterable<Node> {
     }
 
     MyTree() {
-        this.children = new ArrayList<>();
+        this.children = new ArrayList<Node>();
     }
     // todo make working
     public void add(Node parent, Node value) {
-        this.children.set(this.children.indexOf(parent), value);
+        Node temp = this.children.get(this.children.indexOf(parent));
     }
 
     /**
