@@ -3,11 +3,11 @@ package ru.nsu.sartakov;
 import java.util.ArrayList;
 
 class Node {
-    int data;
-    ArrayList<Node> children;
+    Object data;
+    public ArrayList<Node> children;
 
-    Node (int data) {
+    Node (Object data) {
         this.data = data;
-        children = new ArrayList<>();
+        this.children = new ArrayList<>();
     }
 }
