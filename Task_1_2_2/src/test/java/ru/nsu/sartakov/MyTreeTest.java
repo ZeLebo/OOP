@@ -7,13 +7,14 @@ class MyTreeTest {
 
     @Test
     void add() {
-        MyTree tree = new MyTree(1);
+        MyTree tree = new MyTree();
         tree.add(new int[]{1, 2, 3, 4});
     }
 
     @Test
     void remove() {
-        MyTree tree = new MyTree("Hello");
+        MyTree tree = new MyTree();
+        tree.add("Hello");
         tree.remove("Hello");
         Assertions.assertEquals(tree.getClass(), tree.getClass());
     }

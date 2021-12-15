@@ -33,21 +33,4 @@ public class GenericTree {
         }
         return node;
     }
-
-    public void display() {
-        display(this.root);
-    }
-
-    private void display(Node node) {
-        String str = node.data + " => ";
-
-        for (Node curChild : node.children) {
-            str += curChild.data + ", ";
-        }
-        System.out.println(str);
-
-        for (Node curChild : node.children) {
-            display(curChild);
-        }
-    }
 }
