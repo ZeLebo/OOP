@@ -1,13 +1,13 @@
 package ru.nsu.sartakov;
 
-public class Node {
+import java.util.ArrayList;
 
-    public Object value;
+class Node {
+    int data;
+    ArrayList<Node> children;
 
-    Node(){}
-
-    Node (Object value, int arity) {
-        this.value = value;
+    Node (int data) {
+        this.data = data;
+        children = new ArrayList<>();
     }
-
 }
