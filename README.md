@@ -1,10 +1,10 @@
-## Lab 1.1 is done
-## Lab 1.2 is done
-## Lab 2.1 is done
-## Lab 2.2 is done
-## Lab 3.2 is done
-## Lab 4.1 is done
-## Lab 4.2 is done
+### Lab 1.1 is done
+### Lab 1.2 is done
+### Lab 2.1 is done
+### Lab 2.2 is done
+### Lab 3.2 is done
+### Lab 4.1 is done
+### Lab 4.2 is done
 
               (                         (                        (          
                )                         )                        )         
