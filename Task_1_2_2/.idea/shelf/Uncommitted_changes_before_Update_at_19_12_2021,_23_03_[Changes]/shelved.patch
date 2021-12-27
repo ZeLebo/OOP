@@ -1,0 +1,462 @@
+Index: src/main/java/ru/nsu/sartakov/Node.java
+===================================================================
+diff --git a/src/main/java/ru/nsu/sartakov/Node.java b/src/main/java/ru/nsu/sartakov/Node.java
+deleted file mode 100644
+--- a/src/main/java/ru/nsu/sartakov/Node.java	(revision af260ee59b33416da532901efc29a1db1783feda)
++++ /dev/null	(revision af260ee59b33416da532901efc29a1db1783feda)
+@@ -1,13 +0,0 @@
+-package ru.nsu.sartakov;
+-
+-import java.util.ArrayList;
+-
+-class Node {
+-    Object data;
+-    public ArrayList<Node> children;
+-
+-    Node (Object data) {
+-        this.data = data;
+-        this.children = new ArrayList<>();
+-    }
+-}
+Index: src/main/java/ru/nsu/sartakov/MyTree.java
+===================================================================
+diff --git a/src/main/java/ru/nsu/sartakov/MyTree.java b/src/main/java/ru/nsu/sartakov/MyTree.java
+deleted file mode 100644
+--- a/src/main/java/ru/nsu/sartakov/MyTree.java	(revision af260ee59b33416da532901efc29a1db1783feda)
++++ /dev/null	(revision af260ee59b33416da532901efc29a1db1783feda)
+@@ -1,66 +0,0 @@
+-package ru.nsu.sartakov;
+-
+-import java.util.ArrayList;
+-import java.util.Arrays;
+-import java.util.Iterator;
+-import java.util.List;
+-
+-public class MyTree<Node> implements Iterable<Node> {
+-    private Node root;
+-    private ArrayList<Node> children;
+-
+-    MyTree(Node value) {
+-        this.root = value;
+-    }
+-
+-    MyTree() {
+-        this.children = new ArrayList<Node>();
+-    }
+-    // todo make working
+-    public void add(Node parent, Node value) {
+-        Node temp = this.children.get(this.children.indexOf(parent));
+-    }
+-
+-    /**
+-     * @param value object to store in the tree
+-     * @return true if added, false otherwise
+-     */
+-    public boolean add(Node value) {
+-        if (this.root == null) {
+-            this.root = value;
+-        } else {
+-            this.children.add(value);
+-        }
+-        return true;
+-    }
+-
+-    /**
+-     * @param value to be deleted
+-     * @return whether succeed or not
+-     */
+-    public boolean remove(Node value) {
+-        this.children.stream()
+-                .filter(i -> !i.equals(value));
+-        return false;
+-    }
+-
+-    private class Iter implements Iterator<Node> {
+-        int actPos = 0;
+-
+-        @Override
+-        public boolean hasNext() {
+-            return true;
+-        }
+-
+-        @Override
+-        public Node next() {
+-            actPos++;
+-            return children.get(actPos);
+-        }
+-    }
+-
+-    @Override
+-    public Iterator<Node> iterator() {
+-        return new Iter();
+-    }
+-}
+\ No newline at end of file
+Index: src/test/java/ru/nsu/sartakov/MyTreeTest.java
+===================================================================
+diff --git a/src/test/java/ru/nsu/sartakov/MyTreeTest.java b/src/test/java/ru/nsu/sartakov/MyTreeTest.java
+deleted file mode 100644
+--- a/src/test/java/ru/nsu/sartakov/MyTreeTest.java	(revision af260ee59b33416da532901efc29a1db1783feda)
++++ /dev/null	(revision af260ee59b33416da532901efc29a1db1783feda)
+@@ -1,21 +0,0 @@
+-package ru.nsu.sartakov;
+-
+-import org.junit.jupiter.api.Assertions;
+-import org.junit.jupiter.api.Test;
+-
+-class MyTreeTest {
+-
+-    @Test
+-    void add() {
+-        MyTree tree = new MyTree();
+-        tree.add(new int[]{1, 2, 3, 4});
+-    }
+-
+-    @Test
+-    void remove() {
+-        MyTree tree = new MyTree();
+-        tree.add("Hello");
+-        tree.remove("Hello");
+-        Assertions.assertEquals(tree.getClass(), tree.getClass());
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/ru/nsu/sartakov/Tree.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/ru/nsu/sartakov/Tree.java b/src/main/java/ru/nsu/sartakov/Tree.java
+new file mode 100644
+--- /dev/null	(date 1639929510795)
++++ b/src/main/java/ru/nsu/sartakov/Tree.java	(date 1639929510795)
+@@ -0,0 +1,139 @@
++package ru.nsu.sartakov;
++
++import java.util.ArrayList;
++import java.util.Iterator;
++import java.util.List;
++
++public class Tree<E> implements Iterable<E> {
++
++    private Tree<E> root;
++    private E value;
++    private List<Tree<E>> children;
++
++    public Tree() {
++        this.root = this;
++        this.children = new ArrayList<>();
++        this.value = null;
++    }
++
++    public Tree(E root) {
++        this();
++        this.value = root;
++    }
++
++    public List<Tree<E>> getChildren() {
++        return children;
++    }
++
++    public E getValue() {
++        return value;
++    }
++
++    public Tree<E> getRoot() {
++        return root;
++    }
++
++    /**
++     * @param element object to store in the tree
++     * @return true if added, false otherwise
++     */
++    public void add(E element){
++        this.children.add(new Tree<>(element));
++        this.children.get(this.children.size() - 1).root = this;
++    }
++
++    /**
++     * @param parent the leaf after that add new element
++     * @param element object to store in the treee
++     */
++    public void add(Tree parent, E element) {
++        this.children.get(this.children.indexOf(parent)).add(element);
++    }
++
++    public void erase() {
++        this.children.forEach(Tree::erase);
++        this.root = this;
++        this.value = null;
++    }
++
++    /**
++     * @param value to be deleted
++     * @return whether succeed or not
++     */
++    public boolean remove(E value) {
++        if (this.isEmpty()) {
++            return false;
++        }
++        if (this.value.equals(value)) {
++            this.children = null;
++            this.value = null;
++            return true;
++        }
++        for (int i = 0; i < this.children.size(); i++) {
++            if (this.children.get(i).remove(value)) {
++                if (this.children.get(i).getValue() == null) {
++                    this.children.remove(i);
++                }
++                return true;
++            }
++        }
++        return false;
++    }
++
++    /**
++     * @param element to check
++     * @return true if element is in Tree
++     */
++    public boolean contains(E element) {
++        if (this.value.equals(element)) {
++            return true;
++        }
++        for (Tree<E> i : this.children) {
++            if (i.contains(element)) {
++                return true;
++            }
++        }
++        return false;
++    }
++
++
++    /**
++     * @return true if Tree is empty
++     */
++    public boolean isEmpty() {
++        return this.value == null && this.children.isEmpty();
++    }
++
++    public int size() {
++        int size = 0;
++        if (this.value != null) {
++            size++;
++        }
++        if (this.children != null) {
++            for (Tree<E> child : children) {
++                size += child.size();
++            }
++        }
++        return size;
++    }
++
++
++    private class Iter implements Iterator<E> {
++        int actPos = 0;
++
++        @Override
++        public boolean hasNext() {
++            return true;
++        }
++
++        @Override
++        public E next() {
++            return null;
++        }
++    }
++
++    @Override
++    public Iterator<E> iterator() {
++        return new Iter();
++    }
++}
+\ No newline at end of file
+Index: src/test/java/ru/nsu/sartakov/TreeTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/ru/nsu/sartakov/TreeTest.java b/src/test/java/ru/nsu/sartakov/TreeTest.java
+new file mode 100644
+--- /dev/null	(date 1639929468166)
++++ b/src/test/java/ru/nsu/sartakov/TreeTest.java	(date 1639929468166)
+@@ -0,0 +1,43 @@
++package ru.nsu.sartakov;
++
++import org.junit.jupiter.api.Assertions;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++
++class TreeTest {
++
++    @Test
++    void add() {
++        var element = "Hello";
++        Tree tree = new Tree(element);
++        tree.add(element);
++        System.out.println(tree.size());
++        element = "World";
++        tree.add(element);
++        System.out.println(tree.size());
++        System.out.println(tree.contains("World"));
++        tree.remove(element);
++        System.out.println(tree.size());
++        tree.remove("Hello");
++        System.out.println(tree.size());
++    }
++
++    @Test
++    void addParent() {
++
++    }
++
++    @Test
++    void remove() {
++    }
++
++    @Test
++    void contains() {
++
++    }
++
++    @Test
++    void isEmpty() {
++
++    }
++}
+\ No newline at end of file
+Index: .idea/uiDesigner.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+new file mode 100644
+--- /dev/null	(date 1639926484499)
++++ b/.idea/uiDesigner.xml	(date 1639926484499)
+@@ -0,0 +1,124 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Palette2">
++    <group name="Swing">
++      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
++      </item>
++      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.png" removable="false" auto-create-binding="false" can-attach-label="true">
++        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
++        <initial-values>
++          <property name="text" value="Button" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="RadioButton" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="CheckBox" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="Label" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
++          <preferred-size width="-1" height="20" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
++      </item>
++    </group>
++  </component>
++</project>
+\ No newline at end of file
