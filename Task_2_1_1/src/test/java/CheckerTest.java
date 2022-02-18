@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.nsu.sartakov.Checker;
 import ru.nsu.sartakov.SimpleChecker;
 import ru.nsu.sartakov.StreamChecker;
 import ru.nsu.sartakov.ThreadChecker;
@@ -8,7 +7,7 @@ import ru.nsu.sartakov.ThreadChecker;
 public class CheckerTest {
 
     private final long[] testArray = {6997901, 6997927, 6997937, 6997967, 6998009, 6998029, 6998039, 6998051, 6998053};
-    private long[] bigArray = new long[1000000];
+    private final long[] bigArray = new long[1000000];
 
     // will have prime
     public void buildHugeArray() {
