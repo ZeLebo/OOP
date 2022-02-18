@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class ThreadChecker {
     static int THREADS = Runtime.getRuntime().availableProcessors();
-    static boolean noPrime = false;
+    static boolean noPrime = true;
     public static long[] arr;
 
 
@@ -29,8 +29,8 @@ public class ThreadChecker {
         return arr;
     }
 
-    public synchronized static void hasNoPrime() {
-        noPrime = true;
+    public synchronized static void hasPrime() {
+        noPrime = false;
     }
 
     static class PrimeCheck implements Runnable {
@@ -42,7 +42,7 @@ public class ThreadChecker {
         public void run() {
             for (long l : ThreadChecker.getArr()) {
                 if (l % ThreadChecker.THREADS == ID && Checker.isPrime(l)) {
-                    ThreadChecker.hasNoPrime();
+                    ThreadChecker.hasPrime();
                     break;
                 }
             }
