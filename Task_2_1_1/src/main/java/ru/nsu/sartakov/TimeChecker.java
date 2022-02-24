@@ -35,10 +35,12 @@ public class TimeChecker {
         System.out.println("The time elapsed: " + (endTime - startTime) / 50 + " nanoseconds\n");
 
 
+        ThreadChecker thread = new ThreadChecker();
+
         System.out.println("Testing 2 thread running:");
         startTime = System.nanoTime();
         for (int i = 0; i < 50; i++) {
-            result = ThreadChecker.threadRun(bigArray, 2);
+            result = thread.threadRun(bigArray, 2);
         }
         endTime = System.nanoTime();
         System.out.println("The time elapsed: " + (endTime - startTime) / 50 + " nanoseconds\n");
@@ -47,7 +49,7 @@ public class TimeChecker {
         System.out.println("Testing 4 thread running:");
         startTime = System.nanoTime();
         for (int i = 0; i < 50; i++) {
-            result = ThreadChecker.threadRun(bigArray, 4);
+            result = thread.threadRun(bigArray, 4);
         }
         endTime = System.nanoTime();
         System.out.println("The time elapsed: " + (endTime - startTime) / 50 + " nanoseconds\n");
@@ -55,7 +57,7 @@ public class TimeChecker {
         System.out.println("Testing 8 thread running:");
         startTime = System.nanoTime();
         for (int i = 0; i < 50; i++) {
-            result = ThreadChecker.threadRun(bigArray, 8);
+            result = thread.threadRun(bigArray, 8);
         }
         endTime = System.nanoTime();
         System.out.println("The time elapsed: " + (endTime - startTime) / 50 + " nanoseconds\n");
@@ -63,7 +65,7 @@ public class TimeChecker {
         System.out.println("Testing 16 thread running:");
         startTime = System.nanoTime();
         for (int i = 0; i < 50; i++) {
-            result = ThreadChecker.threadRun(bigArray, 16);
+            result = thread.threadRun(bigArray, 16);
         }
         endTime = System.nanoTime();
         System.out.println("The time elapsed: " + (endTime - startTime) / 50 + " nanoseconds\n");

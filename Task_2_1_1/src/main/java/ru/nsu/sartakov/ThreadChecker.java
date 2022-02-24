@@ -5,10 +5,10 @@ import java.util.Arrays;
 public class ThreadChecker {
     static int THREADS = Runtime.getRuntime().availableProcessors();
     static boolean noPrime = true;
-    public static long[] arr;
+    public long[] arr;
 
 
-    public static boolean threadRun(long[] array, int threadsNumber) throws InterruptedException {
+    public boolean threadRun(long[] array, int threadsNumber) throws InterruptedException {
         if (threadsNumber > 0 && threadsNumber < THREADS) {
             THREADS = threadsNumber;
         }
@@ -25,7 +25,7 @@ public class ThreadChecker {
         return noPrime;
     }
 
-    public static long[] getArr() {
+    public long[] getArr() {
         return arr;
     }
 
@@ -33,14 +33,14 @@ public class ThreadChecker {
         noPrime = false;
     }
 
-    static class PrimeCheck implements Runnable {
+    class PrimeCheck implements Runnable {
         final int ID;
 
         public PrimeCheck(int i) {
             ID = i;
         }
         public void run() {
-            for (long l : ThreadChecker.getArr()) {
+            for (long l : arr) {
                 if (l % ThreadChecker.THREADS == ID && Checker.isPrime(l)) {
                     ThreadChecker.hasPrime();
                     break;
