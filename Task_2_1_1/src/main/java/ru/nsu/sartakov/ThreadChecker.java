@@ -9,6 +9,7 @@ public class ThreadChecker {
 
 
     public boolean threadRun(long[] array, int threadsNumber) throws InterruptedException {
+        // todo something was wrong
         if (threadsNumber > 0 && threadsNumber < THREADS) {
             THREADS = threadsNumber;
         }
