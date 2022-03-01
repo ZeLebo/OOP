@@ -1,7 +1,14 @@
 package ru.nsu.sartakov;
 
 public class TimeChecker {
-
+    /**
+     * This class is time checking thing
+     * All the methods are running 50 times
+     * Then the average time is presented
+     *
+     * @param args - not needed here
+     * @throws InterruptedException for interruption while thread checking
+     */
     public static void main(String[] args) throws InterruptedException {
         long startTime, endTime;
         final long[] testArray = {6997901, 6997927, 6997937, 6997967, 6998009, 6998029, 6998039, 6998051, 6998053};
@@ -9,7 +16,6 @@ public class TimeChecker {
         for (int i = 0; i < bigArray.length; i++) {
             bigArray[i] = testArray[i % testArray.length];
         }
-
 
         System.out.println("Testing sequent running:");
         startTime = System.nanoTime();

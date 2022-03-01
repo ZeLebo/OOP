@@ -7,9 +7,14 @@ public class ThreadChecker {
     static boolean noPrime = true;
     public long[] arr;
 
-
+    /**
+     * Runs the check-up using multi-thread
+     * @param array - set of numbers, needed to be checked
+     * @param threadsNumber - amount of threads, limited by the machine
+     * @return true if it has no prime
+     * @throws InterruptedException if the operations were interrupted
+     */
     public boolean threadRun(long[] array, int threadsNumber) throws InterruptedException {
-        // todo something was wrong
         if (threadsNumber > 0 && threadsNumber < THREADS) {
             THREADS = threadsNumber;
         }
@@ -26,10 +31,6 @@ public class ThreadChecker {
         return noPrime;
     }
 
-    public long[] getArr() {
-        return arr;
-    }
-
     public synchronized static void hasPrime() {
         noPrime = false;
     }
@@ -42,7 +43,7 @@ public class ThreadChecker {
         }
         public void run() {
             for (long l : arr) {
-                if (l % ThreadChecker.THREADS == ID && Checker.isPrime(l)) {
+                if (Checker.isPrime(l)) {
                     ThreadChecker.hasPrime();
                     break;
                 }
