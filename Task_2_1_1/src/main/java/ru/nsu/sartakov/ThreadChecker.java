@@ -3,8 +3,8 @@ package ru.nsu.sartakov;
 import java.util.Arrays;
 
 public class ThreadChecker {
-    static int THREADS = Runtime.getRuntime().availableProcessors();
-    static boolean noPrime = true;
+    int THREADS = Runtime.getRuntime().availableProcessors();
+    boolean noPrime = true;
     public long[] arr;
 
     /**
@@ -31,20 +31,21 @@ public class ThreadChecker {
         return noPrime;
     }
 
-    public synchronized static void hasPrime() {
+    public synchronized void hasPrime() {
         noPrime = false;
     }
 
     class PrimeCheck implements Runnable {
-        final int ID;
+        final int ID; // todo ID is not needed
 
         public PrimeCheck(int i) {
             ID = i;
         }
+
         public void run() {
-            for (long l : arr) {
+            for (long l : arr) { // todo THREADS times check array
                 if (Checker.isPrime(l)) {
-                    ThreadChecker.hasPrime();
+                    hasPrime();
                     break;
                 }
             }

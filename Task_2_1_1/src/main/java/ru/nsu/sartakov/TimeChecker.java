@@ -10,7 +10,9 @@ public class TimeChecker {
      * @throws InterruptedException for interruption while thread checking
      */
     public static void main(String[] args) throws InterruptedException {
-        long startTime, endTime;
+        long startTime;
+        long endTime;
+        boolean result = false;
         final long[] testArray = {6997901, 6997927, 6997937, 6997967, 6998009, 6998029, 6998039, 6998051, 6998053};
         long[] bigArray = new long[1000000];
         for (int i = 0; i < bigArray.length; i++) {
@@ -19,7 +21,6 @@ public class TimeChecker {
 
         System.out.println("Testing sequent running:");
         startTime = System.nanoTime();
-        boolean result = SimpleChecker.sequentRun(bigArray);
         for (int i = 0; i < 50; i++) {
             result = SimpleChecker.sequentRun(bigArray);
         }
@@ -28,10 +29,9 @@ public class TimeChecker {
 
 
         System.out.println("Testing parallel running");
-        int index = 0;
         Long[] testArrayLong = new Long[bigArray.length];
-        for (final Long value : bigArray) {
-            testArrayLong[index++] = value;
+        for(int index = 0; index < bigArray.length; index++) {
+            testArrayLong[index] = bigArray[index];
         }
         startTime = System.nanoTime();
         for (int i = 0; i < 50; i++) {
