@@ -1,5 +1,7 @@
 package ru.nsu.sartakov;
 
+import java.util.concurrent.ExecutionException;
+
 public class TimeChecker {
     /**
      * This class is time checking thing
@@ -9,7 +11,7 @@ public class TimeChecker {
      * @param args - not needed here
      * @throws InterruptedException for interruption while thread checking
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         long startTime;
         long endTime;
         boolean result = false;

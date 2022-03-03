@@ -7,8 +7,10 @@ public class Checker {
      * @return true if number is prime
      */
     public static boolean isPrime(long number) {
-        if (number < 2) {
+        if (number <= 1) {
             return false;
+        } else if (number <= 3) {
+            return true;
         }
         for (int i = 3; i < number; i++) {
             if (number % i == 0) {
@@ -19,6 +21,16 @@ public class Checker {
     }
 
     public static boolean notPrime(long number) {
-        return !isPrime(number);
+        if (number <= 1) {
+            return true;
+        } else if (number <= 3) {
+            return false;
+        }
+        for (int i = 2; i < number; i++) {
+            if (number % i == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

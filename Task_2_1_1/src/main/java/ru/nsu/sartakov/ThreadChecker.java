@@ -1,12 +1,14 @@
 package ru.nsu.sartakov;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class ThreadChecker {
     int THREADS = Runtime.getRuntime().availableProcessors();
-    boolean noPrime = true;
-    public long[] arr;
-
+    private Deque<Long> numbersDeque;
+    private synchronized Long getNumber() {
+        return numbersDeque.isEmpty() ? null : numbersDeque.pop();
+    }
     /**
      * Runs the check-up using multi-thread
      * @param array - set of numbers, needed to be checked
@@ -31,24 +33,21 @@ public class ThreadChecker {
         return noPrime;
     }
 
-    public synchronized void hasPrime() {
-        noPrime = false;
+    public synchronized void hasNonePrime() {
+        noPrime = true;
     }
 
     class PrimeCheck implements Runnable {
-        final int ID; // todo ID is not needed
-
-        public PrimeCheck(int i) {
-            ID = i;
-        }
-
+// todo split to chunk (range) to check
         public void run() {
             for (long l : arr) { // todo THREADS times check array
-                if (Checker.isPrime(l)) {
-                    hasPrime();
+                if (Checker.notPrime(l)) {
+                    hasNonePrime();
                     break;
                 }
             }
         }
     }
+
+
 }
