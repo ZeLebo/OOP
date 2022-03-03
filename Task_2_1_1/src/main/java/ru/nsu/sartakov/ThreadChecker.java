@@ -19,10 +19,11 @@ public class ThreadChecker {
      * @throws InterruptedException if the operations were interrupted
      */
     public boolean threadRun(long[] array, int threadsNumber) throws InterruptedException, ExecutionException {
+        numbersDeque = new ArrayDeque<>(Arrays.stream(array).boxed().toList());
         if (threadsNumber > 0 && threadsNumber < THREADS) {
             THREADS = threadsNumber;
         }
-        numbersDeque = new ArrayDeque<>(Arrays.stream(array).boxed().toList());
+
         Callable<Boolean> thread = () -> {
             Long number;
             while((number = getNumber()) != null) {
