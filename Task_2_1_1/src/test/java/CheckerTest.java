@@ -33,10 +33,9 @@ public class CheckerTest {
 
     @Test
     public void streamTest() {
-        int index = 0;
         Long[] testArrayLong = new Long[bigArray.length];
-        for (final Long value : bigArray) {
-            testArrayLong[index++] = value;
+        for(int index = 0; index < bigArray.length; index++) {
+            testArrayLong[index] = bigArray[index];
         }
         Assertions.assertFalse(StreamChecker.streamRun(testArrayLong));
     }

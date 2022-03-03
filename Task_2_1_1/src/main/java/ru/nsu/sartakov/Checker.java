@@ -17,4 +17,8 @@ public class Checker {
         }
         return true;
     }
+
+    public static boolean notPrime(long number) {
+        return !isPrime(number);
+    }
 }
