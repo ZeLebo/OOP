@@ -8,7 +8,10 @@ public class ThreadChecker {
     private Deque<Long> numbersDeque;
 
     private synchronized Long getNumber() {
-        return numbersDeque.isEmpty() ? null : numbersDeque.pop();
+        if (numbersDeque.isEmpty()) {
+            return null;
+        }
+        return numbersDeque.pop();
     }
 
     /**
