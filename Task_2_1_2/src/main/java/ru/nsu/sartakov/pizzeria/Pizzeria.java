@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class Pizzeria {
     private final Logger log;
-    private final Queue<Order> orders;
+    public final Queue<Order> orders;
 
     private final StoreHouse storage;
 

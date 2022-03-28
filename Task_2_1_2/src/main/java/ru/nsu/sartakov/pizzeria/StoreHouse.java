@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class StoreHouse {
     private final Logger log;
-    private final Queue<Order> pizzas;
+    public final Queue<Order> pizzas;
     private final int capacity;
 
     public StoreHouse(int capacity, Logger log) {
