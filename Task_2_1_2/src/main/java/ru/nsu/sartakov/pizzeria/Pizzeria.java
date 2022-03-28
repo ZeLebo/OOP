@@ -37,6 +37,8 @@ public class Pizzeria {
         }
     }
 
+
+    // todo add flag to stop pizzeria
     public Order takeOrder() {
         synchronized (orders) {
             while (orders.isEmpty()) {
