@@ -10,9 +10,7 @@ import java.util.logging.Logger;
 
 public class App {
     public static void main(String[] args) {
-        Logger log = Logger.getLogger("Pizzeria Logger");
-
-        Pizzeria pizzeria = new Pizzeria(10, log);
+        Pizzeria pizzeria = new Pizzeria(10, Logger.getLogger("Pizzeria Logger"));
 
         List<BakerEntity> bakers = Storage.bakers().findAll();
         List<DeliveryEntity> deliverers = Storage.deliverers().findAll();
@@ -25,6 +23,12 @@ public class App {
             pizzeria.addDeliver(deliver);
         }
 
+        pizzeria.addOrder("Margarita");
+        pizzeria.addOrder("Margarita");
+        pizzeria.addOrder("Margarita");
+        pizzeria.addOrder("Margarita");
+        pizzeria.addOrder("Margarita");
+        pizzeria.addOrder("Margarita");
         pizzeria.addOrder("Margarita");
         pizzeria.addOrder("Margarita");
         pizzeria.addOrder("Margarita");

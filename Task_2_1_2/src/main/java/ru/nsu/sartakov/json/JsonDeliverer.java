@@ -6,7 +6,6 @@ import ru.nsu.sartakov.entities.DeliveryEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class JsonDeliverer extends Json implements DeliveryCollection {
     private static final String FILENAME = "pizzeriaConfig/delivery.txt";
@@ -15,11 +14,6 @@ public class JsonDeliverer extends Json implements DeliveryCollection {
         String data = readFile(FILENAME);
         List<DeliveryEntity> delivers = Arrays.asList(gson().fromJson(data, DeliveryEntity[].class));
         return new ArrayList<>(delivers);
-    }
-
-    private void setDelivers(List<DeliveryEntity> delivers) {
-        String data = gson().toJson(delivers);
-        writeFile(FILENAME, data);
     }
 
     @Override
@@ -31,7 +25,6 @@ public class JsonDeliverer extends Json implements DeliveryCollection {
         }
         DeliveryEntity deliver = new DeliveryEntity(maxId + 1, capacity);
         delivers.add(deliver);
-        setDelivers(delivers);
         return deliver;
     }
 
