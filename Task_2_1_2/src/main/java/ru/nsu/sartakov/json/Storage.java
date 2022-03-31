@@ -24,12 +24,4 @@ public class Storage {
     public DelivererJSON[] getDeliverers() {
         return deliverers;
     }
-
-    public static BakerCollection bakers() {
-        return new JsonBaker();
-    }
-
-    public static DeliveryCollection deliverers() {
-        return new JsonDeliverer();
-    }
 }

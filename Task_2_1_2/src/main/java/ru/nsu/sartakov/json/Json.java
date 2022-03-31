@@ -2,24 +2,21 @@ package ru.nsu.sartakov.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
-import ru.nsu.sartakov.entities.BakerEntity;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class Json {
-    private BufferedReader reader;
-    private String fileName;
+    private static final String DEFAULT = "pizzeriaConfig/config.json";
     private final File file;
+    private final String fileName;
+    private BufferedReader reader;
 
-    Json() {
-        file = null;
+    public Json() {
+        this.fileName = DEFAULT;
+        this.file = new File(this.fileName);
     }
 
-    Json(String fileName) {
+    public Json(String fileName) {
         this.fileName = fileName;
         this.file = new File(fileName);
     }
@@ -34,45 +31,41 @@ public class Json {
                 file.createNewFile();
             }
             reader = new BufferedReader(new FileReader(file));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
-    }
-
-    public String readFile() {
-        String content;
-        try {
-            content = readAllLines(reader);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        if (content.equals("")) {
-            return null;
-        }
-        return content;
     }
 
     private String readAllLines(BufferedReader reader) throws IOException {
         StringBuilder content = new StringBuilder();
-        String current;
-        while((current = reader.readLine()) != null) {
-            content.append(current).append("\n");
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null) {
+            content.append(currentLine).append("\n");
         }
         return content.toString();
     }
 
-
-    public String readFile_(String fileName) {
+    public Storage read() {
+        String content;
         try {
-            FileReader fr = new FileReader(fileName);
-            Scanner scanner = new Scanner(fr);
-            String dump = scanner.useDelimiter("\\A").next();
-            scanner.close();
-            fr.close();
-            return dump;
-        } catch (IOException e) {
-            return "[]";
+            content = readAllLines(reader);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+
+        if (content.equals("")) {
+            return null;
+        }
+        Gson gson = new GsonBuilder().create();
+        return gson.fromJson(content, Storage.class);
+    }
+
+    public void close() {
+        try {
+            reader.close();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 }
