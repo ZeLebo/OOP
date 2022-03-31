@@ -7,7 +7,7 @@ import ru.nsu.sartakov.json.PizzeriaJSON;
 import ru.nsu.sartakov.order.Order;
 
 public class PizzeriaSettingUp implements Runnable {
-    private final int workingDay = 200;
+    private final int workingDay = 50000;
     private PizzeriaJSON pizzeriaJSON;
     private Pizzeria pizzeria;
 
@@ -64,6 +64,7 @@ public class PizzeriaSettingUp implements Runnable {
             pizzeriaThread.start();
             Thread.sleep(this.workingDay);
             pizzeria.stop();
+            System.exit(0);
         } catch (InterruptedException stopped) {
             System.err.println("Pizzeria has been hacked…");
             System.exit(1);

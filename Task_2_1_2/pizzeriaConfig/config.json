@@ -4,29 +4,25 @@
   "bakers": [
     {
       "id": 0,
-      "cookingTime": 2
+      "cookingTime": 5000
     },
     {
       "id": 1,
-      "cookingTime": 2
+      "cookingTime": 5000
     },
     {
       "id": 2,
-      "cookingTime": 3
+      "cookingTime": 5000
     }
   ],
   "deliverers": [
     {
       "id": 0,
-      "capacity": 3
+      "capacity": 2
     },
     {
       "id": 1,
-      "capacity": 2
-    },
-    {
-      "id": 2,
-      "capacity": 2
+      "capacity": 1
     }
   ]
 }

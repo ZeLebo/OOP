@@ -2,13 +2,13 @@ package ru.nsu.sartakov.employee;
 
 import ru.nsu.sartakov.interfaces.Consumer;
 import ru.nsu.sartakov.order.Order;
-import ru.nsu.sartakov.order.OrderStatus;
+import static ru.nsu.sartakov.order.Order.Status.*;
 import ru.nsu.sartakov.queue.SharedQueue;
 
 import java.util.List;
 
 public class Deliverer implements Runnable, Consumer<List<Order>> {
-    private final int deliveryTime = 50;
+    private final int deliveryTime = 300;
     private final int id;
     private final int capacity;
     private List<Order> orders;
@@ -29,7 +29,7 @@ public class Deliverer implements Runnable, Consumer<List<Order>> {
         return this.id;
     }
 
-    private void setOrdersState(OrderStatus status) {
+    private void setOrdersState(Order.Status status) {
         for (Order order : orders) {
             order.setStatus(status);
         }
@@ -39,9 +39,9 @@ public class Deliverer implements Runnable, Consumer<List<Order>> {
     public List<Order> consume() {
         try {
             orders = storage.get(this.capacity);
-            setOrdersState(OrderStatus.DELIVERING);
+            setOrdersState(DELIVERING);
             Thread.sleep(this.deliveryTime);
-            setOrdersState(OrderStatus.DELIVERED);
+            setOrdersState(DELIVERED);
             return orders;
         } catch (InterruptedException ignored) {
             return null;

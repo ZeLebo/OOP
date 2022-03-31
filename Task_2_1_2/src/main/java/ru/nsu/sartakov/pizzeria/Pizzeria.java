@@ -16,6 +16,8 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static ru.nsu.sartakov.order.Order.Status.PENDING;
+
 public class Pizzeria implements Runnable {
     private boolean isRunning;
     private List<Baker> bakers;
@@ -34,8 +36,6 @@ public class Pizzeria implements Runnable {
     private void setBakers(BakerJSON[] bakers) {
         Stream<BakerJSON> bakerJSONStream = Arrays.stream(bakers);
         this.bakers = bakerJSONStream.map(bakerJSON -> new Baker(bakerJSON.getId(), bakerJSON.getCookingTime(), this.queue, this.storage)).collect(Collectors.toCollection(ArrayList::new));
-        // todo : check
-        //this.bakers = bakerJSONStream.map(bakerJSON -> new Baker(bakerJSON.getId(), bakerJSON.getCookingTime(), this.queue, this.storage)).collect(Collectors.toList());
     }
 
     private void setDelivers(DelivererJSON[] delivers) {
@@ -46,6 +46,7 @@ public class Pizzeria implements Runnable {
     public void addOrder(Order order) {
         try {
             this.queue.put(order);
+            order.setStatus(PENDING);
         } catch (InterruptedException ignored) {
             System.err.println("Cannot add the order");
         }
@@ -62,8 +63,6 @@ public class Pizzeria implements Runnable {
         ExecutorService deliverersThread = Executors.newFixedThreadPool(delivers.size());
         bakers.forEach(bakersThread::execute);
         delivers.forEach(deliverersThread::execute);
-
-        while (isRunning && !bakersThread.isTerminated() && !deliverersThread.isTerminated()) {}
 
         if (bakersThread.isTerminated() || deliverersThread.isTerminated()) {
             this.isRunning = false;
