@@ -24,11 +24,11 @@ public class Pizzeria implements Runnable {
     private final SharedQueue<Order> storage;
 
     public Pizzeria(PizzeriaJSON config) {
+        this.isRunning = false;
+        this.queue = new SharedQueue<>(config.getQueue());
+        this.storage = new SharedQueue<>(config.getCapacity());
         setBakers(config.getBakers());
         setDelivers(config.getDeliverers());
-        this.isRunning = false;
-        this.queue = new SharedQueue<>(config.getQueueSize());
-        this.storage = new SharedQueue<>(config.getStorageCapacity());
     }
 
     private void setBakers(BakerJSON[] bakers) {

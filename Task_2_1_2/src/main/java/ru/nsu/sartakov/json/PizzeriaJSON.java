@@ -1,17 +1,17 @@
 package ru.nsu.sartakov.json;
 
 public class PizzeriaJSON {
-    private int queueSize;
-    private int storageCapacity;
+    private int queue;
+    private int capacity;
     private BakerJSON[] bakers;
     private DelivererJSON[] deliverers;
 
-    public int getQueueSize() {
-        return queueSize;
+    public int getQueue() {
+        return queue;
     }
 
-    public int getStorageCapacity() {
-        return storageCapacity;
+    public int getCapacity() {
+        return capacity;
     }
 
     public BakerJSON[] getBakers() {

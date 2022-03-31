@@ -1,13 +1,10 @@
 package ru.nsu.sartakov.pizzeria;
 
-import jdk.jshell.spi.ExecutionControl;
 import ru.nsu.sartakov.json.BakerJSON;
 import ru.nsu.sartakov.json.DelivererJSON;
 import ru.nsu.sartakov.json.Json;
 import ru.nsu.sartakov.json.PizzeriaJSON;
 import ru.nsu.sartakov.order.Order;
-
-import java.io.IOException;
 
 public class PizzeriaSettingUp implements Runnable {
     private final int workingDay = 200;
@@ -31,12 +28,12 @@ public class PizzeriaSettingUp implements Runnable {
             System.err.println("No way to configure pizzeria");
             return;
         }
-        if (pizzeriaJSON.getQueueSize() <= 0) {
-            System.err.println("Cannot start pizzeria with such parameters");
+        if (pizzeriaJSON.getQueue() <= 0) {
+            System.err.println("Cannot start pizzeria with such parameters [no queue size provided]");
             return;
         }
-        if (pizzeriaJSON.getStorageCapacity() <= 0) {
-            System.err.println("Cannot start pizzeria with such parameters");
+        if (pizzeriaJSON.getCapacity() <= 0) {
+            System.err.println("Cannot start pizzeria with such parameters [no capacity provided]");
             return;
         }
         BakerJSON[] bakersJSON = pizzeriaJSON.getBakers();
