@@ -1,41 +1,68 @@
 package ru.nsu.sartakov.employee;
 
 import ru.nsu.sartakov.entities.BakerEntity;
-import ru.nsu.sartakov.entities.DeliveryEntity;
-import ru.nsu.sartakov.pizzeria.Order;
+import ru.nsu.sartakov.interfaces.Producer;
+import ru.nsu.sartakov.order.Order;
+import ru.nsu.sartakov.order.OrderStatus;
 import ru.nsu.sartakov.pizzeria.Pizzeria;
-import ru.nsu.sartakov.pizzeria.StoreHouse;
+import ru.nsu.sartakov.queue.SharedQueue;
 
 import static java.lang.Thread.sleep;
 
 
-public class Baker implements Runnable {
-    private final Pizzeria pizzeria;
-    private final BakerEntity entity;
+public class Baker implements Runnable, Producer<Order> {
+    private final int id;
+    private final int cookingTime;
+    private final SharedQueue<Order> queue;
+    private final SharedQueue<Order> storage;
+    private boolean isRunning;
 
-    public Baker(Pizzeria pizzeria, BakerEntity entity) {
-        this.pizzeria = pizzeria;
-        this.entity = entity;
+    public Baker(int id, int cookingTime, SharedQueue<Order> queue, SharedQueue<Order> storage){
+        this.id = id;
+        this.cookingTime = cookingTime;
+        this.queue = queue;
+        this.storage = storage;
+    }
+
+    public void stop() {
+        this.isRunning = false;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public Order takeOrder() {
+        try {
+            Order order = queue.get();
+            order.setStatus(OrderStatus.COOKING);
+            return order;
+        } catch (InterruptedException ignored) {
+            return null;
+        }
+    }
+
+    public void produce(Order order) {
+        try {
+            Thread.sleep(this.cookingTime);
+            order.setStatus(OrderStatus.COOKED);
+            storage.put(order);
+        } catch (NullPointerException | InterruptedException ignored) {}
+    }
+
+    public void work() {
+        Order order = takeOrder();
+        if (order == null) {
+            stop();
+        }
+        produce(order);
     }
 
     @Override
     public void run() {
-        while (true) {
-            Order order = pizzeria.takeOrder();
-            bake(order);
-            pizzeria.addPizza(order);
+        this.isRunning = true;
+        while(this.isRunning) {
+            work();
         }
-    }
-
-    private void bake(Order order) {
-        // todo delete
-        long bakeTime = 10000 / (entity.getCookingTime() < 2 ? 10 : entity.getCookingTime());
-        pizzeria.info(order.setStatus(Order.setStatus(COOCKING)));
-        try {
-            sleep(bakeTime);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        pizzeria.info(order.toString("ready"));
     }
 }

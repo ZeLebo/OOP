@@ -1,9 +1,6 @@
 package ru.nsu.sartakov.json;
 
-import ru.nsu.sartakov.collections.BakerCollection;
-import ru.nsu.sartakov.collections.DeliveryCollection;
-
-public class Storage {
+public class PizzeriaJSON {
     private int queueSize;
     private int storageCapacity;
     private BakerJSON[] bakers;

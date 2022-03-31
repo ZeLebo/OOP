@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 
 public class Json {
-    private static final String DEFAULT = "pizzeriaConfig/config.json";
+    private static final String DEFAULT = "config.json";
     private final File file;
     private final String fileName;
     private BufferedReader reader;
@@ -27,10 +27,10 @@ public class Json {
 
     public void open() {
         try {
-            if (!file.exists()) {
-                file.createNewFile();
+            if (!this.file.exists()) {
+                this.file.createNewFile();
             }
-            reader = new BufferedReader(new FileReader(file));
+            reader = new BufferedReader(new FileReader(this.file));
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -45,7 +45,7 @@ public class Json {
         return content.toString();
     }
 
-    public Storage read() {
+    public PizzeriaJSON read() {
         String content;
         try {
             content = readAllLines(reader);
@@ -58,7 +58,7 @@ public class Json {
             return null;
         }
         Gson gson = new GsonBuilder().create();
-        return gson.fromJson(content, Storage.class);
+        return gson.fromJson(content, PizzeriaJSON.class);
     }
 
     public void close() {
