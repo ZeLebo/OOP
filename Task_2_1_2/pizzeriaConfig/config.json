@@ -1,7 +1,7 @@
 {
-  "queueSize" : 10,
-  "storageCapacity" : 10,
-  "bakers" : [
+  "queue": 10,
+  "capacity": 10,
+  "bakers": [
     {
       "id": 0,
       "cookingTime": 2
@@ -12,29 +12,21 @@
     },
     {
       "id": 2,
-      "cookingTime": 2
-    },
-    {
-      "id": 3,
-      "cookingTime": 2
-    },
-    {
-      "id": 4,
-      "cookingTime": 2
+      "cookingTime": 3
     }
   ],
-  "deliverers" : [
+  "deliverers": [
     {
-      "id" : 0,
-      "capacity" : 2
+      "id": 0,
+      "capacity": 3
     },
     {
-      "id" : 1,
-      "capacity" : 2
+      "id": 1,
+      "capacity": 2
     },
     {
-      "id" : 2,
-      "capacity" : 2
+      "id": 2,
+      "capacity": 2
     }
   ]
 }

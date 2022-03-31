@@ -1,4 +1,4 @@
-package ru.nsu.sartakov;
+package ru.nsu.sartakov.pizzeria;
 
 import ru.nsu.sartakov.order.Order;
 import ru.nsu.sartakov.pizzeria.PizzeriaSettingUp;
@@ -9,6 +9,7 @@ public class App {
         app.addOrder(new Order("Margarita"));
         app.addOrder(new Order("Margarita"));
         app.addOrder(new Order("Margarita"));
+
         app.run();
     }
 }
