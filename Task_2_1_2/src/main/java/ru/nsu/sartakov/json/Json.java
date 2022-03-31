@@ -28,7 +28,10 @@ public class Json {
     public void open() {
         try {
             if (!this.file.exists()) {
-                this.file.createNewFile();
+                var res = this.file.createNewFile();
+                if (!res) {
+                    System.err.println("Cannot create new file");
+                }
             }
             reader = new BufferedReader(new FileReader(this.file));
         } catch (IOException exception) {
