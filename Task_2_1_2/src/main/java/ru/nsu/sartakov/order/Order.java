@@ -4,7 +4,41 @@ public class Order {
     private static int nextId = 0;
     private final int id;
     private final String pizza;
-    public OrderStatus status;
+    public Status status;
+
+
+    public enum Status {
+        PENDING {
+            @Override
+            public String toString() {
+                return "Pending";
+            }
+        },
+        COOKING {
+            @Override
+            public String toString() {
+                return "Cooking";
+            }
+        },
+        COOKED {
+            @Override
+            public String toString() {
+                return "Cooked";
+            }
+        },
+        DELIVERING {
+            @Override
+            public String toString() {
+                return "Delivering";
+            }
+        },
+        DELIVERED {
+            @Override
+            public String toString() {
+                return "Delivered";
+            }
+        }
+    }
 
     public Order(String pizza) {
         this.id = nextId++;
@@ -19,17 +53,17 @@ public class Order {
         return this.id;
     }
 
-    public OrderStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus newStatus) {
+    public void setStatus(Status newStatus) {
         this.status = newStatus;
         System.out.println(this);
     }
 
     @Override
     public String toString() {
-        return "[Order id: " + id + "]" +  "[" + getStatus() + "]";
+        return "[Order id: " + id + "]" + "[Pizza: " + pizza() + "]" +  "[" + status.toString() + "]";
     }
 }

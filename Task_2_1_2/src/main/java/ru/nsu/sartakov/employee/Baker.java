@@ -2,8 +2,7 @@ package ru.nsu.sartakov.employee;
 
 import ru.nsu.sartakov.interfaces.Producer;
 import ru.nsu.sartakov.order.Order;
-import ru.nsu.sartakov.order.OrderStatus;
-import ru.nsu.sartakov.pizzeria.Pizzeria;
+import static ru.nsu.sartakov.order.Order.Status.*;
 import ru.nsu.sartakov.queue.SharedQueue;
 
 import static java.lang.Thread.sleep;
@@ -34,7 +33,7 @@ public class Baker implements Runnable, Producer<Order> {
     public Order takeOrder() {
         try {
             Order order = queue.get();
-            order.setStatus(OrderStatus.COOKING);
+            order.setStatus(COOKING);
             return order;
         } catch (InterruptedException ignored) {
             return null;
@@ -44,7 +43,7 @@ public class Baker implements Runnable, Producer<Order> {
     public void produce(Order order) {
         try {
             Thread.sleep(this.cookingTime);
-            order.setStatus(OrderStatus.COOKED);
+            order.setStatus(COOKED);
             storage.put(order);
         } catch (NullPointerException | InterruptedException ignored) {}
     }

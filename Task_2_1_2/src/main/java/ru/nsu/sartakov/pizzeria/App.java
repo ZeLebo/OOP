@@ -6,9 +6,9 @@ import ru.nsu.sartakov.pizzeria.PizzeriaSettingUp;
 public class App {
     public static void main(String[] args) {
         PizzeriaSettingUp app = new PizzeriaSettingUp();
-        app.addOrder(new Order("Margarita"));
-        app.addOrder(new Order("Margarita"));
-        app.addOrder(new Order("Margarita"));
+        for (int i = 0; i < 10; i++) {
+            app.addOrder(new Order("Margarita"));
+        }
 
         app.run();
     }
