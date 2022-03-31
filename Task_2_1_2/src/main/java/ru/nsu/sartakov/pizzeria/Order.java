@@ -22,12 +22,17 @@ public class Order {
         return this.id;
     }
 
-    public boolean updateStatus() {
-        if (this.status.ordinal() + 1 <= State.values().length) {
-            this.status = State.values()[this.status.ordinal() + 1];
-            return true;
-        }
-        return false;
+    public State getStatus() {
+        return status;
+    }
+
+    public void setStatus(State newStatus) {
+        this.status = newStatus;
+        System.out.println(this);
+    }
+
+    public String toString() {
+        return "[Order id: " + id + "]" +  "[" + getStatus() + "]";
     }
 
     private enum State {
@@ -62,14 +67,5 @@ public class Order {
             }
         }
 
-    }
-
-    public String toString(String ...status) {
-        return String.format(
-                "[Order %s] [%s] %s",
-                id,
-                status[0],
-                Arrays.stream(status).skip(1).collect(Collectors.joining(" "))
-        );
     }
 }

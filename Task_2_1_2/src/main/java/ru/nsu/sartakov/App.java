@@ -12,7 +12,7 @@ public class App {
     public static void main(String[] args) {
         Pizzeria pizzeria = new Pizzeria(10, Logger.getLogger("Pizzeria Logger"));
 
-        List<BakerEntity> bakers = Storage.bakers().findAll();
+        List<BakerEntity> bakers = Storage;
         List<DeliveryEntity> deliverers = Storage.deliverers().findAll();
 
         for (var baker : bakers) {
