@@ -4,12 +4,15 @@ import ru.nsu.sartakov.employee.Baker;
 import ru.nsu.sartakov.entities.BakerEntity;
 import ru.nsu.sartakov.entities.DeliveryEntity;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.logging.Logger;
 
 public class Pizzeria {
     private final Logger log;
+    private final List<Thread> bakerThreads;
     public final Queue<Order> orders;
 
     private final StoreHouse storage;
@@ -18,15 +21,18 @@ public class Pizzeria {
         this.log = log;
         this.orders = new LinkedList<>();
         this.storage = new StoreHouse(capacity, log);
+        this.bakerThreads = new ArrayList<>();
     }
 
     public void addBaker(BakerEntity bakerSample) {
         Baker baker = new Baker(this, bakerSample);
-        new Thread(baker).start();
+        Thread bakerThread = new Thread(baker);
+        bakerThreads.add(bakerThread);
+        bakerThread.start();
     }
 
     public void addDeliver(DeliveryEntity deliverSample) {
-        storage.addDeviver(deliverSample);
+        storage.addDeliverer(deliverSample);
     }
 
     public void addOrder(String pizza) {
