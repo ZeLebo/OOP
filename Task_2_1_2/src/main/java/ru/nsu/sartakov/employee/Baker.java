@@ -28,6 +28,7 @@ public class Baker implements Runnable {
     }
 
     private void bake(Order order) {
+        // todo delete
         long bakeTime = 10000 / (entity.getCookingTime() < 2 ? 10 : entity.getCookingTime());
         pizzeria.info(order.toString("taken", bakeTime + "ms"));
         try {
