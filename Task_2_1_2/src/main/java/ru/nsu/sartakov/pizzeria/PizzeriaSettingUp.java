@@ -16,6 +16,10 @@ public class PizzeriaSettingUp implements Runnable {
         setPizzeria();
     }
 
+    public Pizzeria getPizzeria() {
+        return pizzeria;
+    }
+
     private void setPizzeriaJSON() {
         Json json = new Json();
         json.open();
@@ -47,10 +51,6 @@ public class PizzeriaSettingUp implements Runnable {
             return;
         }
         pizzeria = new Pizzeria(pizzeriaJSON);
-    }
-
-    public void addOrder(Order order) {
-        this.pizzeria.addOrder(order);
     }
 
     @Override

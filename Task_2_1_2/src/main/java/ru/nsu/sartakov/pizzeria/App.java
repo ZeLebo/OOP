@@ -7,7 +7,7 @@ public class App {
     public static void main(String[] args) {
         PizzeriaSettingUp app = new PizzeriaSettingUp();
         for (int i = 0; i < 10; i++) {
-            app.addOrder(new Order("Margarita"));
+            app.getPizzeria().addOrder(new Order("Margarita"));
         }
         app.run();
     }
