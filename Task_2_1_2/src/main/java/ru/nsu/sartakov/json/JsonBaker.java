@@ -1,19 +1,26 @@
 package ru.nsu.sartakov.json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ru.nsu.sartakov.collections.BakerCollection;
 import ru.nsu.sartakov.entities.BakerEntity;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class JsonBaker extends Json implements BakerCollection {
-    private static final String FILENAME = "pizzeriaConfig/bakers.txt";
+    private static final String FILENAME = "pizzeriaConfig/bakers.json";
 
     private List<BakerEntity> getBakers(){
-        String data = readFile(FILENAME);
-        List <BakerEntity> bakers = Arrays.asList(gson().fromJson(data, BakerEntity[].class));
+        Json myReader = new Json(FILENAME);
+        List <BakerEntity> bakers = Arrays.asList(gson().fromJson(myReader.readFile(), BakerEntity[].class));
         return new ArrayList<>(bakers);
+    }
+
+    private Gson gson() {
+        return new GsonBuilder().setPrettyPrinting().create();
     }
 
     @Override

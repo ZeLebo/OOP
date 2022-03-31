@@ -1,5 +1,7 @@
 package ru.nsu.sartakov.json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ru.nsu.sartakov.collections.DeliveryCollection;
 import ru.nsu.sartakov.entities.DeliveryEntity;
 
@@ -8,11 +10,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class JsonDeliverer extends Json implements DeliveryCollection {
-    private static final String FILENAME = "pizzeriaConfig/delivery.txt";
+    private static final String FILENAME = "pizzeriaConfig/delivery.json";
+
+    public Gson gson() {
+        return new GsonBuilder().setPrettyPrinting().create();
+    }
 
     private List<DeliveryEntity> getDeliverers() {
-        String data = readFile(FILENAME);
-        List<DeliveryEntity> delivers = Arrays.asList(gson().fromJson(data, DeliveryEntity[].class));
+        Json myReader = new Json(FILENAME);
+        List<DeliveryEntity> delivers = Arrays.asList(gson().fromJson(myReader.readFile(), DeliveryEntity[].class));
         return new ArrayList<>(delivers);
     }
 

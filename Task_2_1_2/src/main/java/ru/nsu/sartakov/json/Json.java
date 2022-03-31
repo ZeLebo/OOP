@@ -11,11 +11,59 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Json {
-    public Gson gson() {
-        return new GsonBuilder().setPrettyPrinting().create();
+    private BufferedReader reader;
+    private String fileName;
+    private final File file;
+
+    Json() {
+        file = null;
     }
 
-    public String readFile(String fileName) {
+    Json(String fileName) {
+        this.fileName = fileName;
+        this.file = new File(fileName);
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void open() {
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            reader = new BufferedReader(new FileReader(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String readFile() {
+        String content;
+        try {
+            content = readAllLines(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (content.equals("")) {
+            return null;
+        }
+        return content;
+    }
+
+    private String readAllLines(BufferedReader reader) throws IOException {
+        StringBuilder content = new StringBuilder();
+        String current;
+        while((current = reader.readLine()) != null) {
+            content.append(current).append("\n");
+        }
+        return content.toString();
+    }
+
+
+    public String readFile_(String fileName) {
         try {
             FileReader fr = new FileReader(fileName);
             Scanner scanner = new Scanner(fr);
