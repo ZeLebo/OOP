@@ -15,46 +15,51 @@ public class PizzeriaSettingUp implements Runnable {
     private Pizzeria pizzeria;
 
     public PizzeriaSettingUp() {
-        try {
-            setPizzeria();
-        } catch (IOException e) {
-            System.err.println(e);
-        }
         setPizzeriaJSON();
+        setPizzeria();
     }
 
     private void setPizzeriaJSON() {
         Json json = new Json();
         json.open();
-        json.read();
+        this.pizzeriaJSON = json.read();
         json.close();
     }
 
-    private void setPizzeria() throws IOException {
+    private void setPizzeria() {
         if (pizzeriaJSON == null) {
-            throw new IOException("No way to configure pizzeria");
+            System.err.println("No way to configure pizzeria");
+            return;
         }
         if (pizzeriaJSON.getQueueSize() <= 0) {
-            throw new IOException("Cannot start pizzeria with such parameters");
+            System.err.println("Cannot start pizzeria with such parameters");
+            return;
         }
         if (pizzeriaJSON.getStorageCapacity() <= 0) {
-            throw new IOException("Cannot start pizzeria with such parameters");
+            System.err.println("Cannot start pizzeria with such parameters");
+            return;
         }
         BakerJSON[] bakersJSON = pizzeriaJSON.getBakers();
         if (bakersJSON == null || bakersJSON.length == 0) {
-            throw new IOException("Cannot start pizzeria with such parameters (bakers are not found)");
+            System.err.println("Cannot start pizzeria with such parameters (bakers are not found)");
+            return;
         }
         DelivererJSON[] couriersJSON = pizzeriaJSON.getDeliverers();
         if (couriersJSON == null || couriersJSON.length == 0) {
-            throw new IOException("Cannot start pizzeria with such parameters (deliverer are not found)");
+            System.err.println("Cannot start pizzeria with such parameters (deliverer are not found)");
+            return;
         }
         pizzeria = new Pizzeria(pizzeriaJSON);
+    }
+
+    public void addOrder(Order order) {
+        this.pizzeria.addOrder(order);
     }
 
     @Override
     public void run() {
         if (pizzeria == null) {
-            System.err.println("Cannot start pizzeria");
+            System.err.println("Pizzeria doesn't exist");
             System.exit(-1);
         }
         try {
