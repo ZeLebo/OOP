@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 
 public class Json {
-    private static final String DEFAULT = "config.json";
+    private static final String DEFAULT = "pizzeriaConfig/config.json";
     private final File file;
     private final String fileName;
     private BufferedReader reader;
