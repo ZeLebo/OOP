@@ -1,24 +1,43 @@
 package ru.nsu.sartakov.json;
 
+/**
+ * Class describing Pizzeria in JSON format
+ */
 public class PizzeriaJSON {
     private int queue;
     private int capacity;
-    private BakerJSON[] bakers;
-    private DelivererJSON[] deliverers;
+    private BakerEntity[] bakers;
+    private DelivererEntity[] deliverers;
 
+    /**
+     * Returns the size shared queue from config
+     * @return queue size
+     */
     public int getQueue() {
         return queue;
     }
 
+    /**
+     * Returns the storage size from config
+     * @return capacity of storage
+     */
     public int getCapacity() {
         return capacity;
     }
 
-    public BakerJSON[] getBakers() {
+    /**
+     * Returns the array of bakes configuration from JSON file
+     * @return array of baker's data
+     */
+    public BakerEntity[] getBakers() {
         return bakers;
     }
 
-    public DelivererJSON[] getDeliverers() {
+    /**
+     * Returns the array of deliverers configuration from JSON file
+     * @return array of deliverers data
+     */
+    public DelivererEntity[] getDeliverers() {
         return deliverers;
     }
 }

@@ -2,8 +2,8 @@ package ru.nsu.sartakov.pizzeria;
 
 import ru.nsu.sartakov.employee.Baker;
 import ru.nsu.sartakov.employee.Deliverer;
-import ru.nsu.sartakov.json.BakerJSON;
-import ru.nsu.sartakov.json.DelivererJSON;
+import ru.nsu.sartakov.json.BakerEntity;
+import ru.nsu.sartakov.json.DelivererEntity;
 import ru.nsu.sartakov.json.PizzeriaJSON;
 import ru.nsu.sartakov.order.Order;
 import ru.nsu.sartakov.queue.SharedQueue;
@@ -25,6 +25,10 @@ public class Pizzeria implements Runnable {
     private final SharedQueue<Order> queue;
     private final SharedQueue<Order> storage;
 
+    /**
+     * Constructor for Pizzeria class
+     * @param config - pizzeria configuration
+     */
     public Pizzeria(PizzeriaJSON config) {
         this.isRunning = false;
         this.queue = new SharedQueue<>(config.getQueue());
@@ -33,16 +37,21 @@ public class Pizzeria implements Runnable {
         setDelivers(config.getDeliverers());
     }
 
-    private void setBakers(BakerJSON[] bakers) {
-        Stream<BakerJSON> bakerJSONStream = Arrays.stream(bakers);
+    private void setBakers(BakerEntity[] bakers) {
+        Stream<BakerEntity> bakerJSONStream = Arrays.stream(bakers);
         this.bakers = bakerJSONStream.map(bakerJSON -> new Baker(bakerJSON.getId(), bakerJSON.getCookingTime(), this.queue, this.storage)).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private void setDelivers(DelivererJSON[] delivers) {
-        Stream<DelivererJSON> delivererJSONStream = Arrays.stream(delivers);
+    private void setDelivers(DelivererEntity[] delivers) {
+        Stream<DelivererEntity> delivererJSONStream = Arrays.stream(delivers);
         this.delivers = delivererJSONStream.map(delivererJSON -> new Deliverer(delivererJSON.getId(), delivererJSON.getCapacity(), this.storage)).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    /**
+     * Method allows adding order to the shared queue
+     * Updates the order status
+     * @param order adding to shared queue
+     */
     public void addOrder(Order order) {
         try {
             this.queue.put(order);
@@ -52,10 +61,16 @@ public class Pizzeria implements Runnable {
         }
     }
 
+    /**
+     * Stop the pizzeria
+     */
     public void stop() {
         this.isRunning = false;
     }
 
+    /**
+     * Launches the pizzeria with configuration
+     */
     @Override
     public void run() {
         this.isRunning = true;
