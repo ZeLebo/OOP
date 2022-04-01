@@ -1,21 +1,27 @@
 package ru.nsu.sartakov.pizzeria;
 
-import ru.nsu.sartakov.json.BakerJSON;
-import ru.nsu.sartakov.json.DelivererJSON;
+import ru.nsu.sartakov.json.BakerEntity;
+import ru.nsu.sartakov.json.DelivererEntity;
 import ru.nsu.sartakov.json.Json;
 import ru.nsu.sartakov.json.PizzeriaJSON;
-import ru.nsu.sartakov.order.Order;
 
 public class PizzeriaSettingUp implements Runnable {
     private final int workingDay = 50000;
     private PizzeriaJSON pizzeriaJSON;
     private Pizzeria pizzeria;
 
+    /**
+     * Constructor for PizzeriaSettingUp class
+     */
     public PizzeriaSettingUp() {
         setPizzeriaJSON();
         setPizzeria();
     }
 
+    /**
+     * Return the link to object Pizzeria
+     * @return Pizzeria
+     */
     public Pizzeria getPizzeria() {
         return pizzeria;
     }
@@ -40,19 +46,23 @@ public class PizzeriaSettingUp implements Runnable {
             System.err.println("Cannot start pizzeria with such parameters [no capacity provided]");
             return;
         }
-        BakerJSON[] bakersJSON = pizzeriaJSON.getBakers();
+        BakerEntity[] bakersJSON = pizzeriaJSON.getBakers();
         if (bakersJSON == null || bakersJSON.length == 0) {
-            System.err.println("Cannot start pizzeria with such parameters (bakers are not found)");
+            System.err.println("Cannot start pizzeria with such parameters [bakers are not found]");
             return;
         }
-        DelivererJSON[] couriersJSON = pizzeriaJSON.getDeliverers();
+        DelivererEntity[] couriersJSON = pizzeriaJSON.getDeliverers();
         if (couriersJSON == null || couriersJSON.length == 0) {
-            System.err.println("Cannot start pizzeria with such parameters (deliverer are not found)");
+            System.err.println("Cannot start pizzeria with such parameters [deliverer are not found]");
             return;
         }
         pizzeria = new Pizzeria(pizzeriaJSON);
     }
 
+    /**
+     * Method to start pizzeria
+     * Work for workingTime, then closes
+     */
     @Override
     public void run() {
         if (pizzeria == null) {

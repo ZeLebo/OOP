@@ -53,15 +53,6 @@ public class BakerTest {
     }
 
     @Test
-    public void work() {
-        Baker baker = new Baker(0, 1, queue, storage);
-        for (int i = 0; i < 10; i++) {
-            baker.work();
-        }
-        Assertions.assertTrue(queue.isEmpty());
-    }
-
-    @Test
     public void multipleBakers() throws InterruptedException {
         List<Baker> bakers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {

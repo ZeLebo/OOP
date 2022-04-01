@@ -46,16 +46,6 @@ public class DelivererTest {
     }
 
     @Test
-    public void work() {
-        Deliverer deliverer = new Deliverer(0, 10, storage);
-        while (!storage.isEmpty()) {
-            deliverer.work();
-        }
-        orderList.forEach(order -> Assertions.assertEquals(DELIVERED, order.getStatus()));
-        Assertions.assertTrue(storage.isEmpty());
-    }
-
-    @Test
     public void multipleDelivers() throws InterruptedException {
         List<Deliverer> deliverers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
