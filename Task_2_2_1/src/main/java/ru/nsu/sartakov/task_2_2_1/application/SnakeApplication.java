@@ -63,6 +63,7 @@ public class SnakeApplication extends Application {
             Scene scene = new Scene(root, width * cornersize, height * cornersize);
 
             // control
+            // todo make another class for this
             scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
                 if (key.getCode() == KeyCode.W) {
                     if (direction == Direction.down) return;
