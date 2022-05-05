@@ -11,4 +11,12 @@ public class HelloController {
     protected void onHelloButtonClick() {
         welcomeText.setText("Welcome to JavaFX Application!");
     }
+
+    @FXML
+    private Label snakeGame;
+
+    @FXML
+    protected void onSnakeButtonClick() {
+        snakeGame.setText("Snake Game");
+    }
 }
