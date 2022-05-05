@@ -1,7 +1,5 @@
 package ru.nsu.sartakov.task_2_2_1.application;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
@@ -29,7 +27,7 @@ public class SnakeApplication extends Application {
     static int cornersize = 25;
     static Snake snake = new Snake(width / 2, height / 2, speed);
 
-    static Direction direction = Direction.left;
+    static Direction direction = Direction.LEFT;
     static boolean gameOver = false;
     static Random rand = new Random();
 
@@ -62,23 +60,22 @@ public class SnakeApplication extends Application {
 
             Scene scene = new Scene(root, width * cornersize, height * cornersize);
 
-            // control
-            // todo make another class for this
+            // controls for snake
             scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
                 if (key.getCode() == KeyCode.W) {
-                    if (direction == Direction.down) return;
-                    direction = Direction.up;
+                    if (direction == Direction.DOWN) return;
+                    direction = Direction.UP;
                 }
                 if (key.getCode() == KeyCode.A) {
                     if (direction == Direction.right) return;
-                    direction = Direction.left;
+                    direction = Direction.LEFT;
                 }
                 if (key.getCode() == KeyCode.S) {
-                    if (direction == Direction.up) return;
-                    direction = Direction.down;
+                    if (direction == Direction.UP) return;
+                    direction = Direction.DOWN;
                 }
                 if (key.getCode() == KeyCode.D) {
-                    if (direction == Direction.left) return;
+                    if (direction == Direction.LEFT) return;
                     direction = Direction.right;
                 }
 
@@ -111,19 +108,19 @@ public class SnakeApplication extends Application {
         }
 
         switch (direction) {
-            case up -> {
+            case UP -> {
                 snake.get(0).y--;
                 if (snake.get(0).y < 0) {
                     gameOver = true;
                 }
             }
-            case down -> {
+            case DOWN -> {
                 snake.get(0).y++;
                 if (snake.get(0).y > height) {
                     gameOver = true;
                 }
             }
-            case left -> {
+            case LEFT -> {
                 snake.get(0).x--;
                 if (snake.get(0).x < 0) {
                     gameOver = true;
