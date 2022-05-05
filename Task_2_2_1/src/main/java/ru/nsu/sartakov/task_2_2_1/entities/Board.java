@@ -1,4 +1,4 @@
-package ru.nsu.sartakov.snake.entities;
+package ru.nsu.sartakov.task_2_2_1.entities;
 
 public class Board {
     private int width;

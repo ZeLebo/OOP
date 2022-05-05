@@ -1,12 +1,12 @@
-package ru.nsu.sartakov.snake.entities;
+package ru.nsu.sartakov.task_2_2_1.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Snake implements Runnable {
-    private List<SnakePart> body = new ArrayList<>();
-    private SnakePart head;
-    private SnakePart tail;
+    private List<Cell> body;
+    private Cell head;
+    private Cell tail;
     private int direction;
     private boolean isAlive;
     private int speed;
@@ -19,15 +19,14 @@ public class Snake implements Runnable {
         this.direction = 0;
         this.score = 0;
         this.length = 1;
-        this.head = new SnakePart(x, y);
-        this.tail = new SnakePart(x, y);
+        this.body = new ArrayList<>();
+        this.head = new Cell(x, y);
         this.body.add(head);
-        this.body.add(tail);
     }
 
     public void move() {
         if (isAlive) {
-            SnakePart newHead = new SnakePart(head.getX(), head.getY());
+            Cell newHead = new Cell(head.getX(), head.getY());
             switch (direction) {
                 case 0 -> newHead.setY(head.getY() - 1);
                 case 1 -> newHead.setX(head.getX() + 1);
@@ -40,7 +39,12 @@ public class Snake implements Runnable {
         }
     }
 
+    public Cell get(int x) {
+        return getBody().get(x);
+    }
+
     public void grow() {
+        body.add(new Cell(-1, -1));
         length++;
     }
 
@@ -84,28 +88,16 @@ public class Snake implements Runnable {
         this.length = length;
     }
 
-    public List<SnakePart> getBody() {
+    public List<Cell> getBody() {
         return body;
     }
 
-    public void setBody(List<SnakePart> body) {
-        this.body = body;
-    }
-
-    public SnakePart getHead() {
+    public Cell getHead() {
         return head;
     }
 
-    public void setHead(SnakePart head) {
+    public void setHead(Cell head) {
         this.head = head;
-    }
-
-    public SnakePart getTail() {
-        return tail;
-    }
-
-    public void setTail(SnakePart tail) {
-        this.tail = tail;
     }
 
     @SuppressWarnings("BusyWait")
