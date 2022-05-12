@@ -30,17 +30,21 @@ public class Snake implements Runnable {
         }
     }
 
-    public boolean isBumped(){
+    public boolean isBumpedIntoSnake(){
         if (body.size() < 4) {
             return false;
         }
         for (int i = 1; i < body.size() - 1; i++) {
-            if (body.get(i).x == head.x && body.get(i).y == head.y) {
+            if (head.equals(body.get(i))) {
                 return true;
             }
         }
         return false;
         //return body.contains(head);
+    }
+
+    public boolean isBumpedIntoWall(Board board) {
+        return head.x < 0 || head.x > board.getWidth() || head.y < 0 || head.y > board.getHeight();
     }
 
     public Cell get(int x) {
@@ -64,6 +68,10 @@ public class Snake implements Runnable {
 
     public void speedUp() {
         speed++;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 
     public void setDirection(Direction direction) {

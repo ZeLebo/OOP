@@ -1,6 +1,7 @@
 package ru.nsu.sartakov.task_2_2_1.entities;
 
 public class Cell {
+    // todo add a field of death
     public int x;
     public int y;
 

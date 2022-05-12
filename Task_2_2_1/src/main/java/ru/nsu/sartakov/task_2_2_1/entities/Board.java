@@ -1,15 +1,6 @@
 package ru.nsu.sartakov.task_2_2_1.entities;
 
-public class Board {
-    private int width;
-    private int height;
-    private int cellSize;
-
-    public Board(int width, int height, int cellSize) {
-        this.width = width;
-        this.height = height;
-        this.cellSize = cellSize;
-    }
+public record Board(int width, int height, int cellSize) {
 
     public int getWidth() {
         return width;
