@@ -4,6 +4,8 @@ import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.VPos;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -24,12 +26,9 @@ public class SnakeApplication extends Application {
     public static int foodX = 0;
     public static int foodY = 0;
 
-
-    public static int width = 20;
-    public static int height = 20;
-    public static int cellSize = 25;
-    Board board = new Board(width, height, cellSize);
-    Snake snake = new Snake(width / 2, height / 2, speed);
+    Board board = new Board(20, 20, 25);
+    Snake snake = new Snake(board.getWidth() / 2,
+            board.getHeight() / 2, speed);
 
     static boolean gameOver = false;
     static Random rand = new Random();
@@ -39,7 +38,6 @@ public class SnakeApplication extends Application {
     }
 
     private void keyListener(Scene scene) {
-        // controls for snake
         scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.W || key.getCode() == KeyCode.UP) {
                 if (snake.getDirection() == Direction.DOWN) return;
@@ -60,9 +58,49 @@ public class SnakeApplication extends Application {
         });
     }
 
+    private void colorizePanel(GraphicsContext gc) {
+        // background
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0,
+                board.getWidth() * board.getCellSize(),
+                board.height() * board.getCellSize());
 
+
+        // random food color
+        Color cc = switch (foodColor) {
+            case 0 -> Color.PURPLE;
+            case 1 -> Color.LIGHTBLUE;
+            case 2 -> Color.YELLOW;
+            case 3 -> Color.PINK;
+            case 4 -> Color.ORANGE;
+            default -> Color.WHITE;
+        };
+
+        gc.setFill(cc);
+        gc.fillOval(foodX * board.getCellSize(),
+                foodY * board.getCellSize(),
+                board.getCellSize(),
+                board.getCellSize());
+
+        // snake
+        for (Cell c : snake.getBody()) {
+            gc.setFill(Color.LIGHTGREEN);
+            gc.fillRect(c.x * board.getCellSize(),
+                    c.y * board.getCellSize(),
+                    board.getCellSize() - 1,
+                    board.getCellSize() - 1);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(c.x * board.getCellSize(),
+                    c.y * board.getCellSize(),
+                    board.getCellSize()- 2,
+                    board.cellSize() - 2);
+
+        }
+    }
+
+
+    @Override
     public void start(Stage primaryStage) {
-
         Canvas canvas = new Canvas(board.getWidth() * board.getCellSize(),
                 board.getHeight() * board.getCellSize());
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
@@ -86,29 +124,26 @@ public class SnakeApplication extends Application {
             public void handle(long now) {
                 if (lastTick == 0) {
                     lastTick = now;
-                    tick(graphicsContext);
+                    tick(graphicsContext, primaryStage);
                     return;
                 }
 
-                if (now - lastTick > 1000000000 / speed) {
+                if (now - lastTick > 1000000000 / snake.getSpeed()) {
                     lastTick = now;
-                    tick(graphicsContext);
+                    tick(graphicsContext, primaryStage);
                 }
             }
         }.start();
-
 
         keyListener(scene);
     }
 
     // tick
-    public void tick(GraphicsContext gc) {
-        if (gameOver) {
-            gc.setFill(Color.RED);
-            gc.setFont(new Font("", 50));
-            gc.fillText("GAME OVER", width / 2.0, height / 2.0);
-            return;
-        }
+    public void tick(GraphicsContext gc, Stage primaryStage) {
+
+
+        primaryStage.setTitle("Snake score: " + (snake.getBody().size()));
+
 
         // update snake?
         // todo HUINYA peredelat'
@@ -118,87 +153,46 @@ public class SnakeApplication extends Application {
             snake.get(i).setY(snake.get(i - 1).getY());
         }
 
-        // is collapsed with obstacles?
-        switch (snake.getDirection()) {
-            case UP -> {
-                if (snake.getHead().y <= 0) {
-                    setGameOver();
-                }
-            }
-            case DOWN -> {
-                if (snake.getHead().y >= height) {
-                    setGameOver();
-                }
-            }
-            case LEFT -> {
-                if (snake.getHead().x <= 0) {
-                    setGameOver();
-                }
-            }
-            case RIGHT -> {
-                if (snake.getHead().x >= width) {
-                    setGameOver();
-                }
-            }
-        }
         snake.move();
+
 
         // eat food
         if (foodX == snake.getHead().x && foodY == snake.getHead().y) {
             snake.grow();
+            snake.speedUp();
             newFood();
         }
 
-        // self destroy
-        if (snake.isBumped()) {
+        // is collapsed with obstacles?
+        if (snake.isBumpedIntoWall(board) || snake.isBumpedIntoSnake()) {
             setGameOver();
         }
-
-        // fill
-        // background
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, width * cellSize, height * cellSize);
-
-        // score
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font("", 30));
-        gc.fillText("Score: " + (speed - 6), 10, 30);
-
-        // random food color
-        Color cc = switch (foodColor) {
-            case 0 -> Color.PURPLE;
-            case 1 -> Color.LIGHTBLUE;
-            case 2 -> Color.YELLOW;
-            case 3 -> Color.PINK;
-            case 4 -> Color.ORANGE;
-            default -> Color.WHITE;
-        };
-
-        gc.setFill(cc);
-        gc.fillOval(foodX * cellSize, foodY * cellSize, cellSize, cellSize);
-
-        // snake
-        for (Cell c : snake.getBody()) {
-            gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(c.x * cellSize, c.y * cellSize, cellSize - 1, cellSize - 1);
-            gc.setFill(Color.GREEN);
-            gc.fillRect(c.x * cellSize, c.y * cellSize, cellSize - 2, cellSize - 2);
-
+        if (gameOver) {
+            gc.setFill(Color.RED);
+            gc.setFont(new Font("", 24));
+            gc.setTextAlign(TextAlignment.CENTER);
+            gc.setTextBaseline(VPos.CENTER);
+            gc.fillText("GAME OVER",
+                    board.getWidth() * board.getCellSize() / 2.0,
+                    board.getHeight() * board.getCellSize() / 2.0);
+            return;
         }
+
+
+        colorizePanel(gc);
 
     }
 
     // food
     public void newFood() {
-        foodX = rand.nextInt(width);
-        foodY = rand.nextInt(height);
+        foodX = rand.nextInt(board.getWidth());
+        foodY = rand.nextInt(board.getHeight());
         // if food is on snake
         while (snake.contains(foodX, foodY)) {
-            foodX = rand.nextInt(width);
-            foodY = rand.nextInt(height);
+            foodX = rand.nextInt(board.getWidth());
+            foodY = rand.nextInt(board.getHeight());
         }
         foodColor = rand.nextInt(5);
-        speed++;
     }
 
     public static void main(String[] args) {
