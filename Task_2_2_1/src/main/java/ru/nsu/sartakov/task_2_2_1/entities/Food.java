@@ -1,0 +1,45 @@
+package ru.nsu.sartakov.task_2_2_1.entities;
+
+import ru.nsu.sartakov.task_2_2_1.entities.Snake;
+
+import java.util.Random;
+
+
+
+public class Food {
+    // TODO doesn't work
+    private int height = 0;
+    private int width = 0;
+    private Snake snake;
+
+    public int foodX = 0;
+    public int foodY = 0;
+    public int foodColor = 0;
+
+
+    public Food(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.snake = null;
+    }
+
+    public void newFood(Snake snake) {
+        // update snake state
+        this.snake = snake;
+
+        Random rand = new Random();
+        this.foodX = rand.nextInt(this.width);
+        this.foodY = rand.nextInt(this.height);
+        this.foodColor = rand.nextInt(5);
+
+        while (this.snake.contains(this.foodX, this.foodY)) {
+            this.foodX = rand.nextInt(this.width);
+            this.foodY = rand.nextInt(this.height);
+        }
+        snake.speedUp();
+    }
+
+    public boolean isFoodEaten(Snake snake){
+        return snake.contains(this.foodX, this.foodY);
+    }
+}

@@ -13,153 +13,159 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ru.nsu.sartakov.task_2_2_1.entities.Board;
 import ru.nsu.sartakov.task_2_2_1.entities.Cell;
 import ru.nsu.sartakov.task_2_2_1.entities.Direction;
 import ru.nsu.sartakov.task_2_2_1.entities.Snake;
 
 public class SnakeApplication extends Application {
-    static int speed = 5;
-    static int foodcolor = 0;
-    static int width = 20;
-    static int height = 20;
-    static int foodX = 0;
-    static int foodY = 0;
-    static int cornersize = 25;
-    static Snake snake = new Snake(width / 2, height / 2, speed);
+    public static int speed = 5;
+    public static int foodColor = 0;
+    public static int foodX = 0;
+    public static int foodY = 0;
 
-    static Direction direction = Direction.LEFT;
+
+    public static int width = 20;
+    public static int height = 20;
+    public static int cellSize = 25;
+    Board board = new Board(width, height, cellSize);
+    Snake snake = new Snake(width / 2, height / 2, speed);
+
     static boolean gameOver = false;
     static Random rand = new Random();
 
+    public void setGameOver() {
+        gameOver = true;
+    }
+
+    private void keyListener(Scene scene) {
+        // controls for snake
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+            if (key.getCode() == KeyCode.W || key.getCode() == KeyCode.UP) {
+                if (snake.getDirection() == Direction.DOWN) return;
+                snake.setDirection(Direction.UP);
+            }
+            if (key.getCode() == KeyCode.A || key.getCode() == KeyCode.LEFT) {
+                if (snake.getDirection() == Direction.RIGHT) return;
+                snake.setDirection(Direction.LEFT);
+            }
+            if (key.getCode() == KeyCode.S || key.getCode() == KeyCode.DOWN) {
+                if (snake.getDirection() == Direction.UP) return;
+                snake.setDirection(Direction.DOWN);
+            }
+            if (key.getCode() == KeyCode.D || key.getCode() == KeyCode.RIGHT) {
+                if (snake.getDirection() == Direction.LEFT) return;
+                snake.setDirection(Direction.RIGHT);
+            }
+        });
+    }
+
 
     public void start(Stage primaryStage) {
-        try {
-            newFood();
-            VBox root = new VBox();
-            Canvas c = new Canvas(width * cornersize, height * cornersize);
-            GraphicsContext gc = c.getGraphicsContext2D();
-            root.getChildren().add(c);
 
-            new AnimationTimer() {
-                long lastTick = 0;
+        Canvas canvas = new Canvas(board.getWidth() * board.getCellSize(),
+                board.getHeight() * board.getCellSize());
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        VBox root = new VBox();
+        root.getChildren().add(canvas);
 
-                public void handle(long now) {
-                    if (lastTick == 0) {
-                        lastTick = now;
-                        tick(gc);
-                        return;
-                    }
+        Scene scene = new Scene(root,
+                board.getWidth() * board.getCellSize(),
+                board.getHeight() * board.getCellSize());
 
-                    if (now - lastTick > 1000000000 / speed) {
-                        lastTick = now;
-                        tick(gc);
-                    }
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Snake");
+        primaryStage.show();
+
+
+        newFood();
+
+        new AnimationTimer() {
+            long lastTick = 0;
+
+            public void handle(long now) {
+                if (lastTick == 0) {
+                    lastTick = now;
+                    tick(graphicsContext);
+                    return;
                 }
 
-            }.start();
-
-            Scene scene = new Scene(root, width * cornersize, height * cornersize);
-
-            // controls for snake
-            scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-                if (key.getCode() == KeyCode.W) {
-                    if (direction == Direction.DOWN) return;
-                    direction = Direction.UP;
+                if (now - lastTick > 1000000000 / speed) {
+                    lastTick = now;
+                    tick(graphicsContext);
                 }
-                if (key.getCode() == KeyCode.A) {
-                    if (direction == Direction.right) return;
-                    direction = Direction.LEFT;
-                }
-                if (key.getCode() == KeyCode.S) {
-                    if (direction == Direction.UP) return;
-                    direction = Direction.DOWN;
-                }
-                if (key.getCode() == KeyCode.D) {
-                    if (direction == Direction.LEFT) return;
-                    direction = Direction.right;
-                }
+            }
+        }.start();
 
-            });
 
-            // add start snake parts
-            snake.getBody().add(new Cell(width / 2, height / 2));
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Snake");
-            primaryStage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        keyListener(scene);
     }
 
     // tick
-    public static void tick(GraphicsContext gc) {
+    public void tick(GraphicsContext gc) {
         if (gameOver) {
             gc.setFill(Color.RED);
             gc.setFont(new Font("", 50));
-            gc.fillText("GAME OVER", 100, 250);
+            gc.fillText("GAME OVER", width / 2.0, height / 2.0);
             return;
         }
 
+        // update snake?
+        // todo HUINYA peredelat'
         for (int i = snake.getBody().size() - 1; i >= 1; i--) {
             snake.get(i).x = snake.get(i - 1).x;
             snake.get(i).setX(snake.get(i - 1).getX());
             snake.get(i).setY(snake.get(i - 1).getY());
         }
 
-        switch (direction) {
+        // is collapsed with obstacles?
+        switch (snake.getDirection()) {
             case UP -> {
-                snake.get(0).y--;
-                if (snake.get(0).y < 0) {
-                    gameOver = true;
+                if (snake.getHead().y <= 0) {
+                    setGameOver();
                 }
             }
             case DOWN -> {
-                snake.get(0).y++;
-                if (snake.get(0).y > height) {
-                    gameOver = true;
+                if (snake.getHead().y >= height) {
+                    setGameOver();
                 }
             }
             case LEFT -> {
-                snake.get(0).x--;
-                if (snake.get(0).x < 0) {
-                    gameOver = true;
+                if (snake.getHead().x <= 0) {
+                    setGameOver();
                 }
             }
-            case right -> {
-                snake.get(0).x++;
-                if (snake.get(0).x > width) {
-                    gameOver = true;
+            case RIGHT -> {
+                if (snake.getHead().x >= width) {
+                    setGameOver();
                 }
             }
         }
+        snake.move();
 
         // eat food
-        if (foodX == snake.get(0).x && foodY == snake.get(0).y) {
+        if (foodX == snake.getHead().x && foodY == snake.getHead().y) {
             snake.grow();
             newFood();
         }
 
         // self destroy
-        for (int i = 1; i < snake.getBody().size(); i++) {
-            if (snake.get(0).x == snake.get(i).x && snake.get(0).y == snake.get(i).y) {
-                gameOver = true;
-                break;
-            }
+        if (snake.isBumped()) {
+            setGameOver();
         }
 
         // fill
         // background
         gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, width * cornersize, height * cornersize);
+        gc.fillRect(0, 0, width * cellSize, height * cellSize);
 
         // score
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 30));
         gc.fillText("Score: " + (speed - 6), 10, 30);
 
-        // random foodcolor
-        Color cc = switch (foodcolor) {
+        // random food color
+        Color cc = switch (foodColor) {
             case 0 -> Color.PURPLE;
             case 1 -> Color.LIGHTBLUE;
             case 2 -> Color.YELLOW;
@@ -169,35 +175,30 @@ public class SnakeApplication extends Application {
         };
 
         gc.setFill(cc);
-        gc.fillOval(foodX * cornersize, foodY * cornersize, cornersize, cornersize);
+        gc.fillOval(foodX * cellSize, foodY * cellSize, cellSize, cellSize);
 
         // snake
         for (Cell c : snake.getBody()) {
             gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 1, cornersize - 1);
+            gc.fillRect(c.x * cellSize, c.y * cellSize, cellSize - 1, cellSize - 1);
             gc.setFill(Color.GREEN);
-            gc.fillRect(c.x * cornersize, c.y * cornersize, cornersize - 2, cornersize - 2);
+            gc.fillRect(c.x * cellSize, c.y * cellSize, cellSize - 2, cellSize - 2);
 
         }
 
     }
 
     // food
-    public static void newFood() {
-        start: while (true) {
+    public void newFood() {
+        foodX = rand.nextInt(width);
+        foodY = rand.nextInt(height);
+        // if food is on snake
+        while (snake.contains(foodX, foodY)) {
             foodX = rand.nextInt(width);
             foodY = rand.nextInt(height);
-
-            for (Cell c : snake.getBody()) {
-                if (c.x == foodX && c.y == foodY) {
-                    continue start;
-                }
-            }
-            foodcolor = rand.nextInt(5);
-            speed++;
-            break;
-
         }
+        foodColor = rand.nextInt(5);
+        speed++;
     }
 
     public static void main(String[] args) {
