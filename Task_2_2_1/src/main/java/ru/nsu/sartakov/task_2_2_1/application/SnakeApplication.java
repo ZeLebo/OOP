@@ -175,6 +175,7 @@ public class SnakeApplication extends Application {
             gc.fillText("GAME OVER",
                     board.getWidth() * board.getCellSize() / 2.0,
                     board.getHeight() * board.getCellSize() / 2.0);
+            // todo: restart
             return;
         }
 

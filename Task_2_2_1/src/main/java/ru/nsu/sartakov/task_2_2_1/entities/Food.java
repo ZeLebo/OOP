@@ -24,7 +24,6 @@ public class Food {
     }
 
     public void newFood(Snake snake) {
-        // update snake state
         this.snake = snake;
 
         Random rand = new Random();
@@ -36,7 +35,18 @@ public class Food {
             this.foodX = rand.nextInt(this.width);
             this.foodY = rand.nextInt(this.height);
         }
-        snake.speedUp();
+    }
+
+    public int getFoodX() {
+        return foodX;
+    }
+
+    public int getFoodY() {
+        return foodY;
+    }
+
+    public int getFoodColor() {
+        return foodColor;
     }
 
     public boolean isFoodEaten(Snake snake){
