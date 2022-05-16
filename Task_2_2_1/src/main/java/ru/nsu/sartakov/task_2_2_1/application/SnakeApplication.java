@@ -1,5 +1,7 @@
 package ru.nsu.sartakov.task_2_2_1.application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
@@ -15,23 +17,30 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import ru.nsu.sartakov.task_2_2_1.entities.Board;
-import ru.nsu.sartakov.task_2_2_1.entities.Cell;
-import ru.nsu.sartakov.task_2_2_1.entities.Direction;
-import ru.nsu.sartakov.task_2_2_1.entities.Snake;
+import ru.nsu.sartakov.task_2_2_1.entities.*;
 
 public class SnakeApplication extends Application {
-    public static int speed = 5;
-    public static int foodColor = 0;
-    public static int foodX = 0;
-    public static int foodY = 0;
+    public static int winningScore = 10;
+    public static int snakeSpeed = 5;
+    public static int foodAmount = 10;
+    public static int width = 40;
+    public static int height = 40;
+    public static int cellSize = 25;
 
-    Board board = new Board(20, 20, 25);
+    Board board = new Board(width, height, cellSize);
     Snake snake = new Snake(board.getWidth() / 2,
-            board.getHeight() / 2, speed);
+            board.getHeight() / 2, snakeSpeed);
+
+
+    public ArrayList<Food> foodList = new ArrayList<>(foodAmount);
+
 
     static boolean gameOver = false;
-    static Random rand = new Random();
+    static boolean gameWin = false;
+
+    public void setGameWin() {
+        gameWin = true;
+    }
 
     public void setGameOver() {
         gameOver = true;
@@ -59,7 +68,7 @@ public class SnakeApplication extends Application {
     }
 
     private void colorizePanel(GraphicsContext gc) {
-        // background
+        // draw background
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0,
                 board.getWidth() * board.getCellSize(),
@@ -67,22 +76,25 @@ public class SnakeApplication extends Application {
 
 
         // random food color
-        Color cc = switch (foodColor) {
-            case 0 -> Color.PURPLE;
-            case 1 -> Color.LIGHTBLUE;
-            case 2 -> Color.YELLOW;
-            case 3 -> Color.PINK;
-            case 4 -> Color.ORANGE;
-            default -> Color.WHITE;
-        };
+        for (Food food : foodList) {
+            Color cc = switch (food.foodColor) {
+                case 0 -> Color.PURPLE;
+                case 1 -> Color.LIGHTBLUE;
+                case 2 -> Color.YELLOW;
+                case 3 -> Color.PINK;
+                case 4 -> Color.ORANGE;
+                default -> Color.WHITE;
+            };
 
-        gc.setFill(cc);
-        gc.fillOval(foodX * board.getCellSize(),
-                foodY * board.getCellSize(),
-                board.getCellSize(),
-                board.getCellSize());
+            // draw the food
+            gc.setFill(cc);
+            gc.fillOval(food.foodX * board.getCellSize(),
+                    food.foodY * board.getCellSize(),
+                    board.getCellSize(),
+                    board.getCellSize());
+        }
 
-        // snake
+        // draw the snake
         for (Cell c : snake.getBody()) {
             gc.setFill(Color.LIGHTGREEN);
             gc.fillRect(c.x * board.getCellSize(),
@@ -115,8 +127,12 @@ public class SnakeApplication extends Application {
         primaryStage.setTitle("Snake");
         primaryStage.show();
 
-
-        newFood();
+        for (int i = 0; i < foodAmount; i++) {
+            foodList.add(new Food(board.getWidth(), board.getHeight()));
+        }
+        for (Food food : foodList) {
+            food.newFood(snake);
+        }
 
         new AnimationTimer() {
             long lastTick = 0;
@@ -140,10 +156,12 @@ public class SnakeApplication extends Application {
 
     // tick
     public void tick(GraphicsContext gc, Stage primaryStage) {
-
+        // check if winning score is reached
+        if (snake.getBody().size() >= winningScore) {
+            setGameWin();
+        }
 
         primaryStage.setTitle("Snake score: " + (snake.getBody().size()));
-
 
         // update snake?
         // todo HUINYA peredelat'
@@ -153,19 +171,32 @@ public class SnakeApplication extends Application {
             snake.get(i).setY(snake.get(i - 1).getY());
         }
 
-        snake.move();
-
+        snake.move(); // here's supposed to be the snake moving
 
         // eat food
-        if (foodX == snake.getHead().x && foodY == snake.getHead().y) {
-            snake.grow();
-            snake.speedUp();
-            newFood();
+        for (Food f : foodList) {
+            if (snake.getHead().x == f.foodX && snake.getHead().y == f.foodY) {
+                snake.grow();
+                snake.speedUp();
+                f.newFood(snake);
+            }
         }
 
         // is collapsed with obstacles?
         if (snake.isBumpedIntoWall(board) || snake.isBumpedIntoSnake()) {
             setGameOver();
+        }
+
+        if (gameWin) {
+            gc.setFill(Color.GREEN);
+            gc.setFont(new Font("", 24));
+            gc.setTextAlign(TextAlignment.CENTER);
+            gc.setTextBaseline(VPos.CENTER);
+            gc.fillText("You win!",
+                    board.getWidth() * board.getCellSize() / 2.0,
+                    board.getHeight() * board.getCellSize() / 2.0);
+            // todo: restart
+            return;
         }
         if (gameOver) {
             gc.setFill(Color.RED);
@@ -179,21 +210,8 @@ public class SnakeApplication extends Application {
             return;
         }
 
-
         colorizePanel(gc);
 
-    }
-
-    // food
-    public void newFood() {
-        foodX = rand.nextInt(board.getWidth());
-        foodY = rand.nextInt(board.getHeight());
-        // if food is on snake
-        while (snake.contains(foodX, foodY)) {
-            foodX = rand.nextInt(board.getWidth());
-            foodY = rand.nextInt(board.getHeight());
-        }
-        foodColor = rand.nextInt(5);
     }
 
     public static void main(String[] args) {

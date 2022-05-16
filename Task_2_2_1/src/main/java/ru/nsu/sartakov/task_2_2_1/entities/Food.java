@@ -7,7 +7,6 @@ import java.util.Random;
 
 
 public class Food {
-    // TODO doesn't work
     private int height = 0;
     private int width = 0;
     private Snake snake;
