@@ -14,19 +14,32 @@ public class Snake implements Runnable {
     public Snake(int x, int y, int speed) {
         this.speed = speed;
         this.isAlive = true;
-        this.direction = LEFT;
+        // random direction at start
+        this.direction = Direction.values()[(int) (Math.random() * 4)];
         this.body = new ArrayList<>();
         this.head = new Cell(x, y);
         body.add(head);
         this.grow();
     }
 
+    // move snake by adding new head and deleting tail
     public void move() {
+        Cell newHead = new Cell(head.x, head.y);
         switch (direction) {
-            case UP -> head.y--;
-            case DOWN -> head.y++;
-            case LEFT -> head.x--;
-            case RIGHT -> head.x++;
+            case UP -> newHead.y--;
+            case DOWN -> newHead.y++;
+            case LEFT -> newHead.x--;
+            case RIGHT -> newHead.x++;
+        }
+        setHead(newHead);
+        body.add(0, head);
+        body.remove(body.size() - 1);
+    }
+
+    public void shift() {
+        // cycle for 3
+        for (int i = 0; i < 3; i++) {
+            move();
         }
     }
 
@@ -40,7 +53,6 @@ public class Snake implements Runnable {
             }
         }
         return false;
-        //return body.contains(head);
     }
 
     public boolean isBumpedIntoWall(Board board) {

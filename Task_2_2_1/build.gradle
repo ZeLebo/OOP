@@ -34,10 +34,12 @@ javafx {
 }
 
 dependencies {
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
 }
 
 test {
