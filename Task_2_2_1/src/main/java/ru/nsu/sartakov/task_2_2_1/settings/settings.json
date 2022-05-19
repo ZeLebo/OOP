@@ -1,8 +1,8 @@
 {
-  "winningScore": 40,
+  "winningScore": 10,
  "snakeSpeed": 5,
  "foodAmount": 10,
- "obstacleAmount": 10,
+ "obstacleAmount": 5,
  "width": 40,
    "height": 40,
  "cellSize": 25

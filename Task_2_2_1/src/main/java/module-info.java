@@ -3,6 +3,7 @@ module ru.nsu.sartakov.snake.application {
     requires javafx.fxml;
     requires kotlin.stdlib;
     requires com.google.gson;
+    requires org.junit.jupiter.api;
 
 
     exports ru.nsu.sartakov.task_2_2_1.application;

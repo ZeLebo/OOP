@@ -19,7 +19,6 @@ public class Snake implements Runnable {
         this.body = new ArrayList<>();
         this.head = new Cell(x, y);
         body.add(head);
-        this.grow();
     }
 
     // move snake by adding new head and deleting tail
