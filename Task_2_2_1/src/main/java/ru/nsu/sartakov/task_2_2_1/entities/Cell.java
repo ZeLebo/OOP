@@ -4,7 +4,6 @@ public class Cell {
     // todo add a field of death
     public int x;
     public int y;
-    public boolean isEmpty;
 
     public Cell(int x, int y) {
         this.x = x;

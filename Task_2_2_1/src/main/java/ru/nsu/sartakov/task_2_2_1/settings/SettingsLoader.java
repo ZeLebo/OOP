@@ -32,10 +32,20 @@ public class SettingsLoader {
         this.cellSize = cellSize;
     }
     // write to json file
+
+    /**
+     * Save settings to default file
+     * @throws Exception
+     */
     public void saveSettings() throws Exception {
         saveSettings(DEFAULT_FILENAME);
     }
 
+    /**
+     * Save settings to file
+     * @param file
+     * @throws Exception
+     */
     public void saveSettings(String file) throws Exception {
         // create new JsonWriter
         JsonWriter writer = new JsonWriter(new FileWriter(file));
