@@ -1,5 +1,5 @@
 {
-  "winningScore": 10,
+  "winningScore": 20,
  "snakeSpeed": 5,
  "foodAmount": 10,
  "obstacleAmount": 5,

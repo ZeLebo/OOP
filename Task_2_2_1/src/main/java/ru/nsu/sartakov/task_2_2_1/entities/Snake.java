@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static ru.nsu.sartakov.task_2_2_1.entities.Direction.*;
 
-public class Snake implements Runnable {
+public class Snake {
     private final List<Cell> body;
     private Cell head;
     private Direction direction;
@@ -58,10 +58,6 @@ public class Snake implements Runnable {
         return head.x < 0 || head.x > board.getWidth() || head.y < 0 || head.y > board.getHeight();
     }
 
-    public Cell get(int x) {
-        return getBody().get(x);
-    }
-
     public List<Cell> getBody() {
         return body;
     }
@@ -98,24 +94,7 @@ public class Snake implements Runnable {
         return body.contains(cell);
     }
 
-    public boolean isAlive() {
-        return isAlive;
-    }
-
     public void setHead(Cell head) {
         this.head = head;
-    }
-
-    @SuppressWarnings("BusyWait")
-    @Override
-    public void run() {
-        while (isAlive()) {
-            try {
-                Thread.sleep(speed);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //move();
-        }
     }
 }
