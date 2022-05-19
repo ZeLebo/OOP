@@ -32,11 +32,11 @@ public class SettingsLoader {
         this.cellSize = cellSize;
     }
     // write to json file
-    public void write() throws Exception {
-        write(DEFAULT_FILENAME);
+    public void saveSettings() throws Exception {
+        saveSettings(DEFAULT_FILENAME);
     }
 
-    public void write(String file) throws Exception {
+    public void saveSettings(String file) throws Exception {
         // create new JsonWriter
         JsonWriter writer = new JsonWriter(new FileWriter(file));
         writer.beginObject();
@@ -54,11 +54,11 @@ public class SettingsLoader {
     }
 
     // read from json file
-    public void read() throws Exception {
-        read(DEFAULT_FILENAME);
+    public void loadSettings() throws Exception {
+        loadSettings(DEFAULT_FILENAME);
     }
 
-    public void read(String file) throws Exception {
+    public void loadSettings(String file) throws Exception {
         JsonReader reader = new JsonReader(new FileReader(file));
         reader.beginObject();
         while (reader.hasNext()) {

@@ -23,6 +23,7 @@ public class SnakeApplication extends Application {
     static boolean gameOver = false;
     static boolean gameWin = false;
     static boolean isPaused = false;
+    static boolean settingsMenu = false;
 
     public int winningScore = 10;
     public int score = 0;
@@ -85,15 +86,17 @@ public class SnakeApplication extends Application {
 
     // restart the game
     public void restart() {
-        snake = new Snake(board.getWidth() / 2, board.getHeight() / 2, snakeSpeed);
         foodList.clear();
         obstacleList.clear();
+        loadSettings();
+        snake = new Snake(board.getWidth() / 2, board.getHeight() / 2, snakeSpeed);
         generateFood();
         generateObstacles();
         score = 0;
         isPaused = false;
         gameOver = false;
         gameWin = false;
+        settingsMenu = false;
     }
 
     //todo make settings screen
@@ -139,7 +142,7 @@ public class SnakeApplication extends Application {
             }
         }.start();
 
-        keyListener(scene);
+        keyListener(scene, primaryStage);
     }
 
     // tick
@@ -149,8 +152,11 @@ public class SnakeApplication extends Application {
         if (isPaused) {
             return;
         }
+        if (settingsMenu) {
+            return;
+        }
         // check if winning score is reached
-        if (snake.getBody().size() >= winningScore) {
+        if (snake.getBody().size() > winningScore) {
             setGameWin();
         }
         snake.move(); // here's supposed to be the snake moving
@@ -266,7 +272,7 @@ public class SnakeApplication extends Application {
         }
     }
 
-    private void keyListener(Scene scene) {
+    private void keyListener(Scene scene, Stage stage) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.W || key.getCode() == KeyCode.UP) {
                 if (snake.getDirection() == Direction.DOWN) return;
@@ -293,8 +299,8 @@ public class SnakeApplication extends Application {
             }
             if (key.getCode() == KeyCode.ESCAPE) {
                 saveSettings();
-                SettingsApplication.startSnake();
-                System.exit(0);
+                settingsMenu = true;
+                SettingsApplication.settingsMenu(stage, this);
             }
             if (key.getCode() == KeyCode.R) {
                 //restart
@@ -308,7 +314,7 @@ public class SnakeApplication extends Application {
     private void loadSettings() {
         SettingsLoader settings = new SettingsLoader();
         try {
-            settings.read();
+            settings.loadSettings();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -326,7 +332,7 @@ public class SnakeApplication extends Application {
         SettingsLoader settings = new SettingsLoader(this.winningScore, this.snakeSpeed, this.foodAmount,
                         this.obstacleAmount, this.width, this.height, this.cellSize);
         try {
-            settings.write();
+            settings.saveSettings();
         } catch (Exception e) {
             System.out.println("Error saving settings");
             e.printStackTrace();
