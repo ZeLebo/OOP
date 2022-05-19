@@ -1,8 +1,6 @@
 package ru.nsu.sartakov.task_2_2_1.application;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -17,15 +15,27 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
 import ru.nsu.sartakov.task_2_2_1.entities.*;
+import ru.nsu.sartakov.task_2_2_1.settings.SettingsLoader;
 
 public class SnakeApplication extends Application {
-    public static int winningScore = 10;
-    public static int snakeSpeed = 5;
-    public static int foodAmount = 10;
-    public static int width = 40;
-    public static int height = 40;
-    public static int cellSize = 25;
+    static boolean gameOver = false;
+    static boolean gameWin = false;
+    static boolean isPaused = false;
+
+    public int winningScore = 10;
+    public int score = 0;
+    public int snakeSpeed = 5;
+
+    public int foodAmount = 10;
+    public int obstacleAmount = 5;
+
+    public int width = 50;
+    public int height = 50;
+    public int cellSize = 25;
+
+    public SnakeApplication() {}
 
     Board board = new Board(width, height, cellSize);
     Snake snake = new Snake(board.getWidth() / 2,
@@ -33,17 +43,227 @@ public class SnakeApplication extends Application {
 
 
     public ArrayList<Food> foodList = new ArrayList<>(foodAmount);
+    public ArrayList<Obstacle> obstacleList = new ArrayList<>(obstacleAmount);
 
-
-    static boolean gameOver = false;
-    static boolean gameWin = false;
 
     public void setGameWin() {
         gameWin = true;
     }
 
-    public void setGameOver() {
+    public void gameOver() {
         gameOver = true;
+    }
+
+    public void changePauseState() {
+        isPaused = !isPaused;
+    }
+
+    // generate obstacles
+    private void generateObstacles() {
+        for (int i = 0; i < obstacleAmount; i++) {
+            obstacleList.add(new Obstacle(board.height(), board.width()));
+        }
+
+        for (Obstacle obstacle : obstacleList) {
+            obstacle.newObstacle();
+        }
+    }
+
+    // generate food
+    private void generateFood() {
+        for (int i = 0; i < foodAmount; i++) {
+            foodList.add(new Food(board.getWidth(), board.getHeight()));
+        }
+        // generate food on the board with no collisions with obstacles
+        for (Food food : foodList) {
+            food.newFood(snake);
+            while (food.isCollision(obstacleList)) {
+                food.newFood(snake);
+            }
+        }
+    }
+
+    // restart the game
+    public void restart() {
+        snake = new Snake(board.getWidth() / 2, board.getHeight() / 2, snakeSpeed);
+        foodList.clear();
+        obstacleList.clear();
+        generateFood();
+        generateObstacles();
+        score = 0;
+        isPaused = false;
+        gameOver = false;
+        gameWin = false;
+    }
+
+    //todo make settings screen
+    @Override
+    public void start(Stage primaryStage) {
+        // load settings
+        loadSettings();
+
+        Canvas canvas = new Canvas(board.getWidth() * board.getCellSize(),
+                board.getHeight() * board.getCellSize());
+        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        VBox root = new VBox();
+        root.getChildren().add(canvas);
+
+        Scene scene = new Scene(root,
+                board.getWidth() * board.getCellSize(),
+                board.getHeight() * board.getCellSize());
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Snake");
+        primaryStage.show();
+
+        // make obstacles
+        generateObstacles();
+
+        // make food
+        generateFood();
+
+        new AnimationTimer() {
+            long lastTick = 0;
+
+            public void handle(long now) {
+                if (lastTick == 0) {
+                    lastTick = now;
+                    frame(graphicsContext, primaryStage);
+                    return;
+                }
+
+                if (now - lastTick > 1000000000 / snake.getSpeed()) {
+                    lastTick = now;
+                    frame(graphicsContext, primaryStage);
+                }
+            }
+        }.start();
+
+        keyListener(scene);
+    }
+
+    // tick
+    public void frame(GraphicsContext gc, Stage primaryStage) {
+        primaryStage.setTitle("Snake score: " + score);
+        // check if the game is paused
+        if (isPaused) {
+            return;
+        }
+        // check if winning score is reached
+        if (snake.getBody().size() >= winningScore) {
+            setGameWin();
+        }
+        snake.move(); // here's supposed to be the snake moving
+
+        // eating food
+        for (Food f : foodList) {
+            if (snake.getHead().x == f.foodX && snake.getHead().y == f.foodY) {
+                snake.grow();
+                snake.speedUp();
+                score++;
+                // check if possible to place a new food
+                if (width * height - snake.getBody().size() - foodList.size() - obstacleList.size() <= 0) {
+                    setGameWin();
+                } else {
+                    f.newFood(snake);
+                }
+            }
+        }
+
+        // check if the game is over
+        checkGameOver();
+
+        if (gameWin) {
+            showScene(gc, Color.GREEN, "You win!");
+            return;
+        }
+        if (gameOver) {
+            showScene(gc, Color.RED, "GAME OVER\nPress R to restart");
+            return;
+        }
+
+        colorizePanel(gc);
+
+    }
+
+    // check if the game is over
+    private void checkGameOver() {
+        // is collapsed with walls or itself
+        if (snake.isBumpedIntoWall(board) || snake.isBumpedIntoSnake()) {
+            gameOver();
+        }
+
+        // is collided with obstacles
+        for (Obstacle obstacle : obstacleList) {
+            if (snake.getHead().x == obstacle.getX() && snake.getHead().y == obstacle.getY()) {
+                gameOver();
+            }
+        }
+    }
+
+    private void showScene(GraphicsContext gc, Color color, String s) {
+        gc.setFill(color);
+        gc.setFont(new Font("", 24));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.fillText(s,
+                board.getWidth() * board.getCellSize() / 2.0,
+                board.getHeight() * board.getCellSize() / 2.0);
+    }
+
+    private void colorizePanel(GraphicsContext gc) {
+        // draw background
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0,
+                board.getWidth() * board.getCellSize(),
+                board.height() * board.getCellSize());
+
+        // draw borders of the board as line of 1 pixel
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(1);
+        gc.strokeRect(0, 0,
+                board.getWidth() * board.getCellSize(),
+                board.height() * board.getCellSize());
+
+        // draw grid
+        gc.setStroke(Color.DARKGRAY);
+        for (int i = 0; i < board.getWidth(); i++) {
+            gc.strokeLine(i * board.getCellSize(), 0,
+                    i * board.getCellSize(),
+                    board.height() * board.getCellSize());
+        }
+        for (int i = 0; i < board.getHeight(); i++) {
+            gc.strokeLine(0, i * board.getCellSize(),
+                    board.getWidth() * board.getCellSize(),
+                    i * board.getCellSize());
+        }
+
+        // draw obstacles
+        for (Obstacle obstacle : obstacleList) {
+            gc.setFill(obstacle.color);
+            gc.fillRect(obstacle.getX() * board.getCellSize(),
+                    obstacle.getY() * board.getCellSize(),
+                    board.getCellSize(), board.getCellSize());
+        }
+
+        // draw the food
+        for (Food food : foodList) {
+            gc.setFill(food.getFoodColor());
+            gc.fillOval(food.foodX * board.getCellSize(),
+                    food.foodY * board.getCellSize(),
+                    board.getCellSize(), board.getCellSize());
+        }
+
+        // draw the snake
+        for (Cell c : snake.getBody()) {
+            gc.setFill(Color.LIGHTGREEN);
+            gc.fillRect(c.x * board.getCellSize(),  c.y * board.getCellSize(),
+                    board.getCellSize() - 1, board.getCellSize() - 1);
+            gc.setFill(Color.GREEN);
+            gc.fillRect(c.x * board.getCellSize(), c.y * board.getCellSize(),
+                    board.getCellSize()- 2,  board.cellSize() - 2);
+
+        }
     }
 
     private void keyListener(Scene scene) {
@@ -64,154 +284,53 @@ public class SnakeApplication extends Application {
                 if (snake.getDirection() == Direction.LEFT) return;
                 snake.setDirection(Direction.RIGHT);
             }
+            // if shift is pressed, the snake will grow
+            if (key.getCode() == KeyCode.SHIFT) {
+                snake.shift();
+            }
+            if (key.getCode() == KeyCode.SPACE) {
+                changePauseState();
+            }
+            if (key.getCode() == KeyCode.ESCAPE) {
+                saveSettings();
+                SettingsApplication.startSnake();
+                System.exit(0);
+            }
+            if (key.getCode() == KeyCode.R) {
+                //restart
+                restart();
+            }
         });
     }
 
-    private void colorizePanel(GraphicsContext gc) {
-        // draw background
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0,
-                board.getWidth() * board.getCellSize(),
-                board.height() * board.getCellSize());
 
-
-        // random food color
-        for (Food food : foodList) {
-            Color cc = switch (food.foodColor) {
-                case 0 -> Color.PURPLE;
-                case 1 -> Color.LIGHTBLUE;
-                case 2 -> Color.YELLOW;
-                case 3 -> Color.PINK;
-                case 4 -> Color.ORANGE;
-                default -> Color.WHITE;
-            };
-
-            // draw the food
-            gc.setFill(cc);
-            gc.fillOval(food.foodX * board.getCellSize(),
-                    food.foodY * board.getCellSize(),
-                    board.getCellSize(),
-                    board.getCellSize());
+    // load class settings from json file
+    private void loadSettings() {
+        SettingsLoader settings = new SettingsLoader();
+        try {
+            settings.read();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // draw the snake
-        for (Cell c : snake.getBody()) {
-            gc.setFill(Color.LIGHTGREEN);
-            gc.fillRect(c.x * board.getCellSize(),
-                    c.y * board.getCellSize(),
-                    board.getCellSize() - 1,
-                    board.getCellSize() - 1);
-            gc.setFill(Color.GREEN);
-            gc.fillRect(c.x * board.getCellSize(),
-                    c.y * board.getCellSize(),
-                    board.getCellSize()- 2,
-                    board.cellSize() - 2);
-
-        }
+        this.winningScore = settings.winningScore;
+        this.snakeSpeed = settings.snakeSpeed;
+        this.foodAmount = settings.foodAmount;
+        this.obstacleAmount = settings.obstacleAmount;
+        this.width = settings.width;
+        this.height = settings.height;
+        this.cellSize = settings.cellSize;
     }
 
-
-    @Override
-    public void start(Stage primaryStage) {
-        Canvas canvas = new Canvas(board.getWidth() * board.getCellSize(),
-                board.getHeight() * board.getCellSize());
-        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        VBox root = new VBox();
-        root.getChildren().add(canvas);
-
-        Scene scene = new Scene(root,
-                board.getWidth() * board.getCellSize(),
-                board.getHeight() * board.getCellSize());
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Snake");
-        primaryStage.show();
-
-        for (int i = 0; i < foodAmount; i++) {
-            foodList.add(new Food(board.getWidth(), board.getHeight()));
+    // save class settings to json file
+    private void saveSettings() {
+        SettingsLoader settings = new SettingsLoader(this.winningScore, this.snakeSpeed, this.foodAmount,
+                        this.obstacleAmount, this.width, this.height, this.cellSize);
+        try {
+            settings.write();
+        } catch (Exception e) {
+            System.out.println("Error saving settings");
+            e.printStackTrace();
         }
-        for (Food food : foodList) {
-            food.newFood(snake);
-        }
-
-        new AnimationTimer() {
-            long lastTick = 0;
-
-            public void handle(long now) {
-                if (lastTick == 0) {
-                    lastTick = now;
-                    tick(graphicsContext, primaryStage);
-                    return;
-                }
-
-                if (now - lastTick > 1000000000 / snake.getSpeed()) {
-                    lastTick = now;
-                    tick(graphicsContext, primaryStage);
-                }
-            }
-        }.start();
-
-        keyListener(scene);
-    }
-
-    // tick
-    public void tick(GraphicsContext gc, Stage primaryStage) {
-        // check if winning score is reached
-        if (snake.getBody().size() >= winningScore) {
-            setGameWin();
-        }
-
-        primaryStage.setTitle("Snake score: " + (snake.getBody().size()));
-
-        // update snake?
-        // todo HUINYA peredelat'
-        for (int i = snake.getBody().size() - 1; i >= 1; i--) {
-            snake.get(i).x = snake.get(i - 1).x;
-            snake.get(i).setX(snake.get(i - 1).getX());
-            snake.get(i).setY(snake.get(i - 1).getY());
-        }
-
-        snake.move(); // here's supposed to be the snake moving
-
-        // eat food
-        for (Food f : foodList) {
-            if (snake.getHead().x == f.foodX && snake.getHead().y == f.foodY) {
-                snake.grow();
-                snake.speedUp();
-                f.newFood(snake);
-            }
-        }
-
-        // is collapsed with obstacles?
-        if (snake.isBumpedIntoWall(board) || snake.isBumpedIntoSnake()) {
-            setGameOver();
-        }
-
-        if (gameWin) {
-            gc.setFill(Color.GREEN);
-            gc.setFont(new Font("", 24));
-            gc.setTextAlign(TextAlignment.CENTER);
-            gc.setTextBaseline(VPos.CENTER);
-            gc.fillText("You win!",
-                    board.getWidth() * board.getCellSize() / 2.0,
-                    board.getHeight() * board.getCellSize() / 2.0);
-            // todo: restart
-            return;
-        }
-        if (gameOver) {
-            gc.setFill(Color.RED);
-            gc.setFont(new Font("", 24));
-            gc.setTextAlign(TextAlignment.CENTER);
-            gc.setTextBaseline(VPos.CENTER);
-            gc.fillText("GAME OVER",
-                    board.getWidth() * board.getCellSize() / 2.0,
-                    board.getHeight() * board.getCellSize() / 2.0);
-            // todo: restart
-            return;
-        }
-
-        colorizePanel(gc);
-
     }
 
     public static void main(String[] args) {
