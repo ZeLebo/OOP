@@ -51,10 +51,15 @@ class DSL {
             }
         }
     }
+
+    val tasks = taskList {
+        task()
+        task()
+    }
 }
 
 fun main() {
     val dsl = DSL()
     println(dsl.student)
-    //println(dsl.tasks)
+    println(dsl.tasks)
 }

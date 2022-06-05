@@ -21,6 +21,11 @@ class TaskBuilder {
 
     var score = -1
 
+    fun task() {
+        val task = Task(taskId, score)
+        tasks.add(task)
+    }
+
     fun buildTask(): Task {
         if (taskId.isEmpty()) {
             throw IllegalArgumentException("Task id is empty")
@@ -36,4 +41,5 @@ class TaskBuilder {
     fun build(): TaskList {
         return TaskList(tasks)
     }
+
 }
