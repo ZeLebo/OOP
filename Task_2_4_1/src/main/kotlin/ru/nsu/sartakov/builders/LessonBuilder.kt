@@ -7,16 +7,16 @@ import java.time.format.DateTimeFormatter
 class LessonBuilder {
     private val dateFormatter : DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     private var lessonDate: LocalDate = LocalDate.parse("01.01.2019", dateFormatter)
+    var attendance: Boolean = false
 
     var date: String = ""
         set(value) {
-            if (value.isEmpty()) {
+            if (value.isNotEmpty()) {
                 lessonDate = LocalDate.parse(value, dateFormatter)
             }
             lessonDate = LocalDate.parse("01.01.1999", dateFormatter)
         }
 
-    var attendance: Boolean = false
     fun build(): Lesson {
         if (lessonDate.isBefore(LocalDate.parse("01.01.1990", dateFormatter))) {
             throw IllegalArgumentException("Date is empty")

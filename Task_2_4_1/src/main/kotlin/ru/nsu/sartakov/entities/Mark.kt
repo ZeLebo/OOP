@@ -4,5 +4,5 @@ import java.time.LocalDate
 
 data class Mark (
     var value: Int,
-    var date: LocalDate
+    var date: LocalDate,
 )

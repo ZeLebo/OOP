@@ -10,36 +10,25 @@ class StudentBuilder() {
     var nickName = ""
     var firstName = ""
     var lastName = ""
-
     var url = ""
 
-
     lateinit var group: Group
-    fun group(init: GroupBuilder.() -> Unit) {
-        group = GroupBuilder().apply(init).build()
-    }
-
     var givenTasks = mutableListOf<Task>()
-    fun tasks(block: Tasks.() -> Unit) {
-        givenTasks.addAll(Tasks().apply(block))
-    }
-
     var lessons = mutableListOf<Lesson>()
-    fun lessons(block: Lessons.() -> Unit) {
-        lessons.addAll(Lessons().apply(block))
-    }
-
     var marks = mutableListOf<Mark>()
-    fun marks(block: Marks.() -> Unit) {
+
+    fun group(init: GroupBuilder.() -> Unit) =
+        GroupBuilder().apply(init).also { group = it.build() }
+
+    fun tasks(block: Tasks.() -> Unit) =
+        givenTasks.addAll(Tasks().apply(block))
+
+    fun lessons(block: Lessons.() -> Unit) =
+        lessons.addAll(Lessons().apply(block))
+
+    fun marks(block: Marks.() -> Unit) =
         marks.addAll(Marks().apply(block))
-    }
 
-    fun build(): Student {
-        return Student(nickName, firstName, lastName, url, group, givenTasks, lessons, marks)
-    }
-
-
-    fun init() {
-        TODO("not implemented");
-    }
+    fun build(): Student =
+        Student(nickName, firstName, lastName, url, group, givenTasks, lessons, marks)
 }
