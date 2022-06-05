@@ -1,5 +1,5 @@
 package ru.nsu.sartakov.entities
 
-data class Group(
+data class Group (
     var name: Int,
 )
