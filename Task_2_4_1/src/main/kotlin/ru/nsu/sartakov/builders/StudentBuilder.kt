@@ -1,6 +1,9 @@
 package ru.nsu.sartakov.builders
 
+import ru.nsu.sartakov.complex.Lessons
+import ru.nsu.sartakov.complex.Marks
 import ru.nsu.sartakov.complex.Student
+import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.*
 
 class StudentBuilder() {
@@ -10,25 +13,26 @@ class StudentBuilder() {
 
     var url = ""
 
+
     lateinit var group: Group
+    fun group(init: GroupBuilder.() -> Unit) {
+        group = GroupBuilder().apply(init).build()
+    }
+
     var givenTasks = mutableListOf<Task>()
+    fun tasks(block: Tasks.() -> Unit) {
+        givenTasks.addAll(Tasks().apply(block))
+    }
+
     var lessons = mutableListOf<Lesson>()
+    fun lessons(block: Lessons.() -> Unit) {
+        lessons.addAll(Lessons().apply(block))
+    }
+
     var marks = mutableListOf<Mark>()
-
-    // init the vars
-
-    fun marks(init: MutableList<Mark>.() -> Unit) {
-        marks = mutableListOf<Mark>().apply(init)
+    fun marks(block: Marks.() -> Unit) {
+        marks.addAll(Marks().apply(block))
     }
-
-    fun lessons(init: MutableList<Lesson>.() -> Unit) {
-        lessons = mutableListOf<Lesson>().apply(init)
-    }
-
-    fun givenTasks(init: MutableList<Task>.() -> Unit) {
-        givenTasks = mutableListOf<Task>().apply(init)
-    }
-
 
     fun build(): Student {
         return Student(nickName, firstName, lastName, url, group, givenTasks, lessons, marks)

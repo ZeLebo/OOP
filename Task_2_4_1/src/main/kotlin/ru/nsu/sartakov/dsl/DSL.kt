@@ -1,13 +1,44 @@
 package ru.nsu.sartakov.dsl
 
 import ru.nsu.sartakov.builders.StudentBuilder
+import ru.nsu.sartakov.builders.TaskBuilder
 
 class DSL {
-    fun student(nickName: String, init: StudentBuilder.() -> Unit) {
-        StudentBuilder(nickName).init()
+    fun student(block: StudentBuilder.() -> Unit) {
+        StudentBuilder().apply(block).build()
+    }
+
+    fun taskList(block: TaskBuilder.() -> Unit) {
+        TaskBuilder().apply(block).build()
+    }
+
+    val student = student {
+        nickName = "ZeLebo"
+        firstName = "Alexander"
+        lastName = "Sartakov"
+        url = "https://github.com/ZeLebo"
+
+        group {
+            number = 20214
+        }
+
+        tasks {
+            task {
+                taskId = "Task_1_1_1"
+                deadLine = "01.01.2022"
+                score = 5
+            }
+            task {
+                taskId = "Task_1_1_2"
+                score = 5
+                deadLine = "01.01.2022"
+            }
+        }
     }
 }
 
 fun main() {
     val dsl = DSL()
+    println(dsl.student)
+    //println(dsl.tasks)
 }

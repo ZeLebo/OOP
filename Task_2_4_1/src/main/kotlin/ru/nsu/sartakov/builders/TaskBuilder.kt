@@ -2,6 +2,8 @@ package ru.nsu.sartakov.builders
 
 import ru.nsu.sartakov.complex.TaskList
 import ru.nsu.sartakov.entities.Task
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class TaskBuilder {
     var tasks = mutableListOf<Task>()
@@ -11,6 +13,12 @@ class TaskBuilder {
     }
 
     var taskId = ""
+
+    private val dateFormatter : DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    var deadLine: String = (LocalDate.parse("01.01.2000", dateFormatter)).toString()
+
+    var date: String = ""
+
     var score = -1
 
     fun buildTask(): Task {

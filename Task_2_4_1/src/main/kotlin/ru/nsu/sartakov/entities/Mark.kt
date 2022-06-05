@@ -1,8 +1,8 @@
 package ru.nsu.sartakov.entities
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 data class Mark (
     var value: Int,
-    var date: LocalDateTime
+    var date: LocalDate
 )
