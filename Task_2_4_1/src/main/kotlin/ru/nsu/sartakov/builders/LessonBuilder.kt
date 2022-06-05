@@ -13,12 +13,13 @@ class LessonBuilder {
         set(value) {
             if (value.isNotEmpty()) {
                 lessonDate = LocalDate.parse(value, dateFormatter)
+            } else {
+                lessonDate = LocalDate.parse("01.01.2019", dateFormatter)
             }
-            lessonDate = LocalDate.parse("01.01.1999", dateFormatter)
         }
 
     fun build(): Lesson {
-        if (lessonDate.isBefore(LocalDate.parse("01.01.1990", dateFormatter))) {
+        if (lessonDate.isEqual(LocalDate.parse("01.01.2019", dateFormatter))) {
             throw IllegalArgumentException("Date is empty")
         }
         return Lesson(lessonDate, attendance)
