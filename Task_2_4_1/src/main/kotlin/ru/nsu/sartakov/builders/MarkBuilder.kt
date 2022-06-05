@@ -18,9 +18,6 @@ class MarkBuilder {
         if (value == 0) {
             throw IllegalArgumentException("Value cannot be 0")
         }
-        if (date.isEmpty()) {
-            throw IllegalArgumentException("Date cannot be empty")
-        }
         if (markDate == LocalDate.parse("01.01.2019", dateTimeFormatter)) {
             throw IllegalArgumentException("Need to set date after 01.01.2019\nJust I want that")
         }

@@ -34,6 +34,22 @@ class DSL {
                 deadLine = "01.01.2022"
             }
         }
+        lessons {
+            lesson {
+                date = "01.01.2022"
+                attendance = true
+            }
+        }
+        marks {
+            mark {
+                value = 5
+                date = "01.01.2022"
+            }
+            mark {
+                value = 4
+                date = "01.01.2022"
+            }
+        }
     }
 }
 
