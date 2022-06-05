@@ -1,4 +1,4 @@
-package ru.nsu.sartakov.data
+package ru.nsu.sartakov.entities
 
 import java.time.LocalDateTime
 
