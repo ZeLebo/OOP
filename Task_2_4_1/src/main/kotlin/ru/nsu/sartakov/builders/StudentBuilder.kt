@@ -11,14 +11,11 @@ class StudentBuilder() {
     var firstName = ""
     var lastName = ""
     var url = ""
+    var group : Int = 0
 
-    lateinit var group: Group
     var givenTasks = mutableListOf<Task>()
     var lessons = mutableListOf<Lesson>()
     var marks = mutableListOf<Mark>()
-
-    fun group(init: GroupBuilder.() -> Unit) =
-        GroupBuilder().apply(init).also { group = it.build() }
 
     fun tasks(block: Tasks.() -> Unit) =
         givenTasks.addAll(Tasks().apply(block))

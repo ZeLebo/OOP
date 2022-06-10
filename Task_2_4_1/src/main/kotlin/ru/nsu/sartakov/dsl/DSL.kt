@@ -2,6 +2,7 @@ package ru.nsu.sartakov.dsl
 
 import ru.nsu.sartakov.builders.StudentBuilder
 import ru.nsu.sartakov.builders.TaskBuilder
+import ru.nsu.sartakov.entities.Group
 
 class DSL {
     fun student(block: StudentBuilder.() -> Unit) {
@@ -17,10 +18,7 @@ class DSL {
         firstName = "Alexander"
         lastName = "Sartakov"
         url = "https://github.com/ZeLebo"
-
-        group {
-            number = 20214
-        }
+        group = 20214
 
         tasks {
             task {
@@ -64,10 +62,40 @@ class DSL {
             deadLine = "01.01.2022"
         }
     }
+    fun test() {
+        var group = Group(20214)
+        val studentTest = StudentBuilder().apply {
+            nickName = "ZeLebo"
+            firstName = "Alexander"
+            lastName = "Sartakov"
+            url = ""
+        }.build()
+
+        group.addStudent(studentTest)
+        group.addStudent(studentTest)
+        group.addStudent(studentTest)
+
+        for (student in group.students) {
+            println(student.nickName)
+        }
+    }
 }
 
-fun main() {
-    val dsl = DSL()
-    println(dsl.student)
-    println(dsl.tasks)
+fun main(args: Array<String>) {
+    // check for command line args
+    if (args.isEmpty()) {
+        println("No command line args")
+    } else {
+        // if arg is "test" run test
+        if (args[0] == "test") {
+            DSL().test()
+            return
+        } else if (args[0] == "build") {
+            println("Building")
+            return
+        } else {
+            println("Unknown command line arg")
+            return
+        }
+    }
 }

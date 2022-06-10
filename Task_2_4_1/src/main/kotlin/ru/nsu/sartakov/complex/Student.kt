@@ -1,6 +1,5 @@
 package ru.nsu.sartakov.complex
 
-import ru.nsu.sartakov.entities.Group
 import ru.nsu.sartakov.entities.Lesson
 import ru.nsu.sartakov.entities.Mark
 import ru.nsu.sartakov.entities.Task
@@ -10,10 +9,12 @@ data class Student(
     var firstName: String,
     var lastName: String,
     var url: String,
-
-    // complex things
-    var group: Group,
+    var group: Int,
     var givenTasks: List<Task>,
     val lessons: List<Lesson>,
     val marks: List<Mark>,
-)
+) {
+    fun getFullName(): String {
+        return "$firstName $lastName"
+    }
+}
