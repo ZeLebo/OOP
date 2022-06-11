@@ -17,7 +17,6 @@ class GitRunner {
         val result = Runtime.getRuntime().exec("cd repos/$nick/$dir && gradle test")
         result.waitFor()
 
-
         if (result.exitValue() != 0) {
             println("Test failed for $nick/$repo/$dir")
         } else {
