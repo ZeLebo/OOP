@@ -9,10 +9,6 @@ class DSL {
         StudentBuilder().apply(block).build()
     }
 
-    fun taskList(block: TaskBuilder.() -> Unit) {
-        TaskBuilder().apply(block).build()
-    }
-
     val student = student {
         nickName = "ZeLebo"
         firstName = "Alexander"
@@ -50,6 +46,10 @@ class DSL {
         }
     }
 
+    fun taskList(block: TaskBuilder.() -> Unit) {
+        TaskBuilder().apply(block).build()
+    }
+
     val tasks = taskList {
         task {
             taskId = "Task_1_1_1"
@@ -63,7 +63,7 @@ class DSL {
         }
     }
     fun test() {
-        var group = Group(20214)
+        val group = Group(20214)
         val studentTest = StudentBuilder().apply {
             nickName = "ZeLebo"
             firstName = "Alexander"
@@ -78,6 +78,8 @@ class DSL {
         for (student in group.students) {
             println(student.nickName)
         }
+
+
     }
 }
 
