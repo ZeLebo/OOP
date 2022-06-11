@@ -13,19 +13,23 @@ class StudentBuilder() {
     var url = ""
     var group : Int = 0
 
-    var givenTasks = mutableListOf<Task>()
-    var lessons = mutableListOf<Lesson>()
+
+
+    var givenTasks = mutableListOf<String>()
     var marks = mutableListOf<Mark>()
 
-    fun tasks(block: Tasks.() -> Unit) =
-        givenTasks.addAll(Tasks().apply(block))
+    fun tasks(givenTasks: List<String>) {
+        this.givenTasks.addAll(givenTasks)
+    }
 
-    fun lessons(block: Lessons.() -> Unit) =
-        lessons.addAll(Lessons().apply(block))
+    // fun taking many args of string
+    fun givenTasks(vararg givenTasks: String) {
+        this.givenTasks.addAll(givenTasks)
+    }
 
     fun marks(block: Marks.() -> Unit) =
         marks.addAll(Marks().apply(block))
 
     fun build(): Student =
-        Student(nickName, firstName, lastName, url, group, givenTasks, lessons, marks)
+        Student(nickName, firstName, lastName, url, group, givenTasks, marks)
 }

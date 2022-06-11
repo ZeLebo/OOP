@@ -1,0 +1,10 @@
+number = 20214
+students {
+        student {
+            nickName = "ZeLebo"
+            firstName = "Alexander"
+            lastName = "Sartakov"
+            url = "helpme.com"
+        }
+    }
+}

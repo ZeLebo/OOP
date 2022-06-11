@@ -7,6 +7,8 @@ import ru.nsu.sartakov.entities.Student
 import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.Group
 
+
+// TODO: conf data from files, not hard code
 class DSL {
     private fun student(block: StudentBuilder.() -> Unit): Student {
         return StudentBuilder().apply(block).build()
@@ -17,30 +19,9 @@ class DSL {
         firstName = "Alexander"
         lastName = "Sartakov"
         url = "https://github.com/ZeLebo/OOP"
-        group = 20214
 
-        tasks {
-            task {
-                taskId = "Task_1_1_1"
-                deadLine = "01.01.2022"
-                score = 5
-            }
-            task {
-                taskId = "Task_1_1_2"
-                score = 5
-                deadLine = "01.01.2022"
-            }
-        }
-        lessons {
-            lesson {
-                date = "01.01.2022"
-                attendance = true
-            }
-            lesson {
-                date = "01.01.2023"
-                attendance = false
-            }
-        }
+        givenTasks("Task_1_1_1", "Task_1_1_2")
+
         marks {
             mark {
                 value = 5
