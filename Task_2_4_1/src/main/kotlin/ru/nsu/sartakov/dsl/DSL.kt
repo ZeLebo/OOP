@@ -1,6 +1,7 @@
 package ru.nsu.sartakov.dsl
 
 import ru.nsu.sartakov.builders.StudentBuilder
+import ru.nsu.sartakov.complex.Lessons
 import ru.nsu.sartakov.complex.Student
 import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.Group
@@ -68,6 +69,21 @@ class DSL {
         }
     }
 
+    private fun lessons(block: Lessons.() -> Unit): Lessons {
+        return Lessons().apply(block)
+    }
+
+    val lessons = lessons{
+        lesson {
+            date = "01.01.2022"
+            attendance = true
+        }
+        lesson {
+            date = "01.01.2023"
+            attendance = false
+        }
+    }
+
     fun test() {
         val group = Group(20214)
         val studentTest = StudentBuilder().apply {
@@ -87,6 +103,11 @@ class DSL {
         println("Testing taskList")
         for (task in tasks) {
             println(task.toString())
+        }
+
+        println("Testing lessonList")
+        for (lesson in lessons) {
+            println(lesson.toString())
         }
     }
 }
