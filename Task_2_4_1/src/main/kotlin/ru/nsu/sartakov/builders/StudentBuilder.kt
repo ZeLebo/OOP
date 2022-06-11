@@ -2,7 +2,7 @@ package ru.nsu.sartakov.builders
 
 import ru.nsu.sartakov.complex.Lessons
 import ru.nsu.sartakov.complex.Marks
-import ru.nsu.sartakov.complex.Student
+import ru.nsu.sartakov.entities.Student
 import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.*
 

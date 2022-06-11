@@ -1,4 +1,4 @@
-package ru.nsu.sartakov.complex
+package ru.nsu.sartakov.entities
 
 import ru.nsu.sartakov.entities.Lesson
 import ru.nsu.sartakov.entities.Mark

@@ -1,8 +1,9 @@
 package ru.nsu.sartakov.dsl
 
+import ru.nsu.sartakov.builders.GroupBuilder
 import ru.nsu.sartakov.builders.StudentBuilder
 import ru.nsu.sartakov.complex.Lessons
-import ru.nsu.sartakov.complex.Student
+import ru.nsu.sartakov.entities.Student
 import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.Group
 
@@ -84,6 +85,23 @@ class DSL {
         }
     }
 
+    // reading a group
+    private fun group(block: GroupBuilder.() -> Unit): Group {
+        return GroupBuilder().apply(block).build()
+    }
+
+    val group = group {
+        number = 20214
+        students {
+            student {
+                nickName = "ZeLebo"
+                firstName = "Alexander"
+                lastName = "Sartakov"
+                url = ""
+            }
+        }
+    }
+
     fun test() {
         val group = Group(20214)
         val studentTest = StudentBuilder().apply {
@@ -109,6 +127,9 @@ class DSL {
         for (lesson in lessons) {
             println(lesson.toString())
         }
+
+        println("Testing group")
+        println(group.students.toString())
     }
 }
 

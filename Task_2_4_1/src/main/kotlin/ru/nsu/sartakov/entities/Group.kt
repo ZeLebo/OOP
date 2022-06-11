@@ -1,10 +1,8 @@
 package ru.nsu.sartakov.entities
 
-import ru.nsu.sartakov.complex.Student
-
-class Group
-    (var number: Int) {
-    var students : ArrayList<Student> = ArrayList()
+class Group (
+    var number: Int,
+    var students: MutableList<Student> = ArrayList()){
 
     fun addStudent(student: Student) {
         students.add(student)
