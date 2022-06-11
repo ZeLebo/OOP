@@ -2,11 +2,14 @@ package ru.nsu.sartakov.dsl
 
 import ru.nsu.sartakov.builders.StudentBuilder
 import ru.nsu.sartakov.builders.TaskBuilder
+import ru.nsu.sartakov.complex.Student
+import ru.nsu.sartakov.complex.TaskList
 import ru.nsu.sartakov.entities.Group
+import ru.nsu.sartakov.entities.Task
 
 class DSL {
-    fun student(block: StudentBuilder.() -> Unit) {
-        StudentBuilder().apply(block).build()
+    private fun student(block: StudentBuilder.() -> Unit): Student {
+        return StudentBuilder().apply(block).build()
     }
 
     val student = student {
@@ -46,8 +49,8 @@ class DSL {
         }
     }
 
-    fun taskList(block: TaskBuilder.() -> Unit) {
-        TaskBuilder().apply(block).build()
+    fun taskList(block: TaskBuilder.() -> Unit): TaskList {
+        return TaskBuilder().apply(block).build()
     }
 
     val tasks = taskList {
@@ -78,8 +81,6 @@ class DSL {
         for (student in group.students) {
             println(student.nickName)
         }
-
-
     }
 }
 
@@ -90,8 +91,9 @@ fun main(args: Array<String>) {
     } else {
         // if arg is "test" run test
         if (args[0] == "test") {
+            println("String test")
             DSL().test()
-            return
+            println("end of test")
         } else if (args[0] == "build") {
             println("Building")
             return
