@@ -3,6 +3,11 @@ package ru.nsu.sartakov.app
 import ru.nsu.sartakov.dsl.DSL
 import ru.nsu.sartakov.entities.Task
 
+
+/**
+ * Class for running tests and stuff like this
+ */
+
 class App {
     // run tests from task
     fun run(task: Task) {
