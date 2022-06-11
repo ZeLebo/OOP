@@ -23,7 +23,7 @@ class MarkBuilder {
             throw IllegalArgumentException("Value cannot be 0")
         }
         if (markDate.isEqual(LocalDate.parse("01.01.2019", dateTimeFormatter))) {
-            throw IllegalArgumentException("Provide date, plz")
+            throw IllegalArgumentException("Provide deadline, plz")
         }
         return Mark(value, markDate)
     }

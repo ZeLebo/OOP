@@ -1,11 +1,9 @@
 package ru.nsu.sartakov.dsl
 
 import ru.nsu.sartakov.builders.StudentBuilder
-import ru.nsu.sartakov.builders.TaskBuilder
 import ru.nsu.sartakov.complex.Student
-import ru.nsu.sartakov.complex.TaskList
+import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.Group
-import ru.nsu.sartakov.entities.Task
 
 class DSL {
     private fun student(block: StudentBuilder.() -> Unit): Student {
@@ -16,7 +14,7 @@ class DSL {
         nickName = "ZeLebo"
         firstName = "Alexander"
         lastName = "Sartakov"
-        url = "https://github.com/ZeLebo"
+        url = "https://github.com/ZeLebo/OOP"
         group = 20214
 
         tasks {
@@ -36,6 +34,10 @@ class DSL {
                 date = "01.01.2022"
                 attendance = true
             }
+            lesson {
+                date = "01.01.2023"
+                attendance = false
+            }
         }
         marks {
             mark {
@@ -49,11 +51,11 @@ class DSL {
         }
     }
 
-    fun taskList(block: TaskBuilder.() -> Unit): TaskList {
-        return TaskBuilder().apply(block).build()
+    private fun tasks(block: Tasks.() -> Unit): Tasks {
+        return Tasks().apply(block)
     }
 
-    val tasks = taskList {
+    val tasks = tasks{
         task {
             taskId = "Task_1_1_1"
             deadLine = "01.01.2022"
@@ -65,6 +67,7 @@ class DSL {
             deadLine = "01.01.2022"
         }
     }
+
     fun test() {
         val group = Group(20214)
         val studentTest = StudentBuilder().apply {
@@ -75,11 +78,15 @@ class DSL {
         }.build()
 
         group.addStudent(studentTest)
-        group.addStudent(studentTest)
-        group.addStudent(studentTest)
 
-        for (student in group.students) {
-            println(student.nickName)
+        // for each mark in student mark print
+        student.marks.forEach {
+            println(it.toString())
+        }
+
+        println("Testing taskList")
+        for (task in tasks) {
+            println(task.toString())
         }
     }
 }
@@ -91,9 +98,11 @@ fun main(args: Array<String>) {
     } else {
         // if arg is "test" run test
         if (args[0] == "test") {
-            println("String test")
             DSL().test()
-            println("end of test")
+            val dsl = DSL()
+            dsl.tasks.forEach { println(it.toString()) }
+            // print all student info
+            println(dsl.student.toString())
         } else if (args[0] == "build") {
             println("Building")
             return
