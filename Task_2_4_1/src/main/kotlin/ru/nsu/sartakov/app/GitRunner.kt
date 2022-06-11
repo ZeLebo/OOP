@@ -14,7 +14,46 @@ class GitRunner {
         } else {
             Runtime.getRuntime().exec("git clone $repo repos/$nick").waitFor(2, TimeUnit.SECONDS)
         }
-        println(Runtime.getRuntime().exec("cd repos/$nick/$dir && ./gradlew test"))
+        val result = Runtime.getRuntime().exec("cd repos/$nick/$dir && gradle test")
+        result.waitFor()
+
+
+        if (result.exitValue() != 0) {
+            println("Test failed for $nick/$repo/$dir")
+        } else {
+            println("Test passed for $nick/$repo/$dir")
+        }
+
+        // count passed tests
+        var passed = 0
+        var failed = 0
+        var skipped = 0
+        var total = 0
+
+        // read output
+        result.inputStream.bufferedReader().useLines { lines ->
+            lines.forEach {
+                if (it.contains("Tests run: ")) {
+                    total = it.split(" ")[2].toInt()
+                }
+                if (it.contains("Tests passed: ")) {
+                    passed = it.split(" ")[2].toInt()
+                }
+                if (it.contains("Tests failed: ")) {
+                    failed = it.split(" ")[2].toInt()
+                }
+                if (it.contains("Tests skipped: ")) {
+                    skipped = it.split(" ")[2].toInt()
+                }
+            }
+        }
+
+        // print results
+        println("$nick/$repo/$dir:")
+        println("Total: $total")
+        println("Passed: $passed")
+        println("Failed: $failed")
+        println("Skipped: $skipped")
     }
 }
 
