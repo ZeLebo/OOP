@@ -14,6 +14,7 @@ class GitRunner {
         } else {
             Runtime.getRuntime().exec("git clone $repo repos/$nick").waitFor(2, TimeUnit.SECONDS)
         }
+        // todo count the tests and run them
         val result = Runtime.getRuntime().exec("cd repos/$nick/$dir && gradle test")
         result.waitFor()
 
