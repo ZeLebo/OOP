@@ -8,15 +8,18 @@ class GitRunner {
     // clone repo to the repos folder and run tests
     fun cloneAndRunTests(nick: String, repo: String, dir: String) {
         // check if the repo is already cloned
-        val repoDir = File(dir, repo)
+        val repoDir = File("./repos/$nick")
         if (repoDir.exists()) {
             println("Repo $repo already cloned")
         } else {
             Runtime.getRuntime().exec("git clone $repo repos/$nick").waitFor(2, TimeUnit.SECONDS)
+            // delete .git from it to prevent git from messing with it
+            Runtime.getRuntime().exec("rm -rf repos/$nick/.git").waitFor(2, TimeUnit.SECONDS)
         }
         // todo count the tests and run them
-        val result = Runtime.getRuntime().exec("cd repos/$nick/$dir && gradle test")
-        result.waitFor()
+        // count and run gradle tests
+        val result = Runtime.getRuntime().exec("cd repos/$nick/$dir && ./gradlew test --info")
+        result.waitFor(2, TimeUnit.SECONDS)
 
         if (result.exitValue() != 0) {
             println("Test failed for $nick/$repo/$dir")
