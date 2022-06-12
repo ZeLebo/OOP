@@ -1,10 +1,9 @@
 package ru.nsu.sartakov.dsl
 
-import ru.nsu.sartakov.builders.GroupBuilder
 import ru.nsu.sartakov.builders.StudentBuilder
+import ru.nsu.sartakov.complex.Groups
 import ru.nsu.sartakov.complex.Lessons
 import ru.nsu.sartakov.complex.Tasks
-import ru.nsu.sartakov.entities.Group
 import ru.nsu.sartakov.entities.Student
 import java.io.File
 import javax.script.ScriptEngineManager
@@ -45,20 +44,20 @@ class DSL {
     }
 
     // reading a group
-    fun group(block: GroupBuilder.() -> Unit): Group {
-        return GroupBuilder().apply(block).build()
+    fun groups(block: Groups.() -> Unit): Groups {
+        return Groups().apply(block)
     }
 
-    fun configureGroup(): Group {
+    private fun configureGroups(): Groups {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/GroupConf.kts").readText()
-        val scriptResult: Group
+        val scriptResult: Groups
         with(ScriptEngineManager().getEngineByExtension("kts")) {
-            scriptResult = eval(textConfig) as Group
+            scriptResult = eval(textConfig) as Groups
         }
         return scriptResult
     }
 
-    fun configureLessons(): Lessons {
+    private fun configureLessons(): Lessons {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/LessonsConf.kts").readText()
         var scriptResult: Lessons
         with(ScriptEngineManager().getEngineByExtension("kts")) {
@@ -67,7 +66,7 @@ class DSL {
         return scriptResult
     }
 
-    fun configureTasks(): Tasks {
+    private fun configureTasks(): Tasks {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/TasksConf.kts").readText()
         var scriptResult: Tasks
         with(ScriptEngineManager().getEngineByExtension("kts")) {
@@ -76,9 +75,11 @@ class DSL {
         return scriptResult
     }
 
+    fun makeasldkfj(){}
+
     val tasks by lazy { configureTasks() }
     val lessons by lazy { configureLessons() }
-    val group by lazy { configureGroup() }
+    val groups by lazy { configureGroups() }
 }
 
 fun main() {
@@ -86,5 +87,8 @@ fun main() {
     println(dsl.student)
     println(dsl.tasks)
     println(dsl.lessons)
-    println(dsl.group.students)
+    for (group in dsl.groups) {
+        println(group)
+    }
+    println(dsl.groups.getGroup(20214).students)
 }
