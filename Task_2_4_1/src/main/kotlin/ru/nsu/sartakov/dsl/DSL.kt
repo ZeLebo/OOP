@@ -75,8 +75,6 @@ class DSL {
         return scriptResult
     }
 
-    fun makeasldkfj(){}
-
     val tasks by lazy { configureTasks() }
     val lessons by lazy { configureLessons() }
     val groups by lazy { configureGroups() }

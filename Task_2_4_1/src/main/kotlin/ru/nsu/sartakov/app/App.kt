@@ -6,6 +6,7 @@ import ru.nsu.sartakov.entities.Task
 
 /**
  * Class for running tests and stuff like this
+ * All the args are gere
  */
 
 class App {

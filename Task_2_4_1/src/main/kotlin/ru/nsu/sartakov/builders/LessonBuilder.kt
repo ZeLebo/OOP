@@ -22,6 +22,6 @@ class LessonBuilder {
         if (lessonDate.isEqual(LocalDate.parse("01.01.2019", dateFormatter))) {
             throw IllegalArgumentException("Date is empty")
         }
-        return Lesson(lessonDate, attendance)
+        return Lesson(lessonDate)
     }
 }
