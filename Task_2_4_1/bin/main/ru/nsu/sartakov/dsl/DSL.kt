@@ -40,16 +40,40 @@ class DSL {
         return Tasks().apply(block)
     }
 
+//    val tasks = tasks{
+//        task {
+//            taskId = "Task_1_1_1"
+//            deadLine = "01.01.2022"
+//            score = 5
+//        }
+//        task {
+//            taskId = "Task_1_1_2"
+//            score = 5
+//            deadLine = "01.01.2022"
+//        }
+//    }
+
     fun lessons(block: Lessons.() -> Unit): Lessons {
         return Lessons().apply(block)
     }
+
+//    val lessons = lessons{
+//        lesson {
+//            date = "01.01.2022"
+//            attendance = true
+//        }
+//        lesson {
+//            date = "01.01.2023"
+//            attendance = false
+//        }
+//    }
 
     // reading a group
     fun group(block: GroupBuilder.() -> Unit): Group {
         return GroupBuilder().apply(block).build()
     }
 
-    private fun configureGroup() : Group {
+    fun configureGroup() : Group {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/GroupConf.kts").readText()
         val scriptResult : Group
         with (ScriptEngineManager().getEngineByExtension("kts")) {
@@ -58,7 +82,7 @@ class DSL {
         return scriptResult
     }
 
-    private fun configureLesson() : Lessons {
+    fun configureLesson() : Lessons {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/LessonsConf.kts").readText()
         var scriptResult : Lessons
         with (ScriptEngineManager().getEngineByExtension("kts")) {
@@ -67,7 +91,7 @@ class DSL {
         return scriptResult
     }
 
-    private fun configureTasks() : Tasks {
+    fun configureTasks() : Tasks {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/TasksConf.kts").readText()
         var scriptResult : Tasks
         with (ScriptEngineManager().getEngineByExtension("kts")) {
@@ -76,15 +100,23 @@ class DSL {
         return scriptResult
     }
 
-    val tasks = configureTasks()
-    val group = configureGroup()
-    val lessons = configureLesson()
+    //val tasks = configureTasks()
+
+
+    //val group = configureGroup()
+//    val lessons = configureLesson()
+
+    fun test() {
+        println("hello")
+        val group = configureGroup()
+        println(group.toString())
+    }
 }
 
 fun main() {
     val dsl = DSL()
+//    dsl.test()
     println(dsl.student.toString())
-    println(dsl.group.students.toString())
-    println(dsl.lessons.toString())
-    println(dsl.tasks.toString())
+    println(dsl.configureGroup().students.toString())
+    println(dsl.configureLesson().toString())
 }
