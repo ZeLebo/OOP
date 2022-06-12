@@ -88,5 +88,5 @@ fun main() {
     for (group in dsl.groups) {
         println(group)
     }
-    println(dsl.groups.getGroup(20214).students)
+    println(dsl.groups.getGroup(20214)?.students) ?: println("No group with id 20214")
 }

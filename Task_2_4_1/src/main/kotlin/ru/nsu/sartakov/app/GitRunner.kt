@@ -21,7 +21,7 @@ class GitRunner {
     }
 
     fun generateDocs(student: Student, taskName: String) {
-
+        TODO("I will generate docs for $student for $taskName later")
     }
 
     fun runTests(student: Student, taskId : String) {
@@ -29,17 +29,15 @@ class GitRunner {
             println("You do not have a repository for task $taskId, cloning it...")
             clone(student)
         }
+        // todo how to count the tests and beaufitfy the output
         val connection = GradleConnector.newConnector().forProjectDirectory(File("./repos/${student.nickName}/$taskId")).connect()
         // run tests and get the result
-        val result = ArrayList<String>()
         connection.use {
             connection.newBuild().forTasks("test").run().let {
-                result += it.toString()
+                println(it.toString())
             }
         }
         //connection.close()
-
-        println(result)
         println("Tests for task $taskId are done")
         connection.close()
     }
