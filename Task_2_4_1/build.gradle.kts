@@ -12,7 +12,9 @@ repositories {
 }
 
 dependencies {
+//    implementation("commons-io:commons-io:20030203.000550:2.8.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.21")
+    implementation(kotlin("script-runtime"))
 }
 
 tasks.test {
