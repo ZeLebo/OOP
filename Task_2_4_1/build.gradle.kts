@@ -12,6 +12,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.gradle:gradle-tooling-api:7.3-20210825160000+0000")
+    runtimeOnly("org.slf4j:slf4j-simple:1.7.36")
     testImplementation(kotlin("test"))
     implementation("org.jetbrains.kotlin:kotlin-script-util")
     implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable")
