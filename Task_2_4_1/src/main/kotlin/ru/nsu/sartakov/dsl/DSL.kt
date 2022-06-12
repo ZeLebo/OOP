@@ -49,42 +49,42 @@ class DSL {
         return GroupBuilder().apply(block).build()
     }
 
-    private fun configureGroup() : Group {
+    fun configureGroup(): Group {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/GroupConf.kts").readText()
-        val scriptResult : Group
-        with (ScriptEngineManager().getEngineByExtension("kts")) {
+        val scriptResult: Group
+        with(ScriptEngineManager().getEngineByExtension("kts")) {
             scriptResult = eval(textConfig) as Group
         }
         return scriptResult
     }
 
-    private fun configureLesson() : Lessons {
+    fun configureLessons(): Lessons {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/LessonsConf.kts").readText()
-        var scriptResult : Lessons
-        with (ScriptEngineManager().getEngineByExtension("kts")) {
+        var scriptResult: Lessons
+        with(ScriptEngineManager().getEngineByExtension("kts")) {
             scriptResult = eval(textConfig) as Lessons
         }
         return scriptResult
     }
 
-    private fun configureTasks() : Tasks {
+    fun configureTasks(): Tasks {
         val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/TasksConf.kts").readText()
-        var scriptResult : Tasks
-        with (ScriptEngineManager().getEngineByExtension("kts")) {
+        var scriptResult: Tasks
+        with(ScriptEngineManager().getEngineByExtension("kts")) {
             scriptResult = eval(textConfig) as Tasks
         }
         return scriptResult
     }
 
-    val tasks = configureTasks()
-    val group = configureGroup()
-    val lessons = configureLesson()
+    val tasks by lazy { configureTasks() }
+    val lessons by lazy { configureLessons() }
+    val group by lazy { configureGroup() }
 }
 
 fun main() {
     val dsl = DSL()
-    println(dsl.student.toString())
-    println(dsl.group.students.toString())
-    println(dsl.lessons.toString())
-    println(dsl.tasks.toString())
+    println(dsl.student)
+    println(dsl.tasks)
+    println(dsl.lessons)
+    println(dsl.group.students)
 }
