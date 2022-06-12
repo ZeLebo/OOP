@@ -22,11 +22,5 @@ DSL().group {
                 }
             }
         }
-        student {
-            nickName = "ZeLebo"
-            firstName = "Alexander"
-            lastName = "Sartakov"
-            url = ""
-        }
     }
 }

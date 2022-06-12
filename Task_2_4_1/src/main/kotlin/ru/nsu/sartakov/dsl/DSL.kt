@@ -6,6 +6,8 @@ import ru.nsu.sartakov.complex.Lessons
 import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.Group
 import ru.nsu.sartakov.entities.Student
+import java.io.File
+import javax.script.ScriptEngineManager
 
 
 // TODO: conf data from files, not hard code
@@ -71,61 +73,49 @@ class DSL {
         return GroupBuilder().apply(block).build()
     }
 
-    val group = group {
-        number = 20214
-        students {
-            student {
-                nickName = "ZeLebo"
-                firstName = "Alexander"
-                lastName = "Sartakov"
-                url = ""
-            }
+    fun configureGroup() : Group {
+        val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/GroupConf.kts").readText()
+        with (ScriptEngineManager().getEngineByExtension("kts")) {
+            return eval(textConfig) as Group
         }
     }
 
-    fun test() {
-        val group = Group(20214)
-        val studentTest = StudentBuilder().apply {
-            nickName = "ZeLebo"
-            firstName = "Alexander"
-            lastName = "Sartakov"
-            url = ""
-        }.build()
-
-        group.addStudent(studentTest)
-
-        // for each mark in student mark print
-        student.marks.forEach {
-            println(it.toString())
+    fun configureLesson() : Lessons {
+        val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/LessonsConf.kts").readText()
+        var scriptResult : Lessons
+        with (ScriptEngineManager().getEngineByExtension("kts")) {
+            scriptResult = eval(textConfig) as Lessons
         }
+        return scriptResult
+    }
 
-//        println("Testing taskList")
-//        for (task in tasks) {
-//            println(task.toString())
-//        }
-//
-//        println("Testing lessonList")
-//        for (lesson in lessons) {
-//            println(lesson.toString())
-//        }
+    fun configureTasks() : Tasks {
+        val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/TasksConf.kts").readText()
+        var scriptResult : Tasks
+        with (ScriptEngineManager().getEngineByExtension("kts")) {
+            scriptResult = eval(textConfig) as Tasks
+        }
+        return scriptResult
+    }
 
-        println("Testing group")
-        println(group.students.toString())
+    //val tasks = configureTasks()
+
+
+    val group = configureGroup()
+//    val lessons = configureLesson()
+
+    fun test() {
+        val group = configureGroup()
+        println(group.toString())
     }
 }
 
 fun main(args: Array<String>) {
-    // check for command line args
     if (args.isEmpty()) {
         println("No command line args")
     } else {
-        // if arg is "test" run test
         if (args[0] == "test") {
             DSL().test()
-            val dsl = DSL()
-            //dsl.tasks.forEach { println(it.toString()) }
-            // print all student info
-            println(dsl.student.toString())
         } else if (args[0] == "build") {
             println("Building")
             return

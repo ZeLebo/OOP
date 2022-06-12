@@ -12,9 +12,13 @@ repositories {
 }
 
 dependencies {
-//    implementation("commons-io:commons-io:20030203.000550:2.8.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.21")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     implementation(kotlin("script-runtime"))
+    implementation(kotlin("compiler-embeddable"))
+    implementation(kotlin("script-util"))
+    implementation(kotlin("scripting-compiler-embeddable"))
 }
 
 tasks.test {
