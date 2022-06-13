@@ -1,5 +1,6 @@
 package ru.nsu.sartakov.app
 
+import ru.nsu.sartakov.app.calculate.GitRunner
 import ru.nsu.sartakov.dsl.DSL
 
 
@@ -9,7 +10,7 @@ import ru.nsu.sartakov.dsl.DSL
  */
 
 class App {
-    fun checkTask(taskName: String) : Boolean {
+    private fun checkTask(taskName: String) : Boolean {
         return DSL().tasks.any { it.taskId == taskName }
     }
 
@@ -41,7 +42,17 @@ class App {
             println("Student $nickname not found")
             return
         }
-        GitRunner().runTests(student, task)
+        val result = GitRunner().runTests(student, task)
+        if (result.first) {
+            println("Student $nickname passed build of task $task")
+            if (result.second) {
+                println("Student $nickname passed tests for task $task")
+            } else {
+                println("Student $nickname failed tests for task $task")
+            }
+        } else {
+            println("Student $nickname failed build of task $task")
+        }
     }
 
     fun runTask(group: Int, task: String) {
@@ -72,50 +83,36 @@ class App {
 }
 
 fun main(args: Array<String>) {
-    if (args.isEmpty()) {
-        println("No command line args")
-        return
-    }
-    // app student nickname run task
-    // app student nickname docs task
-    // app student nickname run all
-    // app group groupNumber run task
-    // app group groupNumber run all
-    if (args.size < 4) {
+    // app student nickname task
+    // app student nickname all
+    // app group groupNumber task
+    // app group groupNumber all
+    if (args.size < 3) {
         println("Not enough args")
         return
     }
 
     when {
         args[0] == "student" -> {
-            if (args[3] == "run") {
-                if (args[4] == "all") {
-                    println("Running all tasks for student ${args[1]}")
-                    App().runTasks(args[1])
-                } else {
-                    println("Running task ${args[4]}")
-                    App().runTask(args[1], args[4])
-                }
-            } else if (args[3] == "docs") {
-                println("Generating docs for task ${args[4]}")
-                App().generateDocs(args[1], args[4])
-
+            if (args[2] == "all") {
+                println("Running all tasks for ${args[1]}")
+                App().runTasks(args[1])
             } else {
-                println("Unknown command")
+                println("Running task ${args[2]} for ${args[1]}")
+                App().runTask(args[1], args[2])
             }
         }
         args[0] == "group" -> {
-            if (args[3] == "run") {
-                if (args[4] == "all") {
-                    println("Running all tasks for group ${args[2]}")
-                    App().runTasks(args[2].toInt())
-                } else {
-                    println("Running task ${args[4]}")
-                    App().runTask(args[2].toInt(), args[4])
-                }
+            if (args[2] == "all") {
+                println("Running all tasks for ${args[1]}")
+                App().runTasks(args[1].toInt())
             } else {
-                println("Unknown command")
+                println("Running task ${args[2]} for ${args[1]}")
+                App().runTask(args[1].toInt(), args[2])
             }
+        }
+        args[0] == "docs" -> {
+            App().generateDocs(args[1], args[2])
         }
         else -> {
             println("Unknown command")

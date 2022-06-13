@@ -1,4 +1,4 @@
-package ru.nsu.sartakov.app
+package ru.nsu.sartakov.app.calculate
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.internal.storage.file.FileRepository
@@ -46,7 +46,6 @@ class GitRunner {
         return date
     }
 
-
     fun checkAttendance(student : Student, lessons: Lessons) : Float {
         val git = Git(FileRepository("repos/${student.nickName}/.git"))
         var result = 0
@@ -66,7 +65,8 @@ class GitRunner {
 
     private fun projectConnect(student: Student, taskId: String) : ProjectConnection {
         return GradleConnector.newConnector().
-                forProjectDirectory(File("./repos/${student.nickName}/${taskId}")).connect()
+                forProjectDirectory(File("./repos/${student.nickName}/${taskId}")).
+                useGradleVersion("7.3").connect()
     }
 
     // todo : return later
@@ -101,8 +101,8 @@ class GitRunner {
                 build.run()
                 true
             } catch (e: Exception) {
-                println("Build failed")
                 e.printStackTrace()
+                println("Build for $taskId failed, but the problem in you…")
                 return Pair(false, false)
             }
 
@@ -111,8 +111,7 @@ class GitRunner {
                 build.run()
                 true
             } catch (e: Exception) {
-                println("Test failed")
-                e.printStackTrace()
+                println("Test for $taskId failed, but the problem in you…")
                 false
             }
 
@@ -122,9 +121,12 @@ class GitRunner {
 }
 
 fun main() {
-    val runner = GitRunner()
+    val runner = TestResult()
     val dsl = DSL()
-    val test = runner.runTests(dsl.student, "Task_1_1_1")
-    println(test.toString())
-    println(runner.checkAttendance(dsl.student, dsl.lessons))
+    runner.parseTests(dsl.student, "Task_1_1_1")
+    println("TESTS REPORT ${dsl.student.nickName} for Task_1_1_1 \n" +
+            "Tests: ${runner.total}, \n" +
+            "Passed: ${runner.passed}, \n" +
+            "Skipped: ${runner.skipped}, \n" +
+            "Failed: ${runner.failed}")
 }
