@@ -14,6 +14,10 @@ import java.util.concurrent.TimeUnit
 
 typealias BuildTest = Pair<Boolean, Boolean>
 
+/**
+ * Class for git work
+ * Copy, pull, get commits and work with them
+ */
 class GitRunner {
     private fun isCloned(student: Student, taskId: String) : Boolean {
         if (!File("./repos/${student.nickName}/$taskId").exists()) {
@@ -27,7 +31,6 @@ class GitRunner {
         waitFor(2, TimeUnit.SECONDS)
     }
 
-    // todo: if cloned, pull if not - clone logic
     private fun pullClone(student : Student) {
         val repoDir = File("./repos/${student.nickName}")
         if (!repoDir.exists()) {
@@ -46,7 +49,8 @@ class GitRunner {
         return date
     }
 
-    fun checkAttendance(student : Student, lessons: Lessons) : Float {
+    fun checkAttendance(student : Student) : Float {
+        val lessons = DSL().lessons
         val git = Git(FileRepository("repos/${student.nickName}/.git"))
         var result = 0
         for (lesson in lessons) {
@@ -69,7 +73,6 @@ class GitRunner {
                 useGradleVersion("7.3").connect()
     }
 
-    // todo : return later
     fun generateDocs(student: Student, taskName: String) : Boolean {
         if (!isCloned(student, taskName)) {
             pullClone(student)
@@ -101,7 +104,6 @@ class GitRunner {
                 build.run()
                 true
             } catch (e: Exception) {
-                e.printStackTrace()
                 println("Build for $taskId failed, but the problem in you…")
                 return Pair(false, false)
             }
