@@ -55,7 +55,6 @@ class GitRunner {
             val end = localDateToDate(lesson.date.plusDays(8))
             for (commit in git.log().call()) {
                 val commitDate = commit.authorIdent.`when`
-                println("$commitDate $start $end")
                 if (commitDate.after(start) && commitDate.before(end)) {
                     result++
                     break
