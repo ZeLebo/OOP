@@ -22,18 +22,17 @@ class GitRunner {
         return true
     }
 
-    private fun clone(student : Student) {
+    // todo: if cloned, pull if not - clone
+    private fun pullClone(student : Student) {
         val repoDir = File("./repos/${student.nickName}")
         if (!repoDir.exists()) {
             Runtime.getRuntime().exec("git clone ${student.url} repos/${student.nickName}").
                 waitFor(2, TimeUnit.SECONDS)
-            // delete .git from it to prevent git from messing with it
-            //deleteGit(student)
         }
     }
 
-    private fun deleteGit(student: Student) {
-        Runtime.getRuntime().exec("rm -rf repos/${student.nickName}/.git").waitFor(2, TimeUnit.SECONDS)
+    private fun pull(student : Student) {
+
     }
 
     // function to convert localDate to date
@@ -45,8 +44,8 @@ class GitRunner {
 
 
     fun checkAttendance(student : Student, lessons: Lessons) : Float {
-        val git : Git = Git(FileRepository("repos/${student.nickName}/.git"))
-        var result : Int = 0
+        val git = Git(FileRepository("repos/${student.nickName}/.git"))
+        var result = 0
         for (lesson in lessons) {
             val start : Date = localDateToDate(lesson.date)
             val end = localDateToDate(lesson.date.plusDays(8))
@@ -70,18 +69,19 @@ class GitRunner {
     // todo : return later
     fun generateDocs(student: Student, taskName: String) {
         if (!isCloned(student, taskName)) {
-            clone(student)
+            pullClone(student)
         }
         projectConnect(student, taskName).use {
             connection ->
-            var tmp = connection.newBuild().forTasks("java:doc").run()
+            val tmp = connection.newBuild().forTasks("java:doc").run()
+            println(tmp.toString())
         }
     }
 
     fun runTests(student: Student, taskId : String) : BuildTest {
         if (!isCloned(student, taskId)) {
             println("You need to clone ${student.nickName}/$taskId, cloning...")
-            clone(student)
+            pullClone(student)
         }
 
         // if build or tests are failed, we will return false
@@ -116,6 +116,6 @@ fun main() {
     val runner = GitRunner()
     val dsl = DSL()
     val test = runner.runTests(dsl.student, "Task_1_1_1")
-    println(test.first && test.second == true)
+    println(test.toString())
     println(runner.checkAttendance(dsl.student, dsl.lessons))
 }
