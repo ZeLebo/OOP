@@ -1,4 +1,4 @@
-package ru.nsu.sartakov.app.calculate
+package ru.nsu.sartakov.app.report
 
 import ru.nsu.sartakov.entities.Student
 import java.io.File

@@ -1,6 +1,6 @@
 package ru.nsu.sartakov.app
 
-import ru.nsu.sartakov.app.calculate.GitRunner
+import ru.nsu.sartakov.app.report.GitRunner
 import ru.nsu.sartakov.dsl.DSL
 
 
@@ -21,7 +21,10 @@ class App {
             println("Student $nickname not found")
             return
         }
-        student.givenTasks.forEach { task -> runTask(nickname, task) }
+        student.givenTasks.forEach { task ->
+            runTask(nickname, task)
+            generateDocs(nickname, task)
+        }
     }
 
     fun runTasks(groupNumber: Int) {
@@ -31,7 +34,10 @@ class App {
             return
         }
         group.students.forEach { student ->
-            student.givenTasks.forEach { task -> runTask(student.nickName, task) }
+            student.givenTasks.forEach { task ->
+                runTask(student.nickName, task)
+                generateDocs(student.nickName, task)
+            }
         }
 
     }
@@ -40,6 +46,10 @@ class App {
         val student = DSL().groups.getStudent(nickname)
         if (student == null) {
             println("Student $nickname not found")
+            return
+        }
+        if (task !in student.givenTasks) {
+            println("Task $task not found in given tasks for this student")
             return
         }
         val result = GitRunner().runTests(student, task)
@@ -67,8 +77,11 @@ class App {
             }
         }
         // run tests for all the students in the group
+        // run tests for all the students in the group
         DSL().groups.getGroup(group)?.students?.forEach { student ->
-            runTask(student.nickName, task)
+            if (task in student.givenTasks) {
+                runTask(student.nickName, task)
+            }
         } ?: println("Group $group does not exist")
     }
 
@@ -78,7 +91,12 @@ class App {
             println("Student $nickname not found")
             return
         }
-        GitRunner().generateDocs(student, task)
+        if (GitRunner().generateDocs(student, task)) {
+            println("Student $nickname generated docs for task $task")
+        } else {
+            println("Student $nickname failed to generate docs for task $task")
+        }
+
     }
 }
 
@@ -110,9 +128,6 @@ fun main(args: Array<String>) {
                 println("Running task ${args[2]} for ${args[1]}")
                 App().runTask(args[1].toInt(), args[2])
             }
-        }
-        args[0] == "docs" -> {
-            App().generateDocs(args[1], args[2])
         }
         else -> {
             println("Unknown command")

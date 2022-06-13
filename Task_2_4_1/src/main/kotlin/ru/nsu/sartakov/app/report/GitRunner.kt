@@ -1,4 +1,4 @@
-package ru.nsu.sartakov.app.calculate
+package ru.nsu.sartakov.app.report
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.internal.storage.file.FileRepository
@@ -75,7 +75,7 @@ class GitRunner {
             pullClone(student)
         }
         projectConnect(student, taskName).use { connection ->
-            val build = connection.newBuild().forTasks("javadock")
+            val build = connection.newBuild().forTasks("javadoc")
 
             val result = try {
                 build.run()
@@ -121,6 +121,7 @@ class GitRunner {
 }
 
 fun main() {
+    // testing outputs
     val runner = TestResult()
     val dsl = DSL()
     runner.parseTests(dsl.student, "Task_1_1_1")
@@ -129,4 +130,14 @@ fun main() {
             "Passed: ${runner.passed}, \n" +
             "Skipped: ${runner.skipped}, \n" +
             "Failed: ${runner.failed}")
+    println(GitRunner().generateDocs(dsl.student, "Task_1_1_1"))
+    println(GitRunner().generateDocs(dsl.student, "Task_1_1_2"))
+    println(GitRunner().generateDocs(dsl.student, "Task_1_2_1"))
+    println(GitRunner().generateDocs(dsl.student, "Task_1_2_2"))
+    println(GitRunner().generateDocs(dsl.student, "Task_1_3_2"))
+    println(GitRunner().generateDocs(dsl.student, "Task_1_4_1"))
+    println(GitRunner().generateDocs(dsl.student, "Task_1_4_2"))
+    println(GitRunner().generateDocs(dsl.student, "Task_2_1_1"))
+    println(GitRunner().generateDocs(dsl.student, "Task_2_1_2"))
+    println(GitRunner().generateDocs(dsl.student, "Task_2_2_1"))
 }
