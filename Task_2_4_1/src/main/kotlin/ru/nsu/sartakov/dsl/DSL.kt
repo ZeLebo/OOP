@@ -82,11 +82,5 @@ class DSL {
 
 fun main() {
     val dsl = DSL()
-    println(dsl.student)
-    println(dsl.tasks)
     println(dsl.lessons)
-    for (group in dsl.groups) {
-        println(group)
-    }
-    println(dsl.groups.getGroup(20214)?.students) ?: println("No group with id 20214")
 }
