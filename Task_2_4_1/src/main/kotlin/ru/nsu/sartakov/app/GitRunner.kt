@@ -70,14 +70,20 @@ class GitRunner {
     }
 
     // todo : return later
-    fun generateDocs(student: Student, taskName: String) {
+    fun generateDocs(student: Student, taskName: String) : Boolean {
         if (!isCloned(student, taskName)) {
             pullClone(student)
         }
-        projectConnect(student, taskName).use {
-            connection ->
-            val tmp = connection.newBuild().forTasks("java:doc").run()
-            println(tmp.toString())
+        projectConnect(student, taskName).use { connection ->
+            val build = connection.newBuild().forTasks("javadock")
+
+            val result = try {
+                build.run()
+                true
+            } catch (e: Exception) {
+                false
+            }
+            return result
         }
     }
 
