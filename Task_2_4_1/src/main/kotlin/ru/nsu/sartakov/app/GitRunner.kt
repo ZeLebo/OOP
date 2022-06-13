@@ -103,7 +103,7 @@ class GitRunner {
             } catch (e: Exception) {
                 println("Build failed")
                 e.printStackTrace()
-                false
+                return Pair(false, false)
             }
 
             build = connection.newBuild().forTasks("test")
