@@ -22,17 +22,21 @@ class GitRunner {
         return true
     }
 
-    // todo: if cloned, pull if not - clone
+    private fun pull(student : Student) {
+        Runtime.getRuntime().exec("cd repos/${student.nickName} && git pull").
+        waitFor(2, TimeUnit.SECONDS)
+    }
+
+    // todo: if cloned, pull if not - clone logic
     private fun pullClone(student : Student) {
         val repoDir = File("./repos/${student.nickName}")
         if (!repoDir.exists()) {
             Runtime.getRuntime().exec("git clone ${student.url} repos/${student.nickName}").
                 waitFor(2, TimeUnit.SECONDS)
         }
-    }
-
-    private fun pull(student : Student) {
-
+        else {
+            pull(student)
+        }
     }
 
     // function to convert localDate to date
