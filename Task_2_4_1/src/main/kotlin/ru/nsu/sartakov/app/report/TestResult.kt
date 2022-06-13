@@ -8,6 +8,7 @@ class TestResult() {
     var skipped = 0
     var failed = 0
     var passed = 0
+    var time = 0.0
 
     // parse tests from xml file
     fun parseTests(student: Student, taskId: String) : TestResult {
@@ -32,6 +33,8 @@ class TestResult() {
         regex = "failures=\"(.*?)\"".toRegex()
         failed = regex.find(testXml)?.groupValues?.get(1)?.toInt()!!
         passed = total - failed
+        regex = "time=\"(.*?)\"".toRegex()
+        time = regex.find(testXml)?.groupValues?.get(1)?.toDouble()!!
         return this
     }
 }

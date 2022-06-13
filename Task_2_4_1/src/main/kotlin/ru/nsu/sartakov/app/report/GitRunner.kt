@@ -129,15 +129,7 @@ fun main() {
             "Tests: ${runner.total}, \n" +
             "Passed: ${runner.passed}, \n" +
             "Skipped: ${runner.skipped}, \n" +
-            "Failed: ${runner.failed}")
-    println(GitRunner().generateDocs(dsl.student, "Task_1_1_1"))
-    println(GitRunner().generateDocs(dsl.student, "Task_1_1_2"))
-    println(GitRunner().generateDocs(dsl.student, "Task_1_2_1"))
-    println(GitRunner().generateDocs(dsl.student, "Task_1_2_2"))
-    println(GitRunner().generateDocs(dsl.student, "Task_1_3_2"))
-    println(GitRunner().generateDocs(dsl.student, "Task_1_4_1"))
-    println(GitRunner().generateDocs(dsl.student, "Task_1_4_2"))
-    println(GitRunner().generateDocs(dsl.student, "Task_2_1_1"))
-    println(GitRunner().generateDocs(dsl.student, "Task_2_1_2"))
-    println(GitRunner().generateDocs(dsl.student, "Task_2_2_1"))
+            "Failed: ${runner.failed} \n" +
+            "Tests ended in ${runner.time} seconds"
+    )
 }
