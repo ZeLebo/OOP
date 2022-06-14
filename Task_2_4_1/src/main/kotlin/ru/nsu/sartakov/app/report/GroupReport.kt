@@ -1,5 +1,6 @@
 package ru.nsu.sartakov.app.report
 
+import ru.nsu.sartakov.dsl.DSL
 import ru.nsu.sartakov.entities.Group
 
 class GroupReport(val group: Group) {
@@ -27,66 +28,12 @@ class GroupReport(val group: Group) {
     }
 
     fun saveFullReport() {
-        var html = """
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>${group.number} Report</title>
-                <style>
-        *,
-        html {
-            margin: 0;
-            padding: 0;
-            border: 0;
-        }
-
-        html {
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            background-color: rgb(243, 229, 171);
-        }
-
-        .center {
-            width: 100%;
-            height: 50%;
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: black;
-            font-family: "Trebuchet MS", Helvetica, sans-serif;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 80px;
-        }
-        
-        h2 {
-            font-size: 50px;
-        }
-        
-        h3 {
-            font-size: 40px;
-        }
-
-        p {
-            font-size: 30px;
-        }
-    </style>
-            </head>
-            <body>
-            <div class="center">
-            <h1>${group.number} Report</h1>
-    """
+        var html = ""
+        html += DSL().fileFinder("preparedStyle.html").readText()
+        html += "<body>\n" +
+                "<div class=\"center\">"
+        html = html.replace("Title", "${group.number} Report")
+        html += "<h1>${group.number} Report</h1>"
         generateStudentsReport()
         html += "<h2>Students:</h2>"
         students.forEach {
@@ -125,59 +72,12 @@ class GroupReport(val group: Group) {
     }
 
     fun saveTaskReport(task : String) {
-        var html = """
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>${group.number} Report for $task</title>
-                <style>
-        *,
-        html {
-            margin: 0;
-            padding: 0;
-            border: 0;
-        }
-
-        html {
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            background-color: rgb(243, 229, 171);
-        }
-
-        .center {
-            width: 100%;
-            height: 50%;
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: black;
-            font-family: "Trebuchet MS", Helvetica, sans-serif;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 80px;
-        }
-
-        p {
-            font-size: 36px;
-        }
-    </style>
-            </head>
-            <body>
-            <div class="center">
-            <h1>${group.number} Report for $task</h1>
-    }
-    """
+        var html = ""
+        html += DSL().fileFinder("preparedStyle.html").readText()
+        html += "<body>\n" +
+                "<div class=\"center\">"
+        html = html.replace("Title", "${group.number} Report for $task")
+        html += "<h1>${group.number} Report for $task</h1>"
         for (student in students) {
             if (task in student.givenTasks) {
                 html += "<pre>\n\n\n</pre>"

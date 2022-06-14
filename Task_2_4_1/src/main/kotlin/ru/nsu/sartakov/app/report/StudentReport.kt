@@ -1,5 +1,6 @@
 package ru.nsu.sartakov.app.report
 
+import ru.nsu.sartakov.dsl.DSL
 import ru.nsu.sartakov.entities.Student
 
 class StudentReport(val student: Student) {
@@ -30,9 +31,12 @@ class StudentReport(val student: Student) {
     }
 
     fun studentReportLogic() : String {
-        generateTasksReport()
+        if (tasksReport.isEmpty()) {
+            generateTasksReport()
+        }
         var html = ""
         html += "<h1>${student.nickName} Report</h1>"
+        html += "<h2>${student.firstName} ${student.lastName}</h2>"
         html += "<p>Attendance: $attendance</p>"
         html += "<p>Marks:</p>"
         for (mark in marks) {
@@ -42,80 +46,17 @@ class StudentReport(val student: Student) {
         for (taskReport in tasksReport) {
             html += "<h2>${taskReport.task}</h2>"
             html += "<p>${taskReport.taskResultLogic()}</p>"
-            html += "<p></p>"
         }
         return html
     }
 
     fun saveReport() {
-        generateTasksReport()
-        var html = """
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>${student.nickName} Report</title>
-                <style>
-        *,
-        html {
-            margin: 0;
-            padding: 0;
-            border: 0;
-        }
-
-        html {
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            background-color: rgb(243, 229, 171);
-        }
-
-        .center {
-            width: 100%;
-            height: 50%;
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: black;
-            font-family: "Trebuchet MS", Helvetica, sans-serif;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 80px;
-        }
-        
-        h2 {
-            font-size: 50px;
-        }
-
-        p {
-            font-size: 36px;
-        }
-    </style>
-            </head>
-            <body>
-            <div class="center">
-    """
-        html += "<h1>${student.nickName} Report</h1>"
-        html += "<p>Attendance: $attendance</p>"
-        html += "<p>Marks:</p>"
-        for (mark in marks) {
-            html += "<p>${mark.value} of ${mark.date}</p>"
-        }
-        html += "<p>Tasks:</p>"
-        for (taskReport in tasksReport) {
-            html += "<pre>\n\n\n\n</pre>"
-            html += "<h2>${taskReport.task}</h2>"
-            html += taskReport.taskResultLogic()
-        }
+        var html = ""
+        html += DSL().fileFinder("preparedStyle.html").readText()
+        html += "<body>\n" +
+                "<div class=\"center\">"
+        html = html.replace("Title", "${student.nickName} Report")
+        html += studentReportLogic()
         html += "</div>\n</body>\n</html>"
         val file = java.io.File(FILENAME)
         file.writeText(html)
