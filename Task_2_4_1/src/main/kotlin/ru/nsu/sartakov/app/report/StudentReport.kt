@@ -29,6 +29,24 @@ class StudentReport(val student: Student) {
         println()
     }
 
+    fun studentReportLogic() : String {
+        generateTasksReport()
+        var html = ""
+        html += "<h1>${student.nickName} Report</h1>"
+        html += "<p>Attendance: $attendance</p>"
+        html += "<p>Marks:</p>"
+        for (mark in marks) {
+            html += "<p>${mark.value} of ${mark.date}</p>"
+        }
+        html += "<p>Tasks:</p>"
+        for (taskReport in tasksReport) {
+            html += "<h2>${taskReport.task}</h2>"
+            html += "<p>${taskReport.taskResultLogic()}</p>"
+            html += "<p></p>"
+        }
+        return html
+    }
+
     fun saveReport() {
         generateTasksReport()
         var html = """
@@ -94,9 +112,9 @@ class StudentReport(val student: Student) {
         }
         html += "<p>Tasks:</p>"
         for (taskReport in tasksReport) {
+            html += "<pre>\n\n\n\n</pre>"
             html += "<h2>${taskReport.task}</h2>"
-            html += "<p>${taskReport.htmlMid()}</p>"
-            html += "<p></p>"
+            html += "<p>${taskReport.taskResultLogic()}</p>"
         }
         html += "</div>\n</body>\n</html>"
         val file = java.io.File(FILENAME)

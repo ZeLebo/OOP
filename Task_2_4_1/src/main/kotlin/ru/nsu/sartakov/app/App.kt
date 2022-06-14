@@ -43,7 +43,9 @@ class App {
             println("Group $groupNumber not found")
             return
         }
-        GroupReport(group).printFullReportTerminal()
+        val report = GroupReport(group)
+        report.printFullReportTerminal()
+        report.saveFullReport()
         openReport()
     }
 
@@ -75,7 +77,9 @@ class App {
             println("Task $task does not exist")
             return
         }
-        GroupReport(group).printTaskReportTerminal(task)
+        val report = GroupReport(group)
+        report.printTaskReportTerminal(task)
+        report.saveTaskReport(task)
         openReport()
     }
 }

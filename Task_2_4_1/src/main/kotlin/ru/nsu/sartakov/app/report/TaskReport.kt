@@ -40,7 +40,7 @@ class TaskReport(student: Student, val task : String) {
         println()
     }
 
-    fun htmlMid() : String {
+    fun taskResultLogic() : String {
         var html = ""
         html += "<p><strong>Build </strong> ${if (isBuild) "✅ PASSED" else "❌ FAILED"}</p>"
         html += "<p><strong>Tests </strong> ${if (isTested) "✅ PASSED" else "❌ FAILED"}</p>"
@@ -48,7 +48,7 @@ class TaskReport(student: Student, val task : String) {
             html += "<p>Total: ${result.total}</p>"
             html += "<p>Passed: ${result.passed}</p>"
             html += "<p>Failed: ${result.failed}</p>"
-            html += "<p>Time on tests: ${result.time}</p>"
+            html += "<p><strong>Time on tests:</strong> ${result.time}</p>"
         }
         html += "<p><strong>Docs </strong> ${if (isDock) "✅ PASSED" else "❌ FAILED"}</p>"
         return html
@@ -107,7 +107,7 @@ class TaskReport(student: Student, val task : String) {
             <div class="center">
             <h1>${task}</h1>
              """.trimIndent()
-        html += htmlMid()
+        html += taskResultLogic()
         html += "</div>\n</body>\n</html>"
         val file = java.io.File(FILENAME)
         file.writeText(html)
