@@ -121,17 +121,3 @@ class GitRunner {
         }
     }
 }
-
-fun main() {
-    // testing outputs
-    val runner = TestResult()
-    val dsl = DSL()
-    runner.parseTests(dsl.student, "Task_1_1_1")
-    println("TESTS REPORT ${dsl.student.nickName} for Task_1_1_1 \n" +
-            "Tests: ${runner.total}, \n" +
-            "Passed: ${runner.passed}, \n" +
-            "Skipped: ${runner.skipped}, \n" +
-            "Failed: ${runner.failed} \n" +
-            "Tests ended in ${runner.time} seconds"
-    )
-}

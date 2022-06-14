@@ -80,7 +80,3 @@ class DSL {
     val groups by lazy { configureGroups() }
 }
 
-fun main() {
-    val dsl = DSL()
-    println(dsl.lessons)
-}
