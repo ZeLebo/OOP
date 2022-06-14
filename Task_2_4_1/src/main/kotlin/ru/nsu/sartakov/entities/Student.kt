@@ -1,8 +1,6 @@
 package ru.nsu.sartakov.entities
 
-import ru.nsu.sartakov.entities.Lesson
-import ru.nsu.sartakov.entities.Mark
-import ru.nsu.sartakov.entities.Task
+import ru.nsu.sartakov.app.report.GitRunner
 
 data class Student(
     var nickName: String,
@@ -20,6 +18,8 @@ data class Student(
     fun addTask(task: Task) {
         givenTasks.add(task.taskId)
     }
+
+    fun attendance() = GitRunner().checkAttendance(this)
 }
 
 private fun <E> List<E>.add(taskId: String) {

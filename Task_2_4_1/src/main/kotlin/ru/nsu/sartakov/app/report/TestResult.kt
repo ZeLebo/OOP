@@ -24,6 +24,9 @@ class TestResult() {
             return TestResult()
         }
         val testFile = testFiles[0]
+        if (!testFile.name.endsWith(".xml")) {
+            return TestResult()
+        }
         val testXml = testFile.readText()
         // if found tests="{number}" extract it
         var regex = "tests=\"(.*?)\"".toRegex()

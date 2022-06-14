@@ -1,6 +1,9 @@
 package ru.nsu.sartakov.app
 
-import ru.nsu.sartakov.app.report.GitRunner
+import org.gradle.internal.impldep.org.apache.commons.lang.ObjectUtils
+import ru.nsu.sartakov.app.report.GroupReport
+import ru.nsu.sartakov.app.report.StudentReport
+import ru.nsu.sartakov.app.report.TaskReport
 import ru.nsu.sartakov.dsl.DSL
 
 
@@ -21,10 +24,7 @@ class App {
             println("Student $nickname not found")
             return
         }
-        student.givenTasks.forEach { task ->
-            runTask(nickname, task)
-            generateDocs(nickname, task)
-        }
+        StudentReport(student).printReportTerminal()
     }
 
     fun runTasks(groupNumber: Int) {
@@ -33,13 +33,7 @@ class App {
             println("Group $groupNumber not found")
             return
         }
-        group.students.forEach { student ->
-            student.givenTasks.forEach { task ->
-                runTask(student.nickName, task)
-                generateDocs(student.nickName, task)
-            }
-        }
-
+        GroupReport(group).printFullReportTerminal()
     }
 
     fun runTask(nickname: String, task: String) {
@@ -52,59 +46,36 @@ class App {
             println("Task $task not found in given tasks for this student")
             return
         }
-        val result = GitRunner().runTests(student, task)
-        if (result.first) {
-            println("Student $nickname passed build of task $task")
-            if (result.second) {
-                println("Student $nickname passed tests for task $task")
-            } else {
-                println("Student $nickname failed tests for task $task")
-            }
-        } else {
-            println("Student $nickname failed build of task $task")
-        }
+        // print to terminal
+        TaskReport(student, task).printReportTerminal()
     }
 
     fun runTask(group: Int, task: String) {
-        when {
-            !DSL().groups.isGroup(group) -> {
-                println("Group $group does not exist")
-                return
-            }
-            !checkTask(task) -> {
-                println("Task $task does not exist")
-                return
-            }
-        }
-        // run tests for all the students in the group
-        // run tests for all the students in the group
-        DSL().groups.getGroup(group)?.students?.forEach { student ->
-            if (task in student.givenTasks) {
-                runTask(student.nickName, task)
-            }
-        } ?: println("Group $group does not exist")
-    }
+        val group = DSL().groups.getGroup(group)
 
-    fun generateDocs(nickname: String, task: String) {
-        val student = DSL().groups.getStudent(nickname)
-        if (student == null) {
-            println("Student $nickname not found")
+        if (group == null) {
+            println("Group $group does not exist")
             return
         }
-        if (GitRunner().generateDocs(student, task)) {
-            println("Student $nickname generated docs for task $task")
-        } else {
-            println("Student $nickname failed to generate docs for task $task")
+        else if (!checkTask(task)) {
+            println("Task $task does not exist")
+            return
         }
-
+        GroupReport(group).printTaskReportTerminal(task)
     }
 }
 
 fun main(args: Array<String>) {
-    // app student nickname task
-    // app student nickname all
-    // app group groupNumber task
-    // app group groupNumber all
+    if ("help" in args) println(
+        """
+        Usage:
+        app.jar [nickname] [task] - to run task for student
+        app.jar [nickname] all - to run all tasks for student
+        app.jar [group] [task] - run task for all students (in they have it) in group
+        app.jar [group] all - run all tasks for all students in group
+        """
+    )
+
     if (args.size < 3) {
         println("Not enough args")
         return
