@@ -1,6 +1,5 @@
 package ru.nsu.sartakov.app
 
-import org.gradle.internal.impldep.org.apache.commons.lang.ObjectUtils
 import ru.nsu.sartakov.app.report.GroupReport
 import ru.nsu.sartakov.app.report.StudentReport
 import ru.nsu.sartakov.app.report.TaskReport
@@ -17,6 +16,14 @@ class App {
         return DSL().tasks().any { it.taskId == taskName }
     }
 
+    private fun openReport() {
+        // ask user if he wants to open the file
+        println("Do you want to open the report?[y/n]")
+        val answer = readLine()
+        if (answer == "y") {
+            Runtime.getRuntime().exec("open ${DSL().fileFinder("report.html")}").waitFor()
+        }
+    }
 
     fun runTasks(nickname: String) {
         val student = DSL().groups().getStudent(nickname)
@@ -24,7 +31,10 @@ class App {
             println("Student $nickname not found")
             return
         }
-        StudentReport(student).printReportTerminal()
+        val report = StudentReport(student)
+        report.printReportTerminal()
+        report.saveReport()
+        openReport()
     }
 
     fun runTasks(groupNumber: Int) {
@@ -34,6 +44,7 @@ class App {
             return
         }
         GroupReport(group).printFullReportTerminal()
+        openReport()
     }
 
     fun runTask(nickname: String, task: String) {
@@ -47,7 +58,10 @@ class App {
             return
         }
         // print to terminal
-        TaskReport(student, task).printReportTerminal()
+        val report = TaskReport(student, task)
+        report.printReportTerminal()
+        report.saveReport()
+        openReport()
     }
 
     fun runTask(group: Int, task: String) {
@@ -62,6 +76,7 @@ class App {
             return
         }
         GroupReport(group).printTaskReportTerminal(task)
+        openReport()
     }
 }
 

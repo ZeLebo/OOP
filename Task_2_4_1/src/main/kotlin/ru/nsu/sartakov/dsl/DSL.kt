@@ -7,8 +7,6 @@ import ru.nsu.sartakov.complex.Tasks
 import java.io.File
 import javax.script.ScriptEngineManager
 
-
-// TODO: conf data from files, not hard code
 class DSL {
     fun tasks(block: Tasks.() -> Unit): Tasks {
         return Tasks().apply(block)
@@ -41,7 +39,7 @@ class DSL {
         return groups
     }
 
-    private fun fileFinder(fileName: String): File {
+    fun fileFinder(fileName: String): File {
         // list the files from current directory with .kts extension
         var resultFile : File = File("")
         val files = File("./").walkBottomUp().forEach { file ->
@@ -53,7 +51,7 @@ class DSL {
         return resultFile
     }
 
-    private fun students() : Students {
+    fun students() : Students {
         val textConfig = fileFinder("StudentsConf.kts").readText()
         val scriptResult: Students
         with(ScriptEngineManager().getEngineByExtension("kts")) {

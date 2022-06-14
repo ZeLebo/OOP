@@ -5,7 +5,7 @@ import ru.nsu.sartakov.entities.Group
 class GroupReport(group: Group) {
     val group = group
     val students = group.students
-    val FILENAME : String = "./src/main/kotlin/ru/nsu/sartakov/report/report.html"
+    val FILENAME : String = "report.html"
 
     fun printFullReportTerminal() {
         println("Group: ${group.number}")
@@ -21,6 +21,17 @@ class GroupReport(group: Group) {
     }
 
     fun saveFullReport() {
+        val tmp = """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Title</title>
+            </head>
+            <body>
+
+            </body>
+            </html>""".trimIndent()
         TODO("save to html file")
     }
 
@@ -43,6 +54,60 @@ class GroupReport(group: Group) {
     }
 
     fun saveTaskReport(task : String) {
-        TODO("save to html file")
+        var html = """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>${group.number} Report</title>
+                <style>
+        *,
+        html {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: rgb(243, 229, 171);
+        }
+
+        .center {
+            width: 100%;
+            height: 50%;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: black;
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 80px;
+        }
+
+        p {
+            font-size: 36px;
+        }
+    </style>
+            </head>
+            <body>
+            <div class="center">
+    }
+    """
+        html += "</div>\n</body>\n</html>"
+        val file = java.io.File(FILENAME)
+        file.writeText(html)
     }
 }

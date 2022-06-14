@@ -34,8 +34,13 @@ class GitRunner {
     private fun pullClone(student : Student) {
         val repoDir = File("./repos/${student.nickName}")
         if (!repoDir.exists()) {
-            Runtime.getRuntime().exec("git clone ${student.url} repos/${student.nickName}").
-                waitFor(2, TimeUnit.SECONDS)
+            // if student url doesn't end with .git, add it
+            val url = if (student.url.endsWith(".git")) student.url else "${student.url}.git"
+            val result = Runtime.getRuntime().exec("git clone $url repos/${student.nickName}")
+            if (result.exitValue() != 0) {
+                println("The provided link is wrong, make sure that it is correct")
+            }
+            result.waitFor(2, TimeUnit.SECONDS)
         }
         else {
             pull(student)
@@ -51,13 +56,16 @@ class GitRunner {
 
     fun checkAttendance(student : Student) : Float {
         val lessons = DSL().lessons()
+        println(lessons.size)
         val git = Git(FileRepository("repos/${student.nickName}/.git"))
         var result = 0
         for (lesson in lessons) {
             val start : Date = localDateToDate(lesson.date)
             val end = localDateToDate(lesson.date.plusDays(8))
+            println("start: $start, end: $end")
             for (commit in git.log().call()) {
                 val commitDate = commit.authorIdent.`when`
+                println("commit: $commitDate")
                 if (commitDate.after(start) && commitDate.before(end)) {
                     result++
                     break
@@ -120,4 +128,8 @@ class GitRunner {
             return BuildTest(buildRes, testRes)
         }
     }
+}
+
+fun main() {
+    println(GitRunner().checkAttendance(DSL().students()[0]))
 }
