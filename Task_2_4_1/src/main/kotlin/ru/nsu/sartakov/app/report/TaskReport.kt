@@ -3,18 +3,16 @@ package ru.nsu.sartakov.app.report
 import ru.nsu.sartakov.entities.Student
 
 
-class TaskReport(student: Student, task : String) {
-    val taskId = task
-    val nick = student.nickName
+class TaskReport(student: Student, private val task : String) {
     private val gitRunner = GitRunner()
-    val isDock = gitRunner.generateDocs(student, task)
-    val testBuild = gitRunner.runTests(student, task)
-    val isBuild = testBuild.first
-    val isTested = testBuild.second
-    val result = TestResult().parseTests(student, task)
+    private val isDock = gitRunner.generateDocs(student, task)
+    private val testBuild = gitRunner.runTests(student, task)
+    private val isBuild = testBuild.first
+    private val isTested = testBuild.second
+    private val result = TestResult().parseTests(student, task)
 
     fun printReportTerminal() {
-        println("Report for task $taskId")
+        println("Report for task $task")
         when {
             isBuild -> {
                 println("Build: ✅")
@@ -39,5 +37,9 @@ class TaskReport(student: Student, task : String) {
             println("Docs: ❌")
         }
         println()
+    }
+    
+    fun saveReport() {
+        TODO("save to html file") 
     }
 }
