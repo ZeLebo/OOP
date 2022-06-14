@@ -37,4 +37,8 @@ class Groups : ArrayList<Group>() {
         }
         return null
     }
+
+    fun addGroup(number: Int) {
+        this.add(Group(number))
+    }
 }

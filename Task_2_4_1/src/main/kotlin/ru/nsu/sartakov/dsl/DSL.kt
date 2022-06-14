@@ -36,12 +36,18 @@ class DSL {
     }
 
     fun groups(): Groups {
-        val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/GroupConf.kts").readText()
-        val scriptResult: Groups
-        with(ScriptEngineManager().getEngineByExtension("kts")) {
-            scriptResult = eval(textConfig) as Groups
+        val students = students()
+        val groups : Groups = Groups()
+        // add student to group with his number in group
+        for (student in students) {
+            // add student to group with his number in group
+            val group = student.group
+            if (groups.getGroup(group) == null) {
+                groups.addGroup(group)
+            }
+            groups.getGroup(group)?.addStudent(student)
         }
-        return scriptResult
+        return groups
     }
 
     fun lessons(): Lessons {
@@ -61,5 +67,11 @@ class DSL {
         }
         return scriptResult
     }
+}
+
+fun main() {
+    val dsl = DSL()
+    val students = dsl.students()
+    println(students)
 }
 
