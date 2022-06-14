@@ -50,7 +50,7 @@ class GitRunner {
     }
 
     fun checkAttendance(student : Student) : Float {
-        val lessons = DSL().lessons
+        val lessons = DSL().lessons()
         val git = Git(FileRepository("repos/${student.nickName}/.git"))
         var result = 0
         for (lesson in lessons) {

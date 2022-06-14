@@ -14,12 +14,12 @@ import ru.nsu.sartakov.dsl.DSL
 
 class App {
     private fun checkTask(taskName: String) : Boolean {
-        return DSL().tasks.any { it.taskId == taskName }
+        return DSL().tasks().any { it.taskId == taskName }
     }
 
 
     fun runTasks(nickname: String) {
-        val student = DSL().groups.getStudent(nickname)
+        val student = DSL().groups().getStudent(nickname)
         if (student == null) {
             println("Student $nickname not found")
             return
@@ -28,7 +28,7 @@ class App {
     }
 
     fun runTasks(groupNumber: Int) {
-        val group = DSL().groups.getGroup(groupNumber)
+        val group = DSL().groups().getGroup(groupNumber)
         if (group == null) {
             println("Group $groupNumber not found")
             return
@@ -37,7 +37,7 @@ class App {
     }
 
     fun runTask(nickname: String, task: String) {
-        val student = DSL().groups.getStudent(nickname)
+        val student = DSL().groups().getStudent(nickname)
         if (student == null) {
             println("Student $nickname not found")
             return
@@ -51,7 +51,7 @@ class App {
     }
 
     fun runTask(group: Int, task: String) {
-        val group = DSL().groups.getGroup(group)
+        val group = DSL().groups().getGroup(group)
 
         if (group == null) {
             println("Group $group does not exist")
