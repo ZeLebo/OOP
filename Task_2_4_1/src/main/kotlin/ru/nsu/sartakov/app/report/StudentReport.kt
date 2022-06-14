@@ -114,7 +114,7 @@ class StudentReport(val student: Student) {
         for (taskReport in tasksReport) {
             html += "<pre>\n\n\n\n</pre>"
             html += "<h2>${taskReport.task}</h2>"
-            html += "<p>${taskReport.taskResultLogic()}</p>"
+            html += taskReport.taskResultLogic()
         }
         html += "</div>\n</body>\n</html>"
         val file = java.io.File(FILENAME)
