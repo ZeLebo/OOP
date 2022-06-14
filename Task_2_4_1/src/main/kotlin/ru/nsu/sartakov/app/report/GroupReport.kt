@@ -2,8 +2,7 @@ package ru.nsu.sartakov.app.report
 
 import ru.nsu.sartakov.entities.Group
 
-class GroupReport(group: Group) {
-    val group = group
+class GroupReport(val group: Group) {
     val students = group.students
     val FILENAME : String = "report.html"
     var studentsReport = ArrayList<StudentReport>()
@@ -97,7 +96,9 @@ class GroupReport(group: Group) {
             html += "<pre>\n\n\n</pre>"
             var tmp = studentReport.studentReportLogic()
             tmp = tmp.replace("<h2>", "<h3>")
+            tmp = tmp.replace("</h2>", "</h3>")
             tmp = tmp.replace("<h1>", "<h2>")
+            tmp = tmp.replace("</h1>", "</h2>")
             html += tmp
         }
         html += "</div>\n</body>\n</html>"
