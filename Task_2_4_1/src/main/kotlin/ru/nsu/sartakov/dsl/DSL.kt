@@ -26,15 +26,6 @@ class DSL {
         return Students().apply(block)
     }
 
-    fun students() : Students {
-        val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/StudentsConf.kts").readText()
-        val scriptResult: Students
-        with(ScriptEngineManager().getEngineByExtension("kts")) {
-            scriptResult = eval(textConfig) as Students
-        }
-        return scriptResult
-    }
-
     fun groups(): Groups {
         val students = students()
         val groups : Groups = Groups()
@@ -50,8 +41,29 @@ class DSL {
         return groups
     }
 
+    private fun fileFinder(fileName: String): File {
+        // list the files from current directory with .kts extension
+        var resultFile : File = File("")
+        val files = File("./").walkBottomUp().forEach { file ->
+            if (file.name == fileName) {
+                resultFile = file
+                return resultFile
+            }
+        }
+        return resultFile
+    }
+
+    private fun students() : Students {
+        val textConfig = fileFinder("StudentsConf.kts").readText()
+        val scriptResult: Students
+        with(ScriptEngineManager().getEngineByExtension("kts")) {
+            scriptResult = eval(textConfig) as Students
+        }
+        return scriptResult
+    }
+
     fun lessons(): Lessons {
-        val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/LessonsConf.kts").readText()
+        val textConfig = fileFinder("LessonsConf.kts").readText()
         var scriptResult: Lessons
         with(ScriptEngineManager().getEngineByExtension("kts")) {
             scriptResult = eval(textConfig) as Lessons
@@ -60,18 +72,12 @@ class DSL {
     }
 
     fun tasks(): Tasks {
-        val textConfig = File("./src/main/kotlin/ru/nsu/sartakov/configs/TasksConf.kts").readText()
+        val textConfig = fileFinder("TasksConf.kts").readText()
         var scriptResult: Tasks
         with(ScriptEngineManager().getEngineByExtension("kts")) {
             scriptResult = eval(textConfig) as Tasks
         }
         return scriptResult
     }
-}
-
-fun main() {
-    val dsl = DSL()
-    val students = dsl.students()
-    println(students)
 }
 
