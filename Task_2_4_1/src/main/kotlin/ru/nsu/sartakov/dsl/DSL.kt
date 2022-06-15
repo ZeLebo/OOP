@@ -6,6 +6,7 @@ import ru.nsu.sartakov.complex.Students
 import ru.nsu.sartakov.complex.Tasks
 import java.io.File
 import javax.script.ScriptEngineManager
+import kotlin.system.exitProcess
 
 class DSL {
     fun tasks(block: Tasks.() -> Unit): Tasks {
@@ -55,9 +56,14 @@ class DSL {
 
     fun students() : Students {
         val textConfig = fileFinder("StudentsConf.kts").readText()
-        val scriptResult: Students
+        var scriptResult: Students
         with(ScriptEngineManager().getEngineByExtension("kts")) {
-            scriptResult = eval(textConfig) as Students
+            try {
+                scriptResult = eval(textConfig) as Students
+            } catch (e: Exception) {
+                println("Error in script: ${e.message}")
+                exitProcess(1)
+            }
         }
         return scriptResult
     }
@@ -66,7 +72,12 @@ class DSL {
         val textConfig = fileFinder("LessonsConf.kts").readText()
         var scriptResult: Lessons
         with(ScriptEngineManager().getEngineByExtension("kts")) {
-            scriptResult = eval(textConfig) as Lessons
+            try {
+                scriptResult = eval(textConfig) as Lessons
+            } catch (e: Exception) {
+                println("Error in script: ${e.message}")
+                exitProcess(1)
+            }
         }
         return scriptResult
     }
@@ -75,7 +86,12 @@ class DSL {
         val textConfig = fileFinder("TasksConf.kts").readText()
         var scriptResult: Tasks
         with(ScriptEngineManager().getEngineByExtension("kts")) {
-            scriptResult = eval(textConfig) as Tasks
+            try {
+                scriptResult = eval(textConfig) as Tasks
+            } catch (e: Exception) {
+                println("Error in script: ${e.message}")
+                exitProcess(1)
+            }
         }
         return scriptResult
     }
