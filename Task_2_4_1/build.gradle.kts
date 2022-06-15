@@ -33,3 +33,17 @@ tasks.test {
 tasks.withType<KotlinCompile>() {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+
+tasks.jar {
+    archiveBaseName.set("dsl")
+    manifest {
+        attributes["Main-Class"] = "ru/nsu/sartakov/app/AppKt"
+    }
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    include("META-INF/MANIFEST.MF", "META-INF/LICENSE.txt")
+    include("**/*.class", "**/*.kt", "META-INF/services/javax.script.ScriptEngineFactory")
+}
