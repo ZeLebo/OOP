@@ -6,7 +6,7 @@ import ru.nsu.sartakov.entities.Student
 import ru.nsu.sartakov.complex.Tasks
 import ru.nsu.sartakov.entities.*
 
-class StudentBuilder() {
+class StudentBuilder {
     var nickName = ""
     var firstName = ""
     var lastName = ""

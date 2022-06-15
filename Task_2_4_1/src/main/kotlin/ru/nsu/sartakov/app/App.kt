@@ -66,8 +66,8 @@ class App {
         openReport()
     }
 
-    fun runTask(group: Int, task: String) {
-        val group = DSL().groups().getGroup(group)
+    fun runTask(groupNumber: Int, task: String) {
+        val group = DSL().groups().getGroup(groupNumber)
 
         if (group == null) {
             println("Group $group does not exist")

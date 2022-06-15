@@ -26,7 +26,7 @@ class DSL {
 
     fun groups(): Groups {
         val students = students()
-        val groups : Groups = Groups()
+        val groups = Groups()
         // add student to group with his number in group
         for (student in students) {
             // add student to group with his number in group
@@ -41,13 +41,15 @@ class DSL {
 
     fun fileFinder(fileName: String): File {
         // list the files from current directory with .kts extension
-        var resultFile : File = File("")
-        val files = File("./").walkBottomUp().forEach { file ->
+        File("./").walkBottomUp().forEach { file ->
             if (file.name == fileName) {
-                resultFile = file
-                return resultFile
+                return file
             }
         }
+        // create file with fileName if not found
+        val resultFile = File(fileName)
+        resultFile.createNewFile()
+
         return resultFile
     }
 

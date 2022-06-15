@@ -3,7 +3,7 @@ package ru.nsu.sartakov.app.report
 import ru.nsu.sartakov.entities.Student
 import java.io.File
 
-class TestResult() {
+class TestResult {
     var total = 0
     var skipped = 0
     var failed = 0
