@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,gradle,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,gradle,intellij
 
-.DS_Store
+**/.DS_Store
 Task_2_4_1/repos/*
 
 ### Intellij ###
