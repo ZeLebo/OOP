@@ -4,7 +4,6 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.internal.storage.file.FileRepository
 import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.ProjectConnection
-import ru.nsu.sartakov.complex.Lessons
 import ru.nsu.sartakov.dsl.DSL
 import ru.nsu.sartakov.entities.Student
 import java.io.File
@@ -125,8 +124,4 @@ class GitRunner {
             return BuildTest(buildRes, testRes)
         }
     }
-}
-
-fun main() {
-    println(GitRunner().checkAttendance(DSL().students()[0]))
 }
